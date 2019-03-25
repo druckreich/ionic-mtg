@@ -4,7 +4,7 @@ import {Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 import {Store} from '@ngxs/store';
-import {LoadSets} from './+store/main.actions';
+import {LoadCards, LoadSets} from './+store/main.actions';
 
 @Component({
     selector: 'app-root',
@@ -21,7 +21,8 @@ export class AppComponent {
     }
 
     initializeApp() {
-        this.store.dispatch(new LoadSets());
+        //this.store.dispatch(new LoadSets());
+        this.store.dispatch(new LoadCards(null));
 
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();

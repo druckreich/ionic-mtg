@@ -1,8 +1,8 @@
 import {Action, State, StateContext} from '@ngxs/store';
-import {LoadSets} from './main.actions';
+import {LoadCards, LoadSets} from './main.actions';
 import {MainService} from './main.service';
 import {tap} from 'rxjs/operators';
-import {MTGSet} from './main.model';
+import {MTGCard, MTGSet} from './main.model';
 
 export interface BaseState<T> {
     data: T;
@@ -12,6 +12,7 @@ export interface BaseState<T> {
 
 export interface MainStateModel {
     sets: BaseState<MTGSet[]>;
+    cards: BaseState<MTGCard[]>;
 }
 
 @State<MainStateModel>({
@@ -23,18 +24,33 @@ export class MainState {
 
     }
 
+    @Action(LoadCards)
+    loadCards({getState, patchState, setState}: StateContext<MainStateModel>, {searchParams}: LoadCards) {
+        patchState({
+            cards: {data: [], pending: true, error: false}
+        });
+        return this.mainService.loadCards(searchParams).pipe(
+            tap((data: MTGCard[]) => {
+                setState({
+                    ...getState(),
+                    cards: {data: data, pending: false, error: false}
+                });
+            })
+        );
+    }
+
     @Action(LoadSets)
-    loadSets({getState, patchState, setState, dispatch}: StateContext<MainStateModel>) {
+    loadSets({getState, patchState, setState}: StateContext<MainStateModel>) {
         patchState({
             sets: {data: [], pending: true, error: false}
         });
         return this.mainService.loadSets().pipe(
             tap((data: MTGSet[]) => {
                 setState({
-                    sets: {data: data, pending: true, error: false}
+                    ...getState(),
+                    sets: {data: data, pending: false, error: false},
                 });
             })
         );
     }
-
 }
