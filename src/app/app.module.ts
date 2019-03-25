@@ -13,15 +13,22 @@ import {MainState} from './+store/main.state';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 import {HttpClientModule} from '@angular/common/http';
+import {CardDetailsComponent} from './shared/card-details/card-details.component';
 
 @NgModule({
-    declarations: [AppComponent],
-    entryComponents: [],
+    declarations: [
+        AppComponent,
+        CardDetailsComponent
+    ],
+    entryComponents: [
+        CardDetailsComponent
+    ],
     imports: [
         BrowserModule,
         HttpClientModule,
         IonicModule.forRoot(),
         AppRoutingModule,
+
         NgxsModule.forRoot([MainState]),
         NgxsStoragePluginModule.forRoot(),
         NgxsLoggerPluginModule.forRoot()

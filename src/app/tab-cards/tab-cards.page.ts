@@ -5,6 +5,8 @@ import {Store} from '@ngxs/store';
 import {LoadCards} from '../+store/main.actions';
 import {BaseState} from '../+store/main.state';
 import {FormControl, FormGroup} from '@angular/forms';
+import {ModalController} from '@ionic/angular';
+import {CardDetailsComponent} from '../shared/card-details/card-details.component';
 
 @Component({
     selector: 'app-tab-cards',
@@ -19,7 +21,7 @@ export class TabCardsPage implements OnInit {
         'name': new FormControl('')
     });
 
-    constructor(public store: Store) {
+    constructor(public store: Store, public modalController: ModalController) {
     }
 
     ngOnInit() {
@@ -28,7 +30,14 @@ export class TabCardsPage implements OnInit {
 
     triggerCardSearch() {
         this.store.dispatch(new LoadCards(this.searchForm.value));
+    }
 
+    async showCardDetailModal(card: MTGCard) {
+        const modal = await this.modalController.create({
+            component: CardDetailsComponent,
+            componentProps: { card: card }
+        });
+        return await modal.present();
     }
 
 }

@@ -1,5 +1,5 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {LoadCards, LoadSets} from './main.actions';
+import {LoadCards, LoadSets, SetFavourite} from './main.actions';
 import {MainService} from './main.service';
 import {tap} from 'rxjs/operators';
 import {MTGCard, MTGSet} from './main.model';
@@ -13,6 +13,7 @@ export interface BaseState<T> {
 export interface MainStateModel {
     sets: BaseState<MTGSet[]>;
     cards: BaseState<MTGCard[]>;
+    favourites: MTGCard[];
 }
 
 @State<MainStateModel>({
@@ -63,4 +64,29 @@ export class MainState {
             })
         );
     }
+
+    @Action(SetFavourite)
+    setFavourite({getState, patchState, setState}: StateContext<MainStateModel>, {card}: SetFavourite) {
+        const favourites: MTGCard[] = getState().favourites ? getState().favourites : [];
+        const index: number = favourites.findIndex((c: MTGCard) => c.id === card.id);
+        if (index !== -1) {
+            setState({
+                ...getState(),
+                favourites: [
+                    ...favourites.slice(0, index),
+                    ...favourites.slice(index + 1, favourites.length),
+                ]
+            });
+        } else {
+            setState({
+                ...getState(),
+                favourites: [
+                    ...favourites,
+                    card
+                ]
+            });
+        }
+
+    }
+
 }

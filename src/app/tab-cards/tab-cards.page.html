@@ -10,11 +10,11 @@
 </ion-header>
 
 <ion-content>
-
-    <div class="mtg-list" *ngIf="(cards$ | async).data as cards">
+    <div class="mtg-list" *ngIf="(cards$ | async).data as cards" >
         <ng-container *ngFor="let card of cards">
-            <div class="mtg-card-image" *ngIf="card.imageUrl">
-                <img [src]="card.imageUrl">
+            <div class="mtg-card-image" *ngIf="card.imageUrl" (click)="showCardDetailModal(card)">
+                <!--<img [src]="card.imageUrl">-->
+                <pre>{{card.name}}</pre>
             </div>
         </ng-container>
     </div>
