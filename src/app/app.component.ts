@@ -3,8 +3,8 @@ import {Component} from '@angular/core';
 import {Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
+import {LoadSets} from './+store/main.actions';
 import {Store} from '@ngxs/store';
-import {LoadCards, LoadSets} from './+store/main.actions';
 
 @Component({
     selector: 'app-root',
@@ -15,18 +15,19 @@ export class AppComponent {
         private platform: Platform,
         private splashScreen: SplashScreen,
         private statusBar: StatusBar,
-        private store: Store
+        public store: Store
     ) {
         this.initializeApp();
+        this.loadInitialData();
     }
 
     initializeApp() {
-        //this.store.dispatch(new LoadSets());
-        this.store.dispatch(new LoadCards(null));
-
         this.platform.ready().then(() => {
             this.statusBar.styleDefault();
             this.splashScreen.hide();
         });
+    }
+
+    loadInitialData() {
     }
 }

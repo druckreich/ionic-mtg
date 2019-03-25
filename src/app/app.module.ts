@@ -8,7 +8,6 @@ import {StatusBar} from '@ionic-native/status-bar/ngx';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {MainService} from './+store/main.service';
 import {NgxsModule} from '@ngxs/store';
 import {MainState} from './+store/main.state';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
@@ -30,8 +29,7 @@ import {HttpClientModule} from '@angular/common/http';
     providers: [
         StatusBar,
         SplashScreen,
-        {provide: RouteReuseStrategy, useClass: IonicRouteStrategy},
-        MainService
+        {provide: RouteReuseStrategy, useClass: IonicRouteStrategy}
     ],
     bootstrap: [AppComponent]
 })

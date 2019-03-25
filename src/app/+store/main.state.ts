@@ -1,4 +1,4 @@
-import {Action, State, StateContext} from '@ngxs/store';
+import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {LoadCards, LoadSets} from './main.actions';
 import {MainService} from './main.service';
 import {tap} from 'rxjs/operators';
@@ -20,6 +20,16 @@ export interface MainStateModel {
 })
 
 export class MainState {
+
+    @Selector()
+    public static setsSortedByReleaseDate(state: MainStateModel) {
+        return state.sets.data.sort((a: MTGSet, b: MTGSet) => {
+            const aDate: Date = new Date(a.releaseDate);
+            const bDate: Date = new Date(b.releaseDate);
+            return aDate > bDate ? -1 : aDate < bDate ? 1 : 0;
+        });
+    }
+
     constructor(public mainService: MainService) {
 
     }

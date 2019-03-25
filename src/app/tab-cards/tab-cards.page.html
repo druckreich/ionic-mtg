@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Cards</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <form [formGroup]="searchForm">
+        <ion-item>
+            <ion-label position="stacked">Suche</ion-label>
+            <ion-input id="name" formControlName="name" (keyup.enter)="triggerCardSearch()"></ion-input>
+        </ion-item>
+    </form>
+    <div class="mtg-list" *ngIf="(cards$ | async).data as cards">
+        <div class="mtg-card-image" *ngFor="let card of cards">
+            <img *ngIf="card.imageUrl" [src]="card.imageUrl">
+        </div>
+    </div>
+</ion-content>

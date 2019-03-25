@@ -5,7 +5,9 @@ import {environment} from '../../environments/environment';
 import {MTGCard, MTGCardSearchParams, MTGSet} from './main.model';
 import {map} from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class MainService {
 
     constructor(public httpClient: HttpClient) {
@@ -13,11 +15,13 @@ export class MainService {
     }
 
     loadSets(): Observable<MTGSet[]> {
-        return this.httpClient.get<MTGSet[]>(`${environment.mtgApi}/sets`);
+        return this.httpClient.get<any>(`${environment.mtgApi}/sets`).pipe(
+            map(data => data.sets)
+        );
     }
 
     loadCards(params: MTGCardSearchParams): Observable<MTGCard[]> {
-        return this.httpClient.get<any>(`${environment.mtgApi}/cards`).pipe(
+        return this.httpClient.get<any>(`${environment.mtgApi}/cards`, {params: <any>params}).pipe(
             map(data => data.cards)
         );
     }

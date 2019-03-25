@@ -1,0 +1,19 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Sets</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <div class="mtg-list" *ngIf="(cards$ | async).data as cards">
+        <ion-card class="mtg-card" *ngFor="let card of cards">
+            <ion-item>
+                <ion-card-header>
+                    <ion-label>
+                        <ion-label>{{card.name}}</ion-label>
+                    </ion-label>
+                </ion-card-header>
+            </ion-item>
+        </ion-card>
+    </div>
+</ion-content>
