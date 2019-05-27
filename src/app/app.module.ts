@@ -31,7 +31,7 @@ import {CardDetailsComponent} from './shared/card-details/card-details.component
 
         NgxsModule.forRoot([MainState]),
         NgxsStoragePluginModule.forRoot(),
-        NgxsLoggerPluginModule.forRoot()
+        //NgxsLoggerPluginModule.forRoot()
     ],
     providers: [
         StatusBar,

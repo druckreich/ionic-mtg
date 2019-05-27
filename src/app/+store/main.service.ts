@@ -15,14 +15,10 @@ export class MainService {
     }
 
     loadSets(): Observable<MTGSet[]> {
-        return this.httpClient.get<any>(`${environment.mtgApi}/sets`).pipe(
-            map(data => data.sets)
-        );
+        return this.httpClient.get<any>(`${environment.mtgApi}/sets`);
     }
 
     loadCards(params: MTGCardSearchParams): Observable<MTGCard[]> {
-        return this.httpClient.get<any>(`${environment.mtgApi}/cards`, {params: <any>params}).pipe(
-            map(data => data.cards)
-        );
+        return this.httpClient.get<any>(`${environment.mtgApi}/cards`, {params: <any>params});
     }
 }

@@ -1,0 +1,8 @@
+<ion-content>
+    <div class="card-list" *ngIf="cards$ | async as cards">
+        <div class="card" *ngFor="let card of cards.entities.cards | keyvalue">
+            {{card.value.name}}
+        </div>
+    </div>
+
+</ion-content>
