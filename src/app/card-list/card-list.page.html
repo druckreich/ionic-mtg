@@ -1,8 +1,7 @@
 <ion-content>
     <div class="card-list" *ngIf="cards$ | async as cards">
-        <div class="card" *ngFor="let card of cards.entities.cards | keyvalue:sortByName">
+        <div class="card" *ngFor="let card of cards.entities.cards | keyvalue:sortByName" (click)="showCardDetails(card.value)">
             {{card.value.name}}
         </div>
     </div>
-
 </ion-content>
