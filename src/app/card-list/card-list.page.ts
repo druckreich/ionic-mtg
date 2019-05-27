@@ -2,7 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Store} from '@ngxs/store';
 import {LoadCards, LoadSets} from '../+store/main.actions';
-import {MainStateModel, Schema} from '../+store/main.state';
+import {Schema} from '../+store/main.state';
+import {KeyValue} from '@angular/common';
+import {MTGCard} from '../+store/main.model';
 
 @Component({
     selector: 'app-card-list',
@@ -20,5 +22,9 @@ export class CardListPage implements OnInit {
         this.store.dispatch(new LoadSets());
         this.store.dispatch(new LoadCards({}));
     }
+
+    sortByName = (a: KeyValue<number, MTGCard>, b: KeyValue<number, MTGCard>): number => {
+    return a.value.name.localeCompare(b.value.name);
+}
 
 }
