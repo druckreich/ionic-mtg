@@ -1,0 +1,10 @@
+#card-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#card-list > ion-card {
+  flex: 0 0 200px;
+  height: 300px;
+}
+
