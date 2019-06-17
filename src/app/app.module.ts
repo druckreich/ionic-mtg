@@ -12,6 +12,8 @@ import {NgxsModule} from '@ngxs/store';
 import {MainState} from './+store/main.state';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {HttpClientModule} from '@angular/common/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+
 
 @NgModule({
     declarations: [
@@ -20,13 +22,15 @@ import {HttpClientModule} from '@angular/common/http';
     entryComponents: [],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         HttpClientModule,
         IonicModule.forRoot(),
         AppRoutingModule,
 
-        NgxsModule.forRoot([MainState]),
-        NgxsStoragePluginModule.forRoot(),
-        //NgxsLoggerPluginModule.forRoot()
+        NgxsModule.forRoot([
+            MainState
+        ]),
+        NgxsStoragePluginModule.forRoot()
     ],
     providers: [
         StatusBar,
