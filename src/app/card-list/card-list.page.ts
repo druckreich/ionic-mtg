@@ -6,11 +6,12 @@ import {Schema} from '../+store/main.state';
 import {KeyValue} from '@angular/common';
 import {MTGCard} from '../+store/main.model';
 import {Router} from '@angular/router';
+import {state, style, trigger} from '@angular/animations';
 
 @Component({
     selector: 'app-card-list',
     templateUrl: './card-list.page.html',
-    styleUrls: ['./card-list.page.scss'],
+    styleUrls: ['./card-list.page.scss']
 })
 export class CardListPage implements OnInit {
 
@@ -31,6 +32,4 @@ export class CardListPage implements OnInit {
     showCardDetails(card: MTGCard): void {
         this.router.navigate(['cards', card.id]);
     }
-
-
 }

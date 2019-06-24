@@ -3,8 +3,9 @@
   flex-wrap: wrap;
 }
 
-#card-list > ion-card {
+#card-list > * {
   flex: 0 0 200px;
   height: 300px;
+  margin: 12px;
 }
 
