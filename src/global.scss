@@ -9,23 +9,3 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
-
-.mtg-list {
-  display: flex;
-  flex-wrap: wrap;
-}
-.mtg-card {
-  min-width: 200px;
-  min-height: 300px;
-}
-.mtg-card-text {
-  white-space: pre-line;
-}
-.mtg-card-image {
-  padding: 6px 6px 0px 6px;
-}
-.mtg-card-image img {
-  max-width: 223px;
-  max-height: 311px;
-}
-

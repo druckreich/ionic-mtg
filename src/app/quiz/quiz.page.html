@@ -1,9 +1,63 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>quiz</ion-title>
-  </ion-toolbar>
+<ion-header no-border>
+    <ion-toolbar>
+        <ion-title></ion-title>
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-button size="fill" (click)="startQuiz()">Start Quit</ion-button>
+    <ng-container *ngIf="cards$ | async as cards">
+        <ng-container *ngIf="isQuizStarted == false">
+            <ion-button size="fill" (click)="startQuiz()">START</ion-button>
+        </ng-container>
+
+        <ng-container *ngIf="isQuizStarted == true">
+            <ion-button size="fill" (click)="nextCard()">NEXT</ion-button>
+            <ng-container *ngIf="nextCard$ | async as nextCard">
+                <code>{{nextCard.imageUrl}}</code>
+
+
+                <form [formGroup]="quizForm">
+                    <ion-item>
+                        <ion-label position="stacked">NAME</ion-label>
+                        <ion-input formControlName="name"></ion-input>
+                    </ion-item>
+
+                    <ion-list-header>COLOR</ion-list-header>
+                    <div class="color-segment">
+                        <ion-button *ngFor="let c of color" [ngClass]="c"
+                                    color="{{isColorSelected(c) > -1 ? 'success' : 'light'}}" fill="outline"
+                                    (click)="toggleColor(c)">
+                            <img src="../../assets/icon/{{c}}.svg">
+                        </ion-button>
+                    </div>
+
+                    <ion-list-header>CONVERTED MANA COST</ion-list-header>
+                    <ion-segment class="cmc-segment" formControlName="cmc">
+                        <ion-segment-button [value]="c" *ngFor="let c of cmc">
+                            <ion-label>{{c}}</ion-label>
+                        </ion-segment-button>
+                    </ion-segment>
+
+                    <ion-list-header>TYPE</ion-list-header>
+                    <div class="type-segment">
+                        <ion-button *ngFor="let t of type" [ngClass]="t"
+                                    color="{{isColorSelected(t) > -1 ? 'success' : 'light'}}" fill="outline"
+                                    (click)="toggleColor(t)">
+                            {{t}}
+                        </ion-button>
+                    </div>
+
+                    <ion-list-header>RARITY</ion-list-header>
+                    <ion-segment class="cmc-segment" formControlName="rarity">
+                        <ion-segment-button [value]="r" *ngFor="let r of rarity">
+                            <ion-label>{{r}}</ion-label>
+                        </ion-segment-button>
+                    </ion-segment>
+                </form>
+            </ng-container>
+
+            <pre>{{quizForm.value | json}}</pre>
+
+        </ng-container>
+    </ng-container>
 </ion-content>

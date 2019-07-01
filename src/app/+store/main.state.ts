@@ -1,17 +1,10 @@
-import {Action, State, StateContext} from '@ngxs/store';
-import {GetCards, GetCardsSuccess, GetSets, GetSubtypes, GetSupertypes, GetTypes, SetFavourite} from './main.actions';
+import {Action, Selector, State, StateContext} from '@ngxs/store';
+import {GetCards, GetSets, GetSubtypes, GetSupertypes, GetTypes, SetFavourite} from './main.actions';
 import {MainService} from './main.service';
 import {tap} from 'rxjs/operators';
 import {normalize, schema} from 'normalizr';
 import {of} from 'rxjs';
-
-// Type
-// Subtype
-
-const cardSchema = new schema.Entity('cards');
-const setSchema = new schema.Entity('sets', {}, {
-    idAttribute: 'code'
-});
+import {Card, Set} from 'mtgsdk-ts';
 
 export interface Schema {
     entities: {
@@ -21,40 +14,56 @@ export interface Schema {
 }
 
 export interface MainStateModel {
-    cards: Schema;
-    searchParams: any;
-    sets: Schema;
-    types: Schema;
-    subtypes: Schema;
-    supertypes: Schema;
+    cards: Card[];
+    sets: Set[];
+    types: string[];
+    subtypes: string[];
+    supertypes: string[];
 }
 
 @State<MainStateModel>({
     name: 'mtg',
     defaults: {
-        cards: {entities: {cards: {}}, result: []},
-        sets: {entities: {sets: {}}, result: []},
-        types: {entities: {types: {}}, result: []},
-        subtypes: {entities: {subtypes: {}}, result: []},
-        supertypes: {entities: {supertypes: {}}, result: []},
+        cards: [],
+        sets: [],
+        types: [],
+        subtypes: [],
+        supertypes: [],
     }
 })
 
 export class MainState {
 
+    @Selector()
+    public static getCards(state: MainStateModel) {
+        return state.cards;
+    }
+
     constructor(public mainService: MainService) {
 
     }
 
+    @Action(GetCards)
+    getCards(ctx: StateContext<MainStateModel>, {searchParams}: GetCards) {
+        return this.mainService.getCards(searchParams).pipe(
+            tap((data: any) => {
+                ctx.setState({
+                    ...ctx.getState(),
+                    cards: data.cards
+                });
+            })
+        );
+    }
+
     @Action(GetSets)
     getSets(ctx: StateContext<MainStateModel>) {
-        if (ctx.getState().sets.result.length > 0) {
+        if (ctx.getState().sets && ctx.getState().sets.length > 0) {
             return of(ctx.getState());
         } else {
             return this.mainService.getSets().pipe(
                 tap((data: any) => {
                     ctx.patchState({
-                        sets: normalize(data.sets, [setSchema])
+                        sets: data.sets
                     });
                 })
             );
@@ -63,7 +72,7 @@ export class MainState {
 
     @Action(GetTypes)
     getTypes(ctx: StateContext<MainStateModel>) {
-        if (ctx.getState().types.result.length > 0) {
+        if (ctx.getState().types && ctx.getState().types.length > 0) {
             return of(ctx.getState());
         } else {
             return this.mainService.getTypes().pipe(
@@ -78,7 +87,7 @@ export class MainState {
 
     @Action(GetSubtypes)
     getSubtypes(ctx: StateContext<MainStateModel>) {
-        if (ctx.getState().subtypes.result.length > 0) {
+        if (ctx.getState().subtypes && ctx.getState().subtypes.length > 0) {
             return of(ctx.getState());
         } else {
             return this.mainService.getSubtypes().pipe(
@@ -93,7 +102,7 @@ export class MainState {
 
     @Action(GetSupertypes)
     getSupertypes(ctx: StateContext<MainStateModel>) {
-        if (ctx.getState().supertypes.result.length > 0) {
+        if (ctx.getState().supertypes && ctx.getState().supertypes.length > 0) {
             return of(ctx.getState());
         } else {
             return this.mainService.getSupertypes().pipe(
@@ -104,18 +113,5 @@ export class MainState {
                 })
             );
         }
-    }
-
-    @Action(GetCards)
-    getCards(ctx: StateContext<MainStateModel>, {searchParams}: GetCards) {
-        return this.mainService.getCards(searchParams).pipe(
-            tap((data: any) => {
-                ctx.dispatch(new GetCardsSuccess( data.cards[0]));
-            })
-        );
-    }
-
-    @Action(SetFavourite)
-    setFavourite(ctx: StateContext<MainStateModel>, {card}: SetFavourite) {
     }
 }

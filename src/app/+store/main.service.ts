@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {environment} from '../../environments/environment';
-import {MTGCard, MTGSet} from './main.model';
-import * as Magic from 'mtgsdk-ts';
+import {Card, CardFilter, Set} from 'mtgsdk-ts';
 
 @Injectable({
     providedIn: 'root'
@@ -14,23 +13,24 @@ export class MainService {
 
     }
 
-    getSets(): Observable<MTGSet[]> {
+    getCards(params: CardFilter): Observable<Card[]> {
+        return this.httpClient.get<any>(`${environment.mtgApi}/cards`, {params: <any>params});
+    }
+
+    getSets(): Observable<Set[]> {
         return this.httpClient.get<any>(`${environment.mtgApi}/sets`);
     }
 
-    getTypes(): Observable<MTGSet[]> {
+    getTypes(): Observable<string[]> {
         return this.httpClient.get<any>(`${environment.mtgApi}/types`);
     }
 
-    getSubtypes(): Observable<MTGSet[]> {
+    getSubtypes(): Observable<string[]> {
         return this.httpClient.get<any>(`${environment.mtgApi}/subtypes`);
     }
 
-    getSupertypes(): Observable<MTGSet[]> {
+    getSupertypes(): Observable<string[]> {
         return this.httpClient.get<any>(`${environment.mtgApi}/supertypes`);
     }
 
-    getCards(params: Magic.CardFilter): Observable<MTGCard[]> {
-        return this.httpClient.get<any>(`${environment.mtgApi}/cards`, {params: <any>params});
-    }
 }

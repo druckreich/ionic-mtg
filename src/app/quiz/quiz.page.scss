@@ -1,0 +1,16 @@
+.cmc-segment {
+  flex-wrap: wrap;
+}
+
+.color-segment {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.color-segment > * {
+  flex: 0 0 70px;
+}
+
+.color-segment img {
+  width: 24px;
+}

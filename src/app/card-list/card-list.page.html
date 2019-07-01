@@ -1,5 +1,0 @@
-<ion-content padding>
-    <div id="card-list" *ngIf="cards$ | async as cards">
-        <app-card *ngFor="let card of cards.entities.cards | keyvalue:sortByName" [card]="card.value"></app-card>
-    </div>
-</ion-content>
