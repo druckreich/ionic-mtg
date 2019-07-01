@@ -3,7 +3,7 @@ import {Component} from '@angular/core';
 import {Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
-import {LoadSets} from './+store/main.actions';
+import {GetSets, GetSubtypes, GetSupertypes, GetTypes} from './+store/main.actions';
 import {Store} from '@ngxs/store';
 
 @Component({
@@ -29,5 +29,9 @@ export class AppComponent {
     }
 
     loadInitialData() {
+        this.store.dispatch(new GetSets());
+        this.store.dispatch(new GetTypes());
+        this.store.dispatch(new GetSubtypes());
+        this.store.dispatch(new GetSupertypes());
     }
 }

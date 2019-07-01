@@ -1,10 +1,12 @@
 import {Action, State, StateContext} from '@ngxs/store';
-import {LoadCards, LoadSets, SetFavourite} from './main.actions';
+import {GetCards, GetCardsSuccess, GetSets, GetSubtypes, GetSupertypes, GetTypes, SetFavourite} from './main.actions';
 import {MainService} from './main.service';
 import {tap} from 'rxjs/operators';
 import {normalize, schema} from 'normalizr';
-import {isEqual} from '../utils/object-utils';
 import {of} from 'rxjs';
+
+// Type
+// Subtype
 
 const cardSchema = new schema.Entity('cards');
 const setSchema = new schema.Entity('sets', {}, {
@@ -22,14 +24,19 @@ export interface MainStateModel {
     cards: Schema;
     searchParams: any;
     sets: Schema;
+    types: Schema;
+    subtypes: Schema;
+    supertypes: Schema;
 }
 
 @State<MainStateModel>({
     name: 'mtg',
     defaults: {
         cards: {entities: {cards: {}}, result: []},
-        searchParams: {},
         sets: {entities: {sets: {}}, result: []},
+        types: {entities: {types: {}}, result: []},
+        subtypes: {entities: {subtypes: {}}, result: []},
+        supertypes: {entities: {supertypes: {}}, result: []},
     }
 })
 
@@ -39,30 +46,12 @@ export class MainState {
 
     }
 
-    @Action(LoadCards)
-    loadCards(ctx: StateContext<MainStateModel>, {searchParams}: LoadCards) {
-        ctx.patchState({searchParams: searchParams});
-        if (ctx.getState().cards.result.length > 0 && isEqual(ctx.getState().searchParams, searchParams)) {
-            return of(ctx.getState());
-        } else {
-            return this.mainService.loadCards(searchParams).pipe(
-                tap((data: any) => {
-                    ctx.patchState({
-                        cards: normalize(data.cards, [cardSchema])
-                    });
-                })
-            );
-
-        }
-
-    }
-
-    @Action(LoadSets)
-    loadSets(ctx: StateContext<MainStateModel>) {
+    @Action(GetSets)
+    getSets(ctx: StateContext<MainStateModel>) {
         if (ctx.getState().sets.result.length > 0) {
             return of(ctx.getState());
         } else {
-            return this.mainService.loadSets().pipe(
+            return this.mainService.getSets().pipe(
                 tap((data: any) => {
                     ctx.patchState({
                         sets: normalize(data.sets, [setSchema])
@@ -70,6 +59,60 @@ export class MainState {
                 })
             );
         }
+    }
+
+    @Action(GetTypes)
+    getTypes(ctx: StateContext<MainStateModel>) {
+        if (ctx.getState().types.result.length > 0) {
+            return of(ctx.getState());
+        } else {
+            return this.mainService.getTypes().pipe(
+                tap((data: any) => {
+                    ctx.patchState({
+                        types: data.types
+                    });
+                })
+            );
+        }
+    }
+
+    @Action(GetSubtypes)
+    getSubtypes(ctx: StateContext<MainStateModel>) {
+        if (ctx.getState().subtypes.result.length > 0) {
+            return of(ctx.getState());
+        } else {
+            return this.mainService.getSubtypes().pipe(
+                tap((data: any) => {
+                    ctx.patchState({
+                        subtypes: data.subtypes
+                    });
+                })
+            );
+        }
+    }
+
+    @Action(GetSupertypes)
+    getSupertypes(ctx: StateContext<MainStateModel>) {
+        if (ctx.getState().supertypes.result.length > 0) {
+            return of(ctx.getState());
+        } else {
+            return this.mainService.getSupertypes().pipe(
+                tap((data: any) => {
+                    ctx.patchState({
+                        supertypes: data.supertypes
+                    });
+                })
+            );
+        }
+    }
+
+    @Action(GetCards)
+    getCards(ctx: StateContext<MainStateModel>, {searchParams}: GetCards) {
+        return this.mainService.getCards(searchParams).pipe(
+            tap((data: any) => {
+                ctx.dispatch(new GetCardsSuccess( data.cards[0]));
+            })
+        );
     }
 
     @Action(SetFavourite)

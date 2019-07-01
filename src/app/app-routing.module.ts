@@ -2,9 +2,8 @@ import {NgModule} from '@angular/core';
 import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
 
 const routes: Routes = [
-    {path: 'cards', loadChildren: './card-list/card-list.module#CardListPageModule'},
-    {path: 'cards/:id', loadChildren: './card-details/card-details.module#CardDetailsPageModule'},
-    {path: '**', pathMatch: 'full', redirectTo: 'cards'}
+    {path: 'quiz', loadChildren: './quiz/quiz.module#QuizPageModule'},
+    {path: '**', pathMatch: 'full', redirectTo: 'quiz'},
 ];
 
 @NgModule({

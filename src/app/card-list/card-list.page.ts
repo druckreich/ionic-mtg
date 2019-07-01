@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 import {Store} from '@ngxs/store';
-import {LoadCards, LoadSets} from '../+store/main.actions';
+import {GetCards, GetSets} from '../+store/main.actions';
 import {Schema} from '../+store/main.state';
 import {KeyValue} from '@angular/common';
 import {MTGCard} from '../+store/main.model';
@@ -25,8 +25,8 @@ export class CardListPage implements OnInit {
     }
 
     ngOnInit() {
-        this.store.dispatch(new LoadSets());
-        this.store.dispatch(new LoadCards({}));
+        this.store.dispatch(new GetSets());
+        this.store.dispatch(new GetCards({}));
     }
 
     showCardDetails(card: MTGCard): void {
