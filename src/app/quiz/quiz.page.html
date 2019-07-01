@@ -11,17 +11,11 @@
         </ng-container>
 
         <ng-container *ngIf="isQuizStarted == true">
-            <ion-button size="fill" (click)="nextCard()">NEXT</ion-button>
             <ng-container *ngIf="nextCard$ | async as nextCard">
-                <code>{{nextCard.imageUrl}}</code>
-
+                <code>{{nextCard.name}}</code>
 
                 <form [formGroup]="quizForm">
-                    <ion-item>
-                        <ion-label position="stacked">NAME</ion-label>
-                        <ion-input formControlName="name"></ion-input>
-                    </ion-item>
-
+                    <pre>valid: {{quizForm.valid}}</pre>
                     <ion-list-header>COLOR</ion-list-header>
                     <div class="color-segment">
                         <ion-button *ngFor="let c of color" [ngClass]="c"
@@ -42,22 +36,25 @@
                     <div class="type-segment">
                         <ion-button *ngFor="let t of type" [ngClass]="t"
                                     color="{{isColorSelected(t) > -1 ? 'success' : 'light'}}" fill="outline"
-                                    (click)="toggleColor(t)">
-                            {{t}}
+                                    (click)="toggleColor(t)">{{t}}
                         </ion-button>
                     </div>
 
                     <ion-list-header>RARITY</ion-list-header>
-                    <ion-segment class="cmc-segment" formControlName="rarity">
+                    <ion-segment class="rarity-segment" formControlName="rarity">
                         <ion-segment-button [value]="r" *ngFor="let r of rarity">
                             <ion-label>{{r}}</ion-label>
                         </ion-segment-button>
                     </ion-segment>
+
+                    <ion-button type="button" size="fill" color="primary" (click)="validateFormValue(nextCard)">NEXT
+                    </ion-button>
                 </form>
+
+
             </ng-container>
-
-            <pre>{{quizForm.value | json}}</pre>
-
         </ng-container>
     </ng-container>
 </ion-content>
+
+

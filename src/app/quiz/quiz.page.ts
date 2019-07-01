@@ -26,18 +26,17 @@ export class QuizPage implements OnInit {
 
     isQuizStarted = false;
 
+    cmc: string[] = ['1', '2', '3', '4', '5', '6', '7', '8+'];
+    color: string[] = ['B', 'G', 'U', 'W', 'R'];
+    type: string[] = ['Artifact', 'Creature', 'Enchantment', 'Instant', 'Planeswalker', 'Sorcery'];
+    rarity: string[] = ['Common', 'Uncommon', 'Rare', 'Mythic'];
+
     quizForm = new FormGroup({
-        name: new FormControl(''),
         cmc: new FormControl(''),
         color: new FormControl(''),
         type: new FormControl(''),
         rarity: new FormControl('')
     });
-
-    cmc: string[] = ['1', '2', '3', '4', '5', '6', '7', '8+'];
-    color: string[] = ['B', 'G', 'U', 'W', 'R'];
-    type: string[] = ['Artifact', 'Creature', 'Enchantment', 'Instant', 'Planeswalker', 'Sorcery'];
-    rarity: string[] = ['Common', 'Uncommon', 'Rare', 'Mythic'];
 
     constructor(public store: Store) {
     }
@@ -52,7 +51,6 @@ export class QuizPage implements OnInit {
     }
 
     nextCard() {
-        console.log('TRIGGER');
         this.nextCardSubject.next(++this.cardIndex);
     }
 
@@ -73,4 +71,39 @@ export class QuizPage implements OnInit {
         const colors: string[] = control.value.split('|');
         return colors.indexOf(c);
     }
+
+    validateFormValue(card: Card): void {
+        const value: any = this.quizForm.value;
+        if (
+            this.validateCmc(value['cmc'], card)
+            && this.validateColor(value['cmc'], card)
+            && this.validateType(value['cmc'], card)
+            && this.validateRarity(value['cmc'], card)
+        ) {
+            console.log('VALID');
+        } else {
+            console.log('NOT_VALID');
+        }
+    }
+
+    validateCmc(value: string, card: Card): boolean {
+        if ((value === '8+' && card.cmc >= 8) || +value === card.cmc) {
+            return true;
+        }
+        return false;
+    }
+
+    validateColor(value: string, card: Card): boolean {
+        
+        return false;
+    }
+
+    validateType(value: string, card: Card): boolean {
+        return false;
+    }
+
+    validateRarity(value: string, card: Card): boolean {
+        return false;
+    }
+
 }
