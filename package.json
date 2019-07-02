@@ -32,6 +32,8 @@
     "@ngxs/storage-plugin": "^3.2.0",
     "@ngxs/store": "^3.2.0",
     "core-js": "^2.5.4",
+    "lodash": "^4.17.11",
+    "lodash-ts": "^1.2.7",
     "mtgsdk-ts": "^1.1.2",
     "normalizr": "^3.3.0",
     "rxjs": "~6.3.3",

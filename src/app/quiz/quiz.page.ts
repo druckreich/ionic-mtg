@@ -6,6 +6,8 @@ import {map, withLatestFrom} from 'rxjs/operators';
 import {MainState} from '../+store/main.state';
 import {Card} from 'mtgsdk-ts';
 import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import isEqual from 'lodash-ts/isEqual';
+
 
 @Component({
     selector: 'app-quiz',
@@ -27,7 +29,7 @@ export class QuizPage implements OnInit {
     isQuizStarted = false;
 
     cmc: string[] = ['1', '2', '3', '4', '5', '6', '7', '8+'];
-    color: string[] = ['B', 'G', 'U', 'W', 'R'];
+    color: string[] = ['Black', 'Green', 'Blue', 'White', 'Red'];
     type: string[] = ['Artifact', 'Creature', 'Enchantment', 'Instant', 'Planeswalker', 'Sorcery'];
     rarity: string[] = ['Common', 'Uncommon', 'Rare', 'Mythic'];
 
@@ -74,12 +76,7 @@ export class QuizPage implements OnInit {
 
     validateFormValue(card: Card): void {
         const value: any = this.quizForm.value;
-        if (
-            this.validateCmc(value['cmc'], card)
-            && this.validateColor(value['cmc'], card)
-            && this.validateType(value['cmc'], card)
-            && this.validateRarity(value['cmc'], card)
-        ) {
+        if (this.validateCmc(value['cmc'], card) && this.validateColor(value['color'], card) && this.validateType(value['type'], card) && this.validateRarity(value['rarity'], card)) {
             console.log('VALID');
         } else {
             console.log('NOT_VALID');
@@ -87,23 +84,19 @@ export class QuizPage implements OnInit {
     }
 
     validateCmc(value: string, card: Card): boolean {
-        if ((value === '8+' && card.cmc >= 8) || +value === card.cmc) {
-            return true;
-        }
-        return false;
+        return ((value === '8+' && card.cmc >= 8) || +value === card.cmc);
     }
 
     validateColor(value: string, card: Card): boolean {
-        
-        return false;
+        return isEqual(value, card.colors);
     }
 
     validateType(value: string, card: Card): boolean {
-        return false;
+        return isEqual(value, card.types);
     }
 
     validateRarity(value: string, card: Card): boolean {
-        return false;
+        return value === card.rarity;
     }
 
 }
