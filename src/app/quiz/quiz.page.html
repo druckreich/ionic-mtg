@@ -1,9 +1,3 @@
-<ion-header no-border>
-    <ion-toolbar>
-        <ion-title></ion-title>
-    </ion-toolbar>
-</ion-header>
-
 <ion-content>
     <ng-container *ngIf="cards$ | async as cards">
         <ng-container *ngIf="isQuizStarted == false">
@@ -12,10 +6,18 @@
 
         <ng-container *ngIf="isQuizStarted == true">
             <ng-container *ngIf="nextCard$ | async as nextCard">
-                <code>{{nextCard.name}}</code>
+                <img src="{{nextCard.imageUrl}}">
 
                 <form [formGroup]="quizForm">
+
                     <pre>valid: {{quizForm.valid}}</pre>
+                    <pre>cmc valid: {{quizForm.controls['cmc'].valid}}</pre>
+                    <pre>color valid: {{quizForm.controls['color'].valid}}</pre>
+                    <pre>type valid: {{quizForm.controls['type'].valid}}</pre>
+                    <pre>rarity valid: {{quizForm.controls['rarity'].valid}}</pre>
+
+                    <pre>{{quizForm.value | json}}</pre>
+
                     <ion-list-header>COLOR</ion-list-header>
                     <div class="color-segment">
                         <ion-button *ngFor="let c of color" [ngClass]="c"
@@ -35,8 +37,8 @@
                     <ion-list-header>TYPE</ion-list-header>
                     <div class="type-segment">
                         <ion-button *ngFor="let t of type" [ngClass]="t"
-                                    color="{{isColorSelected(t) > -1 ? 'success' : 'light'}}" fill="outline"
-                                    (click)="toggleColor(t)">{{t}}
+                                    color="{{isTypeSelected(t) > -1 ? 'success' : 'light'}}" fill="outline"
+                                    (click)="toggleType(t)">{{t}}
                         </ion-button>
                     </div>
 

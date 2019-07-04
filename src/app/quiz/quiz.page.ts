@@ -5,9 +5,36 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
 import {MainState} from '../+store/main.state';
 import {Card} from 'mtgsdk-ts';
-import {AbstractControl, FormControl, FormGroup} from '@angular/forms';
+import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import isEqual from 'lodash-ts/isEqual';
 
+export function cmcValidator(card: Card): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+        const value = control.value;
+        return ((value === '8+' && card.cmc >= 8) || +value === card.cmc) ? null : {'cmc': 'invalid'};
+    };
+}
+
+export function colorValidator(card: Card): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+        const value = control.value;
+        return isEqual(value.split('|'), card.colors) ? null : {'color': 'invalid'};
+    };
+}
+
+export function typeValidator(card: Card): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+        const value = control.value;
+        return isEqual(value.split('|'), card.types) ? null : {'type': 'invalid'};
+    };
+}
+
+export function rarityValidator(card: Card): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+        const value = control.value;
+        return value === card.rarity ? null : {'rarity': 'invalid'};
+    };
+}
 
 @Component({
     selector: 'app-quiz',
@@ -34,7 +61,7 @@ export class QuizPage implements OnInit {
     rarity: string[] = ['Common', 'Uncommon', 'Rare', 'Mythic'];
 
     quizForm = new FormGroup({
-        cmc: new FormControl(''),
+        cmc: new FormControl('',),
         color: new FormControl(''),
         type: new FormControl(''),
         rarity: new FormControl('')
@@ -58,7 +85,7 @@ export class QuizPage implements OnInit {
 
     toggleColor(c): void {
         const control: AbstractControl = this.quizForm.controls['color'];
-        const colors: string[] = control.value.split('|');
+        const colors: string[] = control.value === '' ? [] : control.value.split('|');
         const index = colors.indexOf(c);
         if (index > -1) {
             colors.splice(index, 1);
@@ -74,29 +101,44 @@ export class QuizPage implements OnInit {
         return colors.indexOf(c);
     }
 
-    validateFormValue(card: Card): void {
-        const value: any = this.quizForm.value;
-        if (this.validateCmc(value['cmc'], card) && this.validateColor(value['color'], card) && this.validateType(value['type'], card) && this.validateRarity(value['rarity'], card)) {
-            console.log('VALID');
+    toggleType(c): void {
+        const control: AbstractControl = this.quizForm.controls['type'];
+        const type: string[] = control.value === '' ? [] : control.value.split('|');
+        const index = type.indexOf(c);
+        if (index > -1) {
+            type.splice(index, 1);
         } else {
-            console.log('NOT_VALID');
+            type.push(c);
+        }
+        this.quizForm.controls['type'].setValue(type.join('|'));
+    }
+
+    isTypeSelected(c): number {
+        const control: AbstractControl = this.quizForm.controls['type'];
+        const type: string[] = control.value.split('|');
+        return type.indexOf(c);
+    }
+
+    validateFormValue(card: Card): void {
+        this.quizForm.controls['cmc'].setValidators([cmcValidator(card)]);
+        this.quizForm.controls['cmc'].updateValueAndValidity();
+
+        this.quizForm.controls['color'].setValidators([colorValidator(card)]);
+        this.quizForm.controls['color'].updateValueAndValidity();
+
+        this.quizForm.controls['type'].setValidators([typeValidator(card)]);
+        this.quizForm.controls['type'].updateValueAndValidity();
+
+        this.quizForm.controls['rarity'].setValidators([rarityValidator(card)]);
+        this.quizForm.controls['rarity'].updateValueAndValidity();
+
+        if(this.quizForm.valid) {
+            this.nextCard();
+        } else {
+            this.quizForm.controls['cmc'].clearValidators();
+            this.quizForm.controls['color'].clearValidators();
+            this.quizForm.controls['type'].clearValidators();
+            this.quizForm.controls['rarity'].clearValidators();
         }
     }
-
-    validateCmc(value: string, card: Card): boolean {
-        return ((value === '8+' && card.cmc >= 8) || +value === card.cmc);
-    }
-
-    validateColor(value: string, card: Card): boolean {
-        return isEqual(value, card.colors);
-    }
-
-    validateType(value: string, card: Card): boolean {
-        return isEqual(value, card.types);
-    }
-
-    validateRarity(value: string, card: Card): boolean {
-        return value === card.rarity;
-    }
-
 }
