@@ -21,8 +21,8 @@
                     <ion-list-header>COLOR</ion-list-header>
                     <div class="color-segment">
                         <ion-button *ngFor="let c of color" [ngClass]="c"
-                                    color="{{isColorSelected(c) > -1 ? 'success' : 'light'}}" fill="outline"
-                                    (click)="toggleColor(c)">
+                                    color="{{isOptionSelected(c, 'color') > -1 ? 'success' : 'light'}}" fill="outline"
+                                    (click)="toggleOption(c, 'color')">
                             <img src="../../assets/icon/{{c}}.svg">
                         </ion-button>
                     </div>
@@ -37,8 +37,8 @@
                     <ion-list-header>TYPE</ion-list-header>
                     <div class="type-segment">
                         <ion-button *ngFor="let t of type" [ngClass]="t"
-                                    color="{{isTypeSelected(t) > -1 ? 'success' : 'light'}}" fill="outline"
-                                    (click)="toggleType(t)">{{t}}
+                                    color="{{isOptionSelected(t, 'type') > -1 ? 'success' : 'light'}}" fill="outline"
+                                    (click)="toggleOption(t, 'type')">{{t}}
                         </ion-button>
                     </div>
 

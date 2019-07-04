@@ -71,7 +71,13 @@ export class QuizPage implements OnInit {
     }
 
     ngOnInit() {
-        this.store.dispatch(new GetCards({random: true, pageSize: 30}));
+        this.store.dispatch(new GetCards({
+            layout: 'normal',
+            types: 'Instant, Sorcery, Artifact, Creature, Enchantment, Planeswalker',
+            contains: 'imageUrl',
+            random: true,
+            pageSize: 30,
+        }));
     }
 
     startQuiz() {
@@ -83,40 +89,22 @@ export class QuizPage implements OnInit {
         this.nextCardSubject.next(++this.cardIndex);
     }
 
-    toggleColor(c): void {
-        const control: AbstractControl = this.quizForm.controls['color'];
+    toggleOption(option: string, type: string) {
+        const control: AbstractControl = this.quizForm.controls[type];
         const colors: string[] = control.value === '' ? [] : control.value.split('|');
-        const index = colors.indexOf(c);
+        const index = colors.indexOf(option);
         if (index > -1) {
             colors.splice(index, 1);
         } else {
-            colors.push(c);
+            colors.push(option);
         }
-        this.quizForm.controls['color'].setValue(colors.join('|'));
+        this.quizForm.controls[type].setValue(colors.join('|'));
     }
 
-    isColorSelected(c): number {
-        const control: AbstractControl = this.quizForm.controls['color'];
+    isOptionSelected(option: string, type: string): boolean {
+        const control: AbstractControl = this.quizForm.controls[type];
         const colors: string[] = control.value.split('|');
-        return colors.indexOf(c);
-    }
-
-    toggleType(c): void {
-        const control: AbstractControl = this.quizForm.controls['type'];
-        const type: string[] = control.value === '' ? [] : control.value.split('|');
-        const index = type.indexOf(c);
-        if (index > -1) {
-            type.splice(index, 1);
-        } else {
-            type.push(c);
-        }
-        this.quizForm.controls['type'].setValue(type.join('|'));
-    }
-
-    isTypeSelected(c): number {
-        const control: AbstractControl = this.quizForm.controls['type'];
-        const type: string[] = control.value.split('|');
-        return type.indexOf(c);
+        return colors.indexOf(option);
     }
 
     validateFormValue(card: Card): void {
@@ -132,7 +120,7 @@ export class QuizPage implements OnInit {
         this.quizForm.controls['rarity'].setValidators([rarityValidator(card)]);
         this.quizForm.controls['rarity'].updateValueAndValidity();
 
-        if(this.quizForm.valid) {
+        if (this.quizForm.valid) {
             this.nextCard();
         } else {
             this.quizForm.controls['cmc'].clearValidators();
