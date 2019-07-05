@@ -1,14 +1,9 @@
+.cmc-segment, .color-segment, .type-segment, .rarity-segment {
+  padding: 0 16px 0 16px;
+}
+
 .cmc-segment {
   flex-wrap: wrap;
-}
-
-.color-segment {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.color-segment > * {
-  flex: 0 0 70px;
 }
 
 .color-segment img {
@@ -17,4 +12,8 @@
 
 .rarity-segment {
   flex-wrap: wrap;
+}
+
+.rarity-segment > * {
+  flex: 0 0 100px;
 }

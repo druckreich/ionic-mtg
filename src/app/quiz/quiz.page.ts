@@ -103,16 +103,20 @@ export class QuizPage implements OnInit {
         this.nextCardSubject.next(this.cardIndex++);
     }
 
-    toggleOption(option: string, type: string) {
+    toggleOption(option: string, type: string, multiple: boolean = false) {
         const control: AbstractControl = this.quizForm.controls[type];
-        const colors: string[] = control.value === '' ? [] : control.value.split('|');
-        const index = colors.indexOf(option);
-        if (index > -1) {
-            colors.splice(index, 1);
+        if (multiple === false) {
+            this.quizForm.controls[type].setValue(option);
         } else {
-            colors.push(option);
+            const options: string[] = control.value === '' ? [] : control.value.split('|');
+            const index = options.indexOf(option);
+            if (index > -1) {
+                options.splice(index, 1);
+            } else {
+                options.push(option);
+            }
+            this.quizForm.controls[type].setValue(options.join('|'));
         }
-        this.quizForm.controls[type].setValue(colors.join('|'));
     }
 
     isOptionSelected(option: string, type: string): number {

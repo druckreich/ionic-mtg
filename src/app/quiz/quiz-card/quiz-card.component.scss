@@ -19,13 +19,20 @@
 
 #quiz-card .mask-top {
   left: 0;
-  top: 0;
+  top: -1px;
   right: 0;
   height: 32px;
 }
 
 #quiz-card .mask-right {
-  right: 0;
+  right: -1px;
+  bottom: 0;
+  top: 0;
+  width: 14px;
+}
+
+#quiz-card .mask-left {
+  left: -1px;
   bottom: 0;
   top: 0;
   width: 14px;
@@ -33,14 +40,7 @@
 
 #quiz-card .mask-bottom {
   left: 0;
-  bottom: 0;
-  top: 0;
-  width: 14px;
-}
-
-#quiz-card .mask-left {
-  left: 0;
-  bottom: 0;
+  bottom: -1px;
   right: 0;
   height: 139px;
 }
