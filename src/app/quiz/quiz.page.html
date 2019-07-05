@@ -1,22 +1,24 @@
 <ion-content>
     <ng-container *ngIf="cards$ | async as cards">
         <ng-container *ngIf="isQuizStarted == false">
-            <ion-button size="fill" (click)="startQuiz()">START</ion-button>
+            <ion-button size="fill" (click)="prepareQuiz()">START</ion-button>
         </ng-container>
 
         <ng-container *ngIf="isQuizStarted == true">
             <ng-container *ngIf="nextCard$ | async as nextCard">
-                <img src="{{nextCard.imageUrl}}">
+
+                <app-quiz-card [card]="nextCard"></app-quiz-card>
 
                 <form [formGroup]="quizForm">
 
+                    <!--
                     <pre>valid: {{quizForm.valid}}</pre>
                     <pre>cmc valid: {{quizForm.controls['cmc'].valid}}</pre>
                     <pre>color valid: {{quizForm.controls['color'].valid}}</pre>
                     <pre>type valid: {{quizForm.controls['type'].valid}}</pre>
                     <pre>rarity valid: {{quizForm.controls['rarity'].valid}}</pre>
+                    -->
 
-                    <pre>{{quizForm.value | json}}</pre>
 
                     <ion-list-header>COLOR</ion-list-header>
                     <div class="color-segment">

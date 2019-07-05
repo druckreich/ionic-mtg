@@ -1,8 +1,7 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {GetCards, GetSets, GetSubtypes, GetSupertypes, GetTypes, SetFavourite} from './main.actions';
+import {GetCards, GetSets, GetSubtypes, GetSupertypes, GetTypes} from './main.actions';
 import {MainService} from './main.service';
 import {tap} from 'rxjs/operators';
-import {normalize, schema} from 'normalizr';
 import {of} from 'rxjs';
 import {Card, Set} from 'mtgsdk-ts';
 

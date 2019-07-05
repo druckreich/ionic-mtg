@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {GetCards} from '../+store/main.actions';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
 import {MainState} from '../+store/main.state';
 import {Card} from 'mtgsdk-ts';
@@ -17,15 +17,15 @@ export function cmcValidator(card: Card): ValidatorFn {
 
 export function colorValidator(card: Card): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-        const value = control.value;
-        return isEqual(value.split('|'), card.colors) ? null : {'color': 'invalid'};
+        const value = control.value === '' ? [] : control.value.split('|');
+        return isEqual(value, card.colors) ? null : {'color': 'invalid'};
     };
 }
 
 export function typeValidator(card: Card): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-        const value = control.value;
-        return isEqual(value.split('|'), card.types) ? null : {'type': 'invalid'};
+        const value = control.value === '' ? [] : control.value.split('|');
+        return isEqual(value, card.types) ? null : {'type': 'invalid'};
     };
 }
 
@@ -61,7 +61,7 @@ export class QuizPage implements OnInit {
     rarity: string[] = ['Common', 'Uncommon', 'Rare', 'Mythic'];
 
     quizForm = new FormGroup({
-        cmc: new FormControl('',),
+        cmc: new FormControl(''),
         color: new FormControl(''),
         type: new FormControl(''),
         rarity: new FormControl('')
@@ -71,22 +71,36 @@ export class QuizPage implements OnInit {
     }
 
     ngOnInit() {
-        this.store.dispatch(new GetCards({
-            layout: 'normal',
-            types: 'Instant, Sorcery, Artifact, Creature, Enchantment, Planeswalker',
+        this.isQuizStarted = false;
+        this.startQuiz();
+    }
+
+    prepareQuiz(): void {
+
+        const format = 'Standard';
+        const pageSize = 30;
+
+        const subscription: Subscription = this.store.dispatch(new GetCards({
+            types: this.type.join('|'),
+            gameFormat: format,
             contains: 'imageUrl',
             random: true,
-            pageSize: 30,
-        }));
+            pageSize: pageSize,
+        })).subscribe((c) => {
+            subscription.unsubscribe();
+            this.startQuiz();
+        });
     }
 
     startQuiz() {
         this.cardIndex = 0;
         this.isQuizStarted = true;
+        this.showNextCard();
+
     }
 
-    nextCard() {
-        this.nextCardSubject.next(++this.cardIndex);
+    showNextCard() {
+        this.nextCardSubject.next(this.cardIndex++);
     }
 
     toggleOption(option: string, type: string) {
@@ -101,10 +115,10 @@ export class QuizPage implements OnInit {
         this.quizForm.controls[type].setValue(colors.join('|'));
     }
 
-    isOptionSelected(option: string, type: string): boolean {
+    isOptionSelected(option: string, type: string): number {
         const control: AbstractControl = this.quizForm.controls[type];
-        const colors: string[] = control.value.split('|');
-        return colors.indexOf(option);
+        const options: string[] = control.value.split('|');
+        return options.indexOf(option);
     }
 
     validateFormValue(card: Card): void {
@@ -121,7 +135,7 @@ export class QuizPage implements OnInit {
         this.quizForm.controls['rarity'].updateValueAndValidity();
 
         if (this.quizForm.valid) {
-            this.nextCard();
+            this.showNextCard();
         } else {
             this.quizForm.controls['cmc'].clearValidators();
             this.quizForm.controls['color'].clearValidators();

@@ -1,0 +1,46 @@
+#quiz-card {
+  position: relative;
+  width: 223px;
+  height: 311px;
+}
+
+#quiz-card img {
+  width: 223px;
+  height: 311px;
+  filter: grayscale(100%);
+}
+
+.mask {
+  position: absolute;
+  opacity: 0.9;
+  background-color: white;
+  z-index: 1000;
+}
+
+#quiz-card .mask-top {
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 32px;
+}
+
+#quiz-card .mask-right {
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 14px;
+}
+
+#quiz-card .mask-bottom {
+  left: 0;
+  bottom: 0;
+  top: 0;
+  width: 14px;
+}
+
+#quiz-card .mask-left {
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 139px;
+}
