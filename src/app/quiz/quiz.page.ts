@@ -3,7 +3,7 @@ import {Select, Store} from '@ngxs/store';
 import {GetCards} from '../+store/main.actions';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import {map, withLatestFrom} from 'rxjs/operators';
-import {MainState} from '../+store/main.state';
+import {CMC, COLOR, MainState, RARITY, TYPE} from '../+store/main.state';
 import {Card} from 'mtgsdk-ts';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import isEqual from 'lodash-ts/isEqual';
@@ -55,10 +55,10 @@ export class QuizPage implements OnInit {
 
     isQuizStarted = false;
 
-    cmc: string[] = ['1', '2', '3', '4', '5', '6', '7', '8+'];
-    color: string[] = ['Black', 'Green', 'Blue', 'White', 'Red'];
-    type: string[] = ['Artifact', 'Creature', 'Enchantment', 'Instant', 'Planeswalker', 'Sorcery'];
-    rarity: string[] = ['Common', 'Uncommon', 'Rare', 'Mythic'];
+    cmc: string[] = CMC;
+    color: string[] = COLOR;
+    type: string[] = TYPE;
+    rarity: string[] = RARITY;
 
     quizForm = new FormGroup({
         cmc: new FormControl(''),
@@ -77,19 +77,6 @@ export class QuizPage implements OnInit {
 
     prepareQuiz(): void {
 
-        const format = 'Standard';
-        const pageSize = 30;
-
-        const subscription: Subscription = this.store.dispatch(new GetCards({
-            types: this.type.join('|'),
-            gameFormat: format,
-            contains: 'imageUrl',
-            random: true,
-            pageSize: pageSize,
-        })).subscribe((c) => {
-            subscription.unsubscribe();
-            this.startQuiz();
-        });
     }
 
     startQuiz() {

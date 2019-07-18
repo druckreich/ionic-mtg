@@ -5,6 +5,11 @@ import {tap} from 'rxjs/operators';
 import {of} from 'rxjs';
 import {Card, Set} from 'mtgsdk-ts';
 
+export const CMC = ['1', '2', '3', '4', '5', '6', '7', '8+'];
+export const COLOR = ['Black', 'Green', 'Blue', 'White', 'Red'];
+export const TYPE = ['Artifact', 'Creature', 'Enchantment', 'Instant', 'Planeswalker', 'Sorcery'];
+export const RARITY = ['Common', 'Uncommon', 'Rare', 'Mythic'];
+
 export interface Schema {
     entities: {
         [key: string]: {}

@@ -1,4 +1,4 @@
-import {Card, CardFilter} from 'mtgsdk-ts';
+import {CardFilter} from 'mtgsdk-ts';
 
 export class GetCards {
     static readonly type: string = '[MAIN] Get Cards';
@@ -10,10 +10,6 @@ export class GetCards {
 
 export class GetSets {
     static readonly type: string = '[MAIN] Get Sets';
-
-    constructor() {
-
-    }
 }
 
 export class GetTypes {
@@ -29,10 +25,3 @@ export class GetSupertypes {
 }
 
 
-export class SetFavourite {
-    static readonly type: string = '[MAIN] Set Favourite';
-
-    constructor(public card: Card) {
-
-    }
-}

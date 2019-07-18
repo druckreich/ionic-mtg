@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {RouteReuseStrategy} from '@angular/router';
 
-import {IonicModule, IonicRouteStrategy, IonInput} from '@ionic/angular';
+import {IonicModule, IonicRouteStrategy} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
 
@@ -13,6 +13,7 @@ import {MainState} from './+store/main.state';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 
 
 @NgModule({
@@ -27,10 +28,9 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         IonicModule.forRoot(),
         AppRoutingModule,
 
-        NgxsModule.forRoot([
-            MainState
-        ]),
-        NgxsStoragePluginModule.forRoot(),
+        NgxsModule.forRoot([MainState]),
+        NgxsStoragePluginModule.forRoot({key: ['mtg']}),
+        NgxsRouterPluginModule.forRoot()
 
 
     ],
