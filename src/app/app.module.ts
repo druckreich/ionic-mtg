@@ -31,8 +31,6 @@ import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
         NgxsModule.forRoot([MainState]),
         NgxsStoragePluginModule.forRoot({key: ['mtg']}),
         NgxsRouterPluginModule.forRoot()
-
-
     ],
     providers: [
         StatusBar,

@@ -1,10 +1,11 @@
 <div text-center>
-<div id="quiz-card">
-    <div class="mask mask-top"></div>
-    <div class="mask mask-right"></div>
-    <div class="mask mask-bottom"></div>
-    <div class="mask mask-left"></div>
+    <div id="quiz-card" [ngClass]="reveal ? 'revealed' : 'masked'">
 
-    <img  src="{{_card.imageUrl}}">
-</div>
+        <div class="mask mask-top"></div>
+        <div class="mask mask-right"></div>
+        <div class="mask mask-bottom"></div>
+        <div class="mask mask-left"></div>
+
+        <img src="{{card?.imageUrl}}">
+    </div>
 </div>

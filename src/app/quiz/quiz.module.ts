@@ -23,7 +23,13 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         ReactiveFormsModule
     ],
-    declarations: [QuizPage, QuizCardComponent]
+    declarations: [
+        QuizPage,
+        QuizCardComponent
+    ],
+    entryComponents: [
+        QuizCardComponent
+    ]
 })
 export class QuizPageModule {
 }

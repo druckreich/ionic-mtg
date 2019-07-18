@@ -9,31 +9,17 @@ import {HttpClient} from '@angular/common/http';
 })
 export class QuizCardComponent implements OnInit {
 
+    @Input()
+    card: Card;
 
     @Input()
-    set card(card: Card) {
-        this._card = card;
-        this.loadImage(card.imageUrl);
-    }
-
-    get card(): Card {
-        return this._card;
-    }
-
-    _card: Card;
+    reveal = false;
 
     constructor(public http: HttpClient) {
 
     }
 
     ngOnInit() {
-    }
 
-    loadImage(url: string): void {
-        //this.http.get(url, {responseType: 'blob'}).subscribe((result) => console.log(result));
-    }
-
-    onLoading($event): void {
-        console.log($event);
     }
 }

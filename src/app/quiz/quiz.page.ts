@@ -1,12 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Select, Store} from '@ngxs/store';
-import {GetCards} from '../+store/main.actions';
-import {BehaviorSubject, Observable, Subscription} from 'rxjs';
-import {map, withLatestFrom} from 'rxjs/operators';
+import {Store} from '@ngxs/store';
 import {CMC, COLOR, MainState, RARITY, TYPE} from '../+store/main.state';
 import {Card} from 'mtgsdk-ts';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import isEqual from 'lodash-ts/isEqual';
+import {ModalController} from '@ionic/angular';
+import {QuizCardComponent} from './quiz-card/quiz-card.component';
 
 export function cmcValidator(card: Card): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -43,22 +42,16 @@ export function rarityValidator(card: Card): ValidatorFn {
 })
 export class QuizPage implements OnInit {
 
-    @Select(MainState.getCards)
-    cards$: Observable<Card[]>;
-
-    cardIndex = 0;
-    nextCardSubject: BehaviorSubject<number> = new BehaviorSubject<number>(this.cardIndex);
-    nextCard$: Observable<Card> = this.nextCardSubject.asObservable().pipe(
-        withLatestFrom(this.cards$),
-        map(([index, cards]) => cards[index])
-    );
-
-    isQuizStarted = false;
-
     cmc: string[] = CMC;
     color: string[] = COLOR;
     type: string[] = TYPE;
     rarity: string[] = RARITY;
+
+    isQuizStarted = false;
+    cards: Card[];
+    cardIndex = 0;
+    currentCard: Card;
+    revealCard: boolean;
 
     quizForm = new FormGroup({
         cmc: new FormControl(''),
@@ -71,23 +64,20 @@ export class QuizPage implements OnInit {
     }
 
     ngOnInit() {
+        this.cards = this.store.selectSnapshot(MainState.getCards);
         this.isQuizStarted = false;
         this.startQuiz();
-    }
-
-    prepareQuiz(): void {
-
     }
 
     startQuiz() {
         this.cardIndex = 0;
         this.isQuizStarted = true;
         this.showNextCard();
-
     }
 
     showNextCard() {
-        this.nextCardSubject.next(this.cardIndex++);
+        this.revealCard = false;
+        this.currentCard = this.cards[this.cardIndex++];
     }
 
     toggleOption(option: string, type: string, multiple: boolean = false) {
@@ -112,7 +102,12 @@ export class QuizPage implements OnInit {
         return options.indexOf(option);
     }
 
-    validateFormValue(card: Card): void {
+    validateFormValue(): void {
+
+        this.revealCard = true;
+
+        /*
+        const card = this.currentCard;
         this.quizForm.controls['cmc'].setValidators([cmcValidator(card)]);
         this.quizForm.controls['cmc'].updateValueAndValidity();
 
@@ -133,5 +128,6 @@ export class QuizPage implements OnInit {
             this.quizForm.controls['type'].clearValidators();
             this.quizForm.controls['rarity'].clearValidators();
         }
+         */
     }
 }
