@@ -1,10 +1,12 @@
 <div text-center>
+    <p>{{card.name}}</p>
     <div id="quiz-card" [ngClass]="reveal ? 'revealed' : 'masked'">
 
         <div class="mask mask-top"></div>
         <div class="mask mask-right"></div>
-        <div class="mask mask-bottom"></div>
         <div class="mask mask-left"></div>
+
+        <div class="mask mask-text" [ngClass]="getMaskType()"></div>
 
         <img src="{{card?.imageUrl}}">
     </div>

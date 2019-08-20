@@ -1,4 +1,4 @@
-#quiz-card  {
+#quiz-card {
   position: relative;
   width: 223px;
   height: 311px;
@@ -48,11 +48,18 @@
   width: 14px;
 }
 
-#quiz-card .mask-bottom {
-  left: 0;
-  bottom: -1px;
-  right: 0;
-  height: 139px;
+#quiz-card .mask-text.normal {
+  left: 19px;
+  bottom: 31px;
+  right: 19px;
+  height: 85px;
+}
+
+#quiz-card .mask-text.saga {
+  left: 19px;
+  bottom: 31px;
+  right: 19px;
+  height: 85px;
 }
 
 @keyframes remove-greyfilter {

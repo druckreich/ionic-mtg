@@ -4,8 +4,6 @@ import {CMC, COLOR, MainState, RARITY, TYPE} from '../+store/main.state';
 import {Card} from 'mtgsdk-ts';
 import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import isEqual from 'lodash-ts/isEqual';
-import {ModalController} from '@ionic/angular';
-import {QuizCardComponent} from './quiz-card/quiz-card.component';
 
 export function cmcValidator(card: Card): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -64,14 +62,14 @@ export class QuizPage implements OnInit {
     }
 
     ngOnInit() {
-        this.cards = this.store.selectSnapshot(MainState.getCards);
         this.isQuizStarted = false;
+        this.cards = this.store.selectSnapshot(MainState.getCards);
         this.startQuiz();
     }
 
     startQuiz() {
-        this.cardIndex = 0;
         this.isQuizStarted = true;
+        this.cardIndex = 0;
         this.showNextCard();
     }
 
@@ -106,7 +104,6 @@ export class QuizPage implements OnInit {
 
         this.revealCard = true;
 
-        /*
         const card = this.currentCard;
         this.quizForm.controls['cmc'].setValidators([cmcValidator(card)]);
         this.quizForm.controls['cmc'].updateValueAndValidity();
@@ -120,14 +117,15 @@ export class QuizPage implements OnInit {
         this.quizForm.controls['rarity'].setValidators([rarityValidator(card)]);
         this.quizForm.controls['rarity'].updateValueAndValidity();
 
+        this.quizForm.controls['cmc'].clearValidators();
+        this.quizForm.controls['color'].clearValidators();
+        this.quizForm.controls['type'].clearValidators();
+        this.quizForm.controls['rarity'].clearValidators();
+
         if (this.quizForm.valid) {
-            this.showNextCard();
-        } else {
-            this.quizForm.controls['cmc'].clearValidators();
-            this.quizForm.controls['color'].clearValidators();
-            this.quizForm.controls['type'].clearValidators();
-            this.quizForm.controls['rarity'].clearValidators();
+            console.log('valid');
         }
-         */
+
+        this.showNextCard();
     }
 }

@@ -1,10 +1,13 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Home</ion-title>
+    <ion-title>MENU</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content align-items-center justify-content-center>
-  <ion-button size="block" (click)="startQuiz(5)">Quiz (5 Cards)</ion-button>
-  <ion-button size="block" (click)="startQuiz(10)">Quiz (10 Cards)</ion-button>
+  <div id="progress-indicator" *ngIf="startingQuiz">Loading ...</div>
+  <div id="menu" *ngIf="!startingQuiz">
+    <ion-button size="block" (click)="startQuiz(5)">Quiz (5 Cards)</ion-button>
+    <ion-button size="block" (click)="startQuiz(10)">Quiz (10 Cards)</ion-button>
+  </div>
 </ion-content>

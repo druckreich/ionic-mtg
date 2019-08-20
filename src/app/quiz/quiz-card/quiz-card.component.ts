@@ -22,4 +22,8 @@ export class QuizCardComponent implements OnInit {
     ngOnInit() {
 
     }
+
+    getMaskType(): string {
+        return this.card.layout;
+    }
 }

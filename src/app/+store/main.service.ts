@@ -9,28 +9,32 @@ import {Card, CardFilter, Set} from 'mtgsdk-ts';
 })
 export class MainService {
 
-    constructor(public httpClient: HttpClient) {
+    constructor(public http: HttpClient) {
 
+    }
+
+    getCardsData() {
+        return this.http.get("https://archive.scryfall.com/json/scryfall-default-cards.json");
     }
 
     getCards(params: CardFilter): Observable<Card[]> {
-        return this.httpClient.get<any>(`${environment.mtgApi}/cards`, {params: <any>params});
+        return this.http.get<any>(`${environment.mtgApi}/cards`, {params: <any>params});
     }
 
     getSets(): Observable<Set[]> {
-        return this.httpClient.get<any>(`${environment.mtgApi}/sets`);
+        return this.http.get<any>(`${environment.mtgApi}/sets`);
     }
 
     getTypes(): Observable<string[]> {
-        return this.httpClient.get<any>(`${environment.mtgApi}/types`);
+        return this.http.get<any>(`${environment.mtgApi}/types`);
     }
 
     getSubtypes(): Observable<string[]> {
-        return this.httpClient.get<any>(`${environment.mtgApi}/subtypes`);
+        return this.http.get<any>(`${environment.mtgApi}/subtypes`);
     }
 
     getSupertypes(): Observable<string[]> {
-        return this.httpClient.get<any>(`${environment.mtgApi}/supertypes`);
+        return this.http.get<any>(`${environment.mtgApi}/supertypes`);
     }
 
 }

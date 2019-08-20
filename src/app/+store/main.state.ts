@@ -1,5 +1,5 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-import {GetCards, GetSets, GetSubtypes, GetSupertypes, GetTypes} from './main.actions';
+import {GetCards, GetData, GetSets, GetSubtypes, GetSupertypes, GetTypes} from './main.actions';
 import {MainService} from './main.service';
 import {tap} from 'rxjs/operators';
 import {of} from 'rxjs';
@@ -46,6 +46,16 @@ export class MainState {
     constructor(public mainService: MainService) {
 
     }
+
+    @Action(GetData)
+    getData(ctx: StateContext<MainStateModel>) {
+        return this.mainService.getCardsData().pipe(
+            tap((data: any) => {
+                console.log(data);
+            })
+        );
+    }
+
 
     @Action(GetCards)
     getCards(ctx: StateContext<MainStateModel>, {searchParams}: GetCards) {
