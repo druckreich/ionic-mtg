@@ -13,9 +13,6 @@ export class QuizCardComponent implements OnInit {
     @Input()
     card: Card;
 
-    @Input()
-    reveal = false;
-
     constructor(public http: HttpClient) {
 
     }

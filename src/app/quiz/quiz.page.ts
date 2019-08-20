@@ -8,6 +8,7 @@ import {ActivatedRoute} from '@angular/router';
 import {MainService} from '../+store/main.service';
 import {map} from 'rxjs/operators';
 import {Card} from '../+store/card.model';
+import {ToastController} from '@ionic/angular';
 
 export function cmcValidator(card: Card): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -55,7 +56,8 @@ export class QuizPage implements OnInit {
     isQuizStarted = false;
     cardIndex = 0;
     currentCard: Card;
-    revealCard: boolean;
+
+    showBackdrop = true;
 
     quizForm = new FormGroup({
         cmc: new FormControl(''),
@@ -64,8 +66,7 @@ export class QuizPage implements OnInit {
         rarity: new FormControl('')
     });
 
-    constructor(public store: Store, public activatedRoute: ActivatedRoute, public mainService: MainService) {
-
+    constructor(public store: Store, public activatedRoute: ActivatedRoute, public mainService: MainService, public toastController: ToastController) {
     }
 
     ngOnInit() {
@@ -123,7 +124,8 @@ export class QuizPage implements OnInit {
     }
 
     showNextCard() {
-        this.revealCard = false;
+        this.clearFormValidators();
+        this.showBackdrop = false;
         this.currentCard = this.cards[this.cardIndex++];
     }
 
@@ -151,7 +153,7 @@ export class QuizPage implements OnInit {
 
     validateFormValue(): void {
 
-        this.revealCard = true;
+        this.showBackdrop = true;
 
         const card = this.currentCard;
         this.quizForm.controls['cmc'].setValidators([cmcValidator(card)]);
@@ -166,15 +168,28 @@ export class QuizPage implements OnInit {
         this.quizForm.controls['rarity'].setValidators([rarityValidator(card)]);
         this.quizForm.controls['rarity'].updateValueAndValidity();
 
+
+        if (this.quizForm.valid) {
+            this.presentToast('success', 'GOOD').then(() => this.showNextCard());
+        } else {
+            this.presentToast('danger', 'BAD').then(() => this.showNextCard());
+        }
+    }
+
+    clearFormValidators(): void {
         this.quizForm.controls['cmc'].clearValidators();
         this.quizForm.controls['color'].clearValidators();
         this.quizForm.controls['type'].clearValidators();
         this.quizForm.controls['rarity'].clearValidators();
+    }
 
-        if (this.quizForm.valid) {
-            console.log('valid');
-        }
-
-        this.showNextCard();
+    async presentToast(type: string, message: string) {
+        const toast = await this.toastController.create({
+            message: message,
+            duration: 2000,
+            position: 'middle',
+            color: type
+        });
+        return toast.present();
     }
 }

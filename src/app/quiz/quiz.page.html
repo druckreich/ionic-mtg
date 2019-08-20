@@ -1,4 +1,4 @@
-<div id="prepare"></div>
+<ion-backdrop [visible]="true" *ngIf="showBackdrop"></ion-backdrop>
 
 <ion-content padding>
     <ng-container *ngIf="cards">
@@ -6,7 +6,7 @@
 
             <ion-grid>
                 <ion-row justify-content-center align-items-center>
-                    <app-quiz-card [card]="currentCard" [reveal]="revealCard"></app-quiz-card>
+                    <app-quiz-card [card]="currentCard"></app-quiz-card>
                 </ion-row>
             </ion-grid>
 
@@ -58,11 +58,8 @@
             </form>
         </ng-container>
     </ng-container>
-</ion-content>
 
-<ion-footer padding>
     <ion-button type="button" size="block" color="primary" (click)="validateFormValue()">NEXT
     </ion-button>
-</ion-footer>
 
-
+</ion-content>
