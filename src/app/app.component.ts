@@ -3,8 +3,9 @@ import {Component} from '@angular/core';
 import {Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
-import {GetSets, GetSubtypes, GetSupertypes, GetTypes} from './+store/main.actions';
+import {GetData} from './+store/main.actions';
 import {Store} from '@ngxs/store';
+import {Navigate} from '@ngxs/router-plugin';
 
 @Component({
     selector: 'app-root',
@@ -29,9 +30,8 @@ export class AppComponent {
     }
 
     loadInitialData() {
-        this.store.dispatch(new GetSets());
-        this.store.dispatch(new GetTypes());
-        this.store.dispatch(new GetSubtypes());
-        this.store.dispatch(new GetSupertypes());
+        this.store.dispatch(new GetData()).subscribe(() => {
+            this.store.dispatch(new Navigate(['home']));
+        });
     }
 }

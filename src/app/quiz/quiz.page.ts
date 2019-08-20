@@ -1,14 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
-import {CMC, COLOR, MainState, RARITY, TYPE} from '../+store/main.state';
-import {Card} from 'mtgsdk-ts';
+import {CMC, COLOR, RARITY, TYPE} from '../+store/main.state';
+
 import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
 import isEqual from 'lodash-ts/isEqual';
+import {ActivatedRoute} from '@angular/router';
+import {MainService} from '../+store/main.service';
+import {map} from 'rxjs/operators';
+import {Card} from '../+store/card.model';
 
 export function cmcValidator(card: Card): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
         const value = control.value;
-        return ((value === '8+' && card.cmc >= 8) || +value === card.cmc) ? null : {'cmc': 'invalid'};
+        return ((value === '8+' && +card.cmc >= 8) || +value === +card.cmc) ? null : {'cmc': 'invalid'};
     };
 }
 
@@ -22,7 +26,9 @@ export function colorValidator(card: Card): ValidatorFn {
 export function typeValidator(card: Card): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
         const value = control.value === '' ? [] : control.value.split('|');
-        return isEqual(value, card.types) ? null : {'type': 'invalid'};
+        const split = card.type_line.split(' — ');
+        const types = split[0].split(' ');
+        return isEqual(value, types) ? null : {'type': 'invalid'};
     };
 }
 
@@ -40,13 +46,13 @@ export function rarityValidator(card: Card): ValidatorFn {
 })
 export class QuizPage implements OnInit {
 
+    cards: Card[];
     cmc: string[] = CMC;
     color: string[] = COLOR;
     type: string[] = TYPE;
     rarity: string[] = RARITY;
 
     isQuizStarted = false;
-    cards: Card[];
     cardIndex = 0;
     currentCard: Card;
     revealCard: boolean;
@@ -58,13 +64,56 @@ export class QuizPage implements OnInit {
         rarity: new FormControl('')
     });
 
-    constructor(public store: Store) {
+    constructor(public store: Store, public activatedRoute: ActivatedRoute, public mainService: MainService) {
+
     }
 
     ngOnInit() {
         this.isQuizStarted = false;
-        this.cards = this.store.selectSnapshot(MainState.getCards);
-        this.startQuiz();
+        const cardsNumber: number = +this.activatedRoute.snapshot.queryParams['cardsNumber'];
+        this.mainService.getCardsData().pipe(
+            map((cards: Card[]) => {
+                return cards.filter((card: Card) => {
+                    return card.legalities.standard === 'legal';
+                });
+            }),
+            map((cards: Card[]) => {
+                return cards.filter((card: Card) => {
+                    const types: string[] = this.getCardTypes(card);
+                    if (types.indexOf('Land') !== -1 || types.indexOf('Token') !== -1) {
+                        return false;
+                    }
+                    return true;
+                });
+            }),
+            map((cards: Card[]) => {
+                return this.getRandom(cards, cardsNumber);
+            })
+        ).subscribe((cards: Card[]) => {
+            this.cards = cards;
+            console.log(this.cards);
+            this.startQuiz();
+        });
+    }
+
+    getRandom(arr, n) {
+        const result = new Array(n);
+        let len = arr.length;
+        const taken = new Array(len);
+        if (n > len) {
+            throw new RangeError('getRandom: more elements taken than available');
+        }
+        while (n--) {
+            const x = Math.floor(Math.random() * len);
+            result[n] = arr[x in taken ? taken[x] : x];
+            taken[x] = --len in taken ? taken[len] : len;
+        }
+        return result;
+    }
+
+    getCardTypes(card: Card): string[] {
+        const types = card.type_line.split(' — ');
+        return types[0].split(' ');
     }
 
     startQuiz() {

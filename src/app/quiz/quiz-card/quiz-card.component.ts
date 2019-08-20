@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Card} from 'mtgsdk-ts';
+
 import {HttpClient} from '@angular/common/http';
+import {Card} from '../../+store/card.model';
 
 @Component({
     selector: 'app-quiz-card',
@@ -23,7 +24,7 @@ export class QuizCardComponent implements OnInit {
 
     }
 
-    getMaskType(): string {
-        return this.card.layout;
+    getArtCrop(): string {
+        return this.card.image_uris.border_crop;
     }
 }
