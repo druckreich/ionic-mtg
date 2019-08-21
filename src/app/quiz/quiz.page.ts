@@ -88,6 +88,8 @@ export class QuizPage implements OnInit {
                 });
             }),
             map((cards: Card[]) => {
+                console.log(cards);
+                localStorage.setItem('cards', JSON.stringify(cards));
                 return this.getRandom(cards, cardsNumber);
             })
         ).subscribe((cards: Card[]) => {
