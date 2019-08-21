@@ -7,6 +7,7 @@ import {IonicModule} from '@ionic/angular';
 
 import {QuizPage} from './quiz.page';
 import {QuizCardComponent} from './quiz-card/quiz-card.component';
+import {BannerComponent} from './banner/banner.component';
 
 const routes: Routes = [
     {
@@ -25,7 +26,8 @@ const routes: Routes = [
     ],
     declarations: [
         QuizPage,
-        QuizCardComponent
+        QuizCardComponent,
+        BannerComponent
     ],
     entryComponents: [
         QuizCardComponent

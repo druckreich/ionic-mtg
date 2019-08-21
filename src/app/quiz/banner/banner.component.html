@@ -1,0 +1,7 @@
+<div class="banner-wrapper">
+    <div class="banner" [@lightSpeedInOnEnter] [@fadeOutOnLeave]>
+        <div *ngIf="!valid" [@shakeOnEnter] class="valid"><ion-text color="danger">{{text}}</ion-text></div>
+        <div *ngIf="valid" [@rubberBandOnEnter] class="not-valid"><ion-text color="success">{{text}}</ion-text></div>
+    </div>
+</div>
+

@@ -6,9 +6,18 @@ import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/for
 import isEqual from 'lodash-ts/isEqual';
 import {ActivatedRoute} from '@angular/router';
 import {MainService} from '../+store/main.service';
-import {map} from 'rxjs/operators';
+import {delay, map, tap} from 'rxjs/operators';
 import {Card} from '../+store/card.model';
-import {ToastController} from '@ionic/angular';
+import {of} from 'rxjs';
+import {animate, style, transition, trigger} from '@angular/animations';
+import {
+    bounceInOnEnterAnimation,
+    bounceOutAnimation,
+    bounceOutOnLeaveAnimation,
+    fadeInOnEnterAnimation,
+    fadeOutOnLeaveAnimation, lightSpeedInOnEnterAnimation,
+    rubberBandOnEnterAnimation, slideInLeftOnEnterAnimation
+} from 'angular-animations';
 
 export function cmcValidator(card: Card): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -43,7 +52,7 @@ export function rarityValidator(card: Card): ValidatorFn {
 @Component({
     selector: 'app-quiz',
     templateUrl: './quiz.page.html',
-    styleUrls: ['./quiz.page.scss'],
+    styleUrls: ['./quiz.page.scss']
 })
 export class QuizPage implements OnInit {
 
@@ -57,11 +66,11 @@ export class QuizPage implements OnInit {
     cardIndex = 0;
     currentCard: Card;
 
-    showBackdrop = true;
+    showBackdrop = false;
 
     quizForm: FormGroup;
 
-    constructor(public store: Store, public activatedRoute: ActivatedRoute, public mainService: MainService, public toastController: ToastController) {
+    constructor(public store: Store, public activatedRoute: ActivatedRoute, public mainService: MainService) {
     }
 
     ngOnInit() {
@@ -121,9 +130,9 @@ export class QuizPage implements OnInit {
     }
 
     showNextCard() {
+        this.showBackdrop = false;
         this.clearFormValue();
         this.clearFormValidators();
-        this.showBackdrop = false;
         this.currentCard = this.cards[this.cardIndex++];
     }
 
@@ -150,9 +159,6 @@ export class QuizPage implements OnInit {
     }
 
     validateFormValue(): void {
-
-        this.showBackdrop = true;
-
         const card = this.currentCard;
         this.quizForm.controls['cmc'].setValidators([cmcValidator(card)]);
         this.quizForm.controls['cmc'].updateValueAndValidity();
@@ -191,12 +197,10 @@ export class QuizPage implements OnInit {
     }
 
     async presentToast(type: string, message: string) {
-        const toast = await this.toastController.create({
-            message: message,
-            duration: 2000,
-            position: 'middle',
-            color: type
-        });
-        return toast.present();
+        this.showBackdrop = true;
+        return of().pipe(
+            tap(() => this.showBackdrop = true),
+            delay(2000)
+        ).toPromise();
     }
 }

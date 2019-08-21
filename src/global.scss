@@ -9,3 +9,13 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+.mtg-toast {
+    opacity: 0.8;
+    width: 100%;
+    max-width: 100%;
+    margin: -8px;
+    height: 80px;
+    background-color: #eee;
+    border-radius: 0px;
+}

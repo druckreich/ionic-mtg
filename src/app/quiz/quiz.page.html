@@ -1,4 +1,5 @@
 <ion-backdrop [visible]="true" *ngIf="showBackdrop"></ion-backdrop>
+<app-banner [valid]="quizForm.valid" *ngIf="showBackdrop"></app-banner>
 
 <ion-content padding>
     <ng-container *ngIf="cards">
