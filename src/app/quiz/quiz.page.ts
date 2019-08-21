@@ -35,8 +35,8 @@ export function typeValidator(card: Card): ValidatorFn {
 
 export function rarityValidator(card: Card): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-        const value = control.value;
-        return value === card.rarity ? null : {'rarity': 'invalid'};
+        const value: string = control.value;
+        return value.toLowerCase() === card.rarity.toLowerCase() ? null : {'rarity': 'invalid'};
     };
 }
 
@@ -59,12 +59,7 @@ export class QuizPage implements OnInit {
 
     showBackdrop = true;
 
-    quizForm = new FormGroup({
-        cmc: new FormControl(''),
-        color: new FormControl(''),
-        type: new FormControl(''),
-        rarity: new FormControl('')
-    });
+    quizForm: FormGroup;
 
     constructor(public store: Store, public activatedRoute: ActivatedRoute, public mainService: MainService, public toastController: ToastController) {
     }
@@ -126,6 +121,7 @@ export class QuizPage implements OnInit {
     }
 
     showNextCard() {
+        this.clearFormValue();
         this.clearFormValidators();
         this.showBackdrop = false;
         this.currentCard = this.cards[this.cardIndex++];
@@ -176,6 +172,15 @@ export class QuizPage implements OnInit {
         } else {
             this.presentToast('danger', 'BAD').then(() => this.showNextCard());
         }
+    }
+
+    clearFormValue(): void {
+        this.quizForm = new FormGroup({
+            cmc: new FormControl(''),
+            color: new FormControl(''),
+            type: new FormControl(''),
+            rarity: new FormControl('')
+        });
     }
 
     clearFormValidators(): void {

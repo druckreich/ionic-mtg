@@ -30,8 +30,6 @@ export class AppComponent {
     }
 
     loadInitialData() {
-        this.store.dispatch(new GetData()).subscribe(() => {
-            this.store.dispatch(new Navigate(['home']));
-        });
+        this.store.dispatch(new GetData());
     }
 }

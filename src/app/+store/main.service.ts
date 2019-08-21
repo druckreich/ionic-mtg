@@ -11,6 +11,6 @@ export class MainService {
     }
 
     getCardsData() {
-        return this.http.get("../assets/data/scryfall-oracle-cards.json");
+        return this.http.get("../assets/data/cards.json");
     }
 }

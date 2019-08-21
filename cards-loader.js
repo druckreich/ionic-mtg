@@ -37,6 +37,7 @@ const parse = function(src, dest, cb) {
 
             } else {
                 var card = {
+                    name: object.name,
                     cmc: object.cmc,
                     rarity: object.rarity,
                     legalities: {
