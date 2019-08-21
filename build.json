@@ -1,0 +1,18 @@
+{
+  "android": {
+    "debug": {
+      "keystore": "/Users/smarti/workspace/my-release-key.jks",
+      "storePassword": "!passwd4U",
+      "alias": "my-alias",
+      "password" : "!passwd4U",
+      "keystoreType": "jks"
+    },
+    "release": {
+      "keystore": "/Users/smarti/workspace/my-release-key.jks",
+      "storePassword": "!passwd4U",
+      "alias": "my-alias",
+      "password" : "!passwd4U",
+      "keystoreType": "jks"
+    }
+  }
+}

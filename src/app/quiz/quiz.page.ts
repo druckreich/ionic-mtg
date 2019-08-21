@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
 import {CMC, COLOR, RARITY, TYPE} from '../+store/main.state';
 
@@ -6,18 +6,9 @@ import {AbstractControl, FormControl, FormGroup, ValidatorFn} from '@angular/for
 import isEqual from 'lodash-ts/isEqual';
 import {ActivatedRoute} from '@angular/router';
 import {MainService} from '../+store/main.service';
-import {delay, map, tap} from 'rxjs/operators';
+import {delay, map, takeUntil} from 'rxjs/operators';
 import {Card} from '../+store/card.model';
-import {of} from 'rxjs';
-import {animate, style, transition, trigger} from '@angular/animations';
-import {
-    bounceInOnEnterAnimation,
-    bounceOutAnimation,
-    bounceOutOnLeaveAnimation,
-    fadeInOnEnterAnimation,
-    fadeOutOnLeaveAnimation, lightSpeedInOnEnterAnimation,
-    rubberBandOnEnterAnimation, slideInLeftOnEnterAnimation
-} from 'angular-animations';
+import {of, Subject} from 'rxjs';
 
 export function cmcValidator(card: Card): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -54,7 +45,7 @@ export function rarityValidator(card: Card): ValidatorFn {
     templateUrl: './quiz.page.html',
     styleUrls: ['./quiz.page.scss']
 })
-export class QuizPage implements OnInit {
+export class QuizPage implements OnInit, OnDestroy {
 
     cards: Card[];
     cmc: string[] = CMC;
@@ -63,44 +54,44 @@ export class QuizPage implements OnInit {
     rarity: string[] = RARITY;
 
     isQuizStarted = false;
-    cardIndex = 0;
-    currentCard: Card;
-
+    currentCardLoaded = false;
     showBackdrop = false;
+    showBanner = false;
+
+    results: any[];
+    cardsNumber: number;
+    currentCard: Card;
+    cardIndex = 0;
 
     quizForm: FormGroup;
+    destroy$: Subject<any> = new Subject();
 
-    constructor(public store: Store, public activatedRoute: ActivatedRoute, public mainService: MainService) {
+    constructor(public store: Store, public activatedRoute: ActivatedRoute, public cd: ChangeDetectorRef, public mainService: MainService) {
     }
 
     ngOnInit() {
         this.isQuizStarted = false;
-        const cardsNumber: number = +this.activatedRoute.snapshot.queryParams['cardsNumber'];
+        this.resetFormValue();
+
+        this.cardsNumber = +this.activatedRoute.snapshot.queryParams['cardsNumber'];
         this.mainService.getCardsData().pipe(
+            takeUntil(this.destroy$),
             map((cards: Card[]) => {
                 return cards.filter((card: Card) => {
                     return card.legalities.standard === 'legal';
                 });
             }),
             map((cards: Card[]) => {
-                return cards.filter((card: Card) => {
-                    const types: string[] = this.getCardTypes(card);
-                    if (types.indexOf('Land') !== -1 || types.indexOf('Token') !== -1) {
-                        return false;
-                    }
-                    return true;
-                });
-            }),
-            map((cards: Card[]) => {
-                console.log(cards);
-                localStorage.setItem('cards', JSON.stringify(cards));
-                return this.getRandom(cards, cardsNumber);
+                return this.getRandom(cards, this.cardsNumber);
             })
         ).subscribe((cards: Card[]) => {
             this.cards = cards;
-            console.log(this.cards);
             this.startQuiz();
         });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
     }
 
     getRandom(arr, n) {
@@ -118,22 +109,31 @@ export class QuizPage implements OnInit {
         return result;
     }
 
-    getCardTypes(card: Card): string[] {
-        const types = card.type_line.split(' — ');
-        return types[0].split(' ');
-    }
-
     startQuiz() {
         this.isQuizStarted = true;
         this.cardIndex = 0;
         this.showNextCard();
     }
 
+    stopQuiz() {
+        this.isQuizStarted = false;
+    }
+
     showNextCard() {
+        if (this.cardIndex < this.cardsNumber) {
+            this.showBackdrop = true;
+            this.currentCardLoaded = false;
+            this.currentCard = this.cards[this.cardIndex++];
+        } else {
+            this.stopQuiz();
+        }
+    }
+
+    onQuizCardLoaded() {
         this.showBackdrop = false;
-        this.clearFormValue();
+        this.currentCardLoaded = true;
+        this.resetFormValue();
         this.clearFormValidators();
-        this.currentCard = this.cards[this.cardIndex++];
     }
 
     toggleOption(option: string, type: string, multiple: boolean = false) {
@@ -172,15 +172,15 @@ export class QuizPage implements OnInit {
         this.quizForm.controls['rarity'].setValidators([rarityValidator(card)]);
         this.quizForm.controls['rarity'].updateValueAndValidity();
 
-
-        if (this.quizForm.valid) {
-            this.presentToast('success', 'GOOD').then(() => this.showNextCard());
-        } else {
-            this.presentToast('danger', 'BAD').then(() => this.showNextCard());
-        }
+        this.showBanner = true;
+        this.presentToast().then(() => {
+            this.showNextCard();
+            this.showBanner = false;
+            this.cd.markForCheck();
+        });
     }
 
-    clearFormValue(): void {
+    resetFormValue(): void {
         this.quizForm = new FormGroup({
             cmc: new FormControl(''),
             color: new FormControl(''),
@@ -196,10 +196,8 @@ export class QuizPage implements OnInit {
         this.quizForm.controls['rarity'].clearValidators();
     }
 
-    async presentToast(type: string, message: string) {
-        this.showBackdrop = true;
+    async presentToast() {
         return of().pipe(
-            tap(() => this.showBackdrop = true),
             delay(2000)
         ).toPromise();
     }
