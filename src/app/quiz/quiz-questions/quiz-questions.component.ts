@@ -17,6 +17,7 @@ import {QuizQuestion} from './quiz-question.model';
 import {QuizQuestionService} from './quiz-question.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {WhatsTheColorComponent} from './whats-the-color/whats-the-color.component';
 
 
 @Component({
@@ -38,7 +39,8 @@ export class QuizQuestionsComponent implements OnInit, OnChanges, OnDestroy {
 
     questionIndex = 0;
     questions: any[] = [
-        WhatsTheNameComponent
+        WhatsTheNameComponent,
+        WhatsTheColorComponent
     ];
 
     destroy$: Subject<any> = new Subject();
@@ -67,7 +69,7 @@ export class QuizQuestionsComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     prepareQuestion(): void {
-        this.questionIndex = (this.questionIndex + 1) % this.questions.length;
+        this.questionIndex = Math.floor(Math.random() * this.questions.length);
         const currentQuestion = this.questions[this.questionIndex];
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(currentQuestion);
         const viewContainerRef = this.adHost.viewContainerRef;

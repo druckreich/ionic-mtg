@@ -1,43 +1,10 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
-
-import {AbstractControl, ValidatorFn} from '@angular/forms';
-import isEqual from 'lodash-ts/isEqual';
 import {ActivatedRoute} from '@angular/router';
 import {MainService} from '../+store/main.service';
 import {delay, map, takeUntil} from 'rxjs/operators';
 import {Card} from '../+store/card.model';
 import {of, Subject} from 'rxjs';
-
-export function cmcValidator(card: Card): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-        const value = control.value;
-        return ((value === '8+' && +card.cmc >= 8) || +value === +card.cmc) ? null : {'cmc': 'invalid'};
-    };
-}
-
-export function colorValidator(card: Card): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-        const value = control.value === '' ? [] : control.value.split('|');
-        return isEqual(value, card.colors) ? null : {'color': 'invalid'};
-    };
-}
-
-export function typeValidator(card: Card): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-        const value = control.value === '' ? [] : control.value.split('|');
-        const split = card.type_line.split(' — ');
-        const types = split[0].split(' ');
-        return isEqual(value, types) ? null : {'type': 'invalid'};
-    };
-}
-
-export function rarityValidator(card: Card): ValidatorFn {
-    return (control: AbstractControl): { [key: string]: any } | null => {
-        const value: string = control.value;
-        return value.toLowerCase() === card.rarity.toLowerCase() ? null : {'rarity': 'invalid'};
-    };
-}
 
 @Component({
     selector: 'app-quiz',

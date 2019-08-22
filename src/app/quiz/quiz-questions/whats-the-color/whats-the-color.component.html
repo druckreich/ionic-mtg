@@ -1,0 +1,13 @@
+<p>Welche Farbe?</p>
+<div>
+<div class="colors">
+    <ion-button (click)="validate($event)">OK</ion-button>
+    <img class="W" src="../../assets/icon/W.svg" [ngClass]="isColorSelected('W') ? 'glow' : ''" (click)="toggleColor('W')">
+    <img class="G" src="../../assets/icon/G.svg" [ngClass]="isColorSelected('G') ? 'glow' : ''" (click)="toggleColor('G')">
+    <img class="U" src="../../assets/icon/U.svg" [ngClass]="isColorSelected('U') ? 'glow' : ''" (click)="toggleColor('U')">
+    <img class="B" src="../../assets/icon/B.svg" [ngClass]="isColorSelected('B') ? 'glow' : ''" (click)="toggleColor('B')">
+    <img class="R" src="../../assets/icon/R.svg" [ngClass]="isColorSelected('R') ? 'glow' : ''" (click)="toggleColor('R')">
+</div>
+</div>
+
+
