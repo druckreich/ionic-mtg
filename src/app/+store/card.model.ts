@@ -1,5 +1,6 @@
 export class Card {
     id: string;
+    name: string;
     cmc: string;
     rarity: string;
     legalities: {

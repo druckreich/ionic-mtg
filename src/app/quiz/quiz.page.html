@@ -1,67 +1,17 @@
 <ion-backdrop [visible]="true" *ngIf="showBackdrop"></ion-backdrop>
-<app-banner [valid]="quizForm.valid" *ngIf="showBanner"></app-banner>
 
 <ion-content padding>
-    <ng-container *ngIf="cards">
-        <ng-container *ngIf="currentCard">
-
-            <ion-grid>
-                <ion-row justify-content-center align-items-center>
-                    <app-quiz-card [card]="currentCard" (loaded)="onQuizCardLoaded()"></app-quiz-card>
-                </ion-row>
-            </ion-grid>
-
-            <form [formGroup]="quizForm" *ngIf="currentCardLoaded">
-
-                <ion-list-header>CONVERTED MANA COST</ion-list-header>
-                <div class="cmc-segment">
-                    <ion-button *ngFor="let c of cmc" [ngClass]="c"
-                                color="{{isOptionSelected(c, 'cmc') > -1 ? 'success' : 'medium'}}"
-                                fill="outline"
-                                (click)="toggleOption(c, 'cmc')">
-                        {{c}}
-                    </ion-button>
-                </div>
-
-                <hr>
-
-                <ion-list-header>COLOR</ion-list-header>
-                <div class="color-segment">
-                    <ion-button *ngFor="let c of color" [ngClass]="c"
-                                color="{{isOptionSelected(c, 'color') > -1 ? 'success' : 'medium'}}"
-                                fill="outline"
-                                (click)="toggleOption(c, 'color', true)">
-                        <img src="../../assets/icon/{{c}}.svg">
-                    </ion-button>
-                </div>
-
-                <hr>
-
-                <ion-list-header>TYPE</ion-list-header>
-                <div class="type-segment">
-                    <ion-button *ngFor="let t of type" [ngClass]="t"
-                                color="{{isOptionSelected(t, 'type') > -1 ? 'success' : 'medium'}}"
-                                fill="outline"
-                                (click)="toggleOption(t, 'type', true)">{{t}}
-                    </ion-button>
-                </div>
-
-                <hr>
-
-                <ion-list-header>RARITY</ion-list-header>
-                <div class="rarity-segment">
-                    <ion-button *ngFor="let r of rarity" [ngClass]="r"
-                                color="{{isOptionSelected(r, 'rarity') > -1 ? 'success' : 'medium'}}"
-                                fill="outline"
-                                (click)="toggleOption(r, 'rarity')">
-                        {{r}}
-                    </ion-button>
-                </div>
-            </form>
-        </ng-container>
+    <ng-container *ngIf="quizStatus == 'STARTED'">
+        <ion-grid>
+            <ion-row justify-content-center align-items-center>
+                <app-quiz-card [card]="currentCard" (loaded)="onQuizCardLoaded()"></app-quiz-card>
+            </ion-row>
+        </ion-grid>
+        <app-quiz-questions *ngIf="currentCardLoaded" [card]="currentCard"
+                            (answer)="handleQuizResult($event)"></app-quiz-questions>
     </ng-container>
-
-    <ion-button type="button" size="block" color="primary" (click)="validateFormValue()">NEXT
-    </ion-button>
+    <ng-container *ngIf="quizStatus == 'SHOW_RESULT'">
+        <h4>{{ this.results.join(' ') }}</h4>
+    </ng-container>
 
 </ion-content>

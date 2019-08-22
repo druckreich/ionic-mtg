@@ -30,7 +30,7 @@ export class QuizCardComponent implements OnInit, OnChanges {
     ngOnChanges(changes: SimpleChanges): void {
         if (changes['card'].currentValue) {
             this.base64Image = '';
-            const imageUrl: string = changes['card'].currentValue.image_uris.border_crop;
+            const imageUrl: string = changes['card'].currentValue.image_uris.art_crop;
             this.getBase64ImageFromURL(imageUrl).subscribe(base64data => {
                 this.base64Image = 'data:image/jpg;base64,' + base64data;
                 this.loaded.next();
