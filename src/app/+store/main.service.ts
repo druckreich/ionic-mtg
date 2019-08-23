@@ -28,8 +28,9 @@ export class MainService {
                     throw new RangeError('getRandom: more elements taken than available');
                 }
                 while (n--) {
-                    const x = Math.floor(Math.random() * len);
-                    result[n] = cards[x in taken ? taken[x] : x];
+                    let x = Math.floor(Math.random() * len);
+                    x = x in taken ? taken[x] : x;
+                    result[n] = {...cards[x]};
                     taken[x] = --len in taken ? taken[len] : len;
                 }
                 return result;

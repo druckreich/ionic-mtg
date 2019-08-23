@@ -47,6 +47,7 @@ const routes: Routes = [
     ],
     entryComponents: [
         QuizCardComponent,
+        BannerComponent,
         QuizQuestionsComponent,
         ...questions
     ]

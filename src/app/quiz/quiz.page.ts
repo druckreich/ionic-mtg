@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
-import {ActivatedRoute} from '@angular/router';
 import {MainService} from '../+store/main.service';
-import {delay, map, takeUntil} from 'rxjs/operators';
+import {map, takeUntil} from 'rxjs/operators';
 import {Card} from '../+store/card.model';
-import {of, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
+import {ModalController} from '@ionic/angular';
+import {BannerComponent} from './banner/banner.component';
 
 @Component({
     selector: 'app-quiz',
@@ -16,22 +17,21 @@ export class QuizPage implements OnInit, OnDestroy {
     cards: Card[];
 
     quizStatus = null;
-    cardsNumber: number;
-    currentCard: Card;
-    cardIndex = 0;
-    currentCardLoaded = false;
-    showBackdrop = false;
 
+    currentCard: Card;
+    currentCardLoaded = false;
+    cardIndex = 0;
+    errors = 0;
+    maxErrors = 2;
     results: any[] = [];
 
     destroy$: Subject<any> = new Subject();
 
-    constructor(public store: Store, public activatedRoute: ActivatedRoute, public mainService: MainService) {
+    constructor(public store: Store, public mainService: MainService, public modalController: ModalController) {
     }
 
     ngOnInit() {
         this.quizStatus = 'PREPARING';
-        this.cardsNumber = +this.activatedRoute.snapshot.queryParams['cardsNumber'];
         this.mainService.cards$.pipe(
             takeUntil(this.destroy$),
             map((cards: Card[]) => {
@@ -52,23 +52,28 @@ export class QuizPage implements OnInit, OnDestroy {
 
     startQuiz() {
         this.quizStatus = 'STARTED';
-        this.showBackdrop = false;
         this.cardIndex = 0;
         this.showNextCard();
     }
 
     stopQuiz() {
-        this.showBackdrop = true;
-        this.quizStatus = 'SHOW_RESULT';
+        this.quizStatus = 'STOPPED';
+        this.presentModal();
+    }
+
+    handleRestart() {
+        this.cardIndex = 0;
+        this.errors = 0;
+        this.startQuiz();
     }
 
     showNextCard() {
-        if (this.cardIndex < this.cardsNumber) {
+        if (this.errors >= this.maxErrors) {
+            this.stopQuiz();
+        } else {
             this.currentCardLoaded = false;
             this.cardIndex++;
             this.currentCard = this.getRandomCard();
-        } else {
-            this.stopQuiz();
         }
     }
 
@@ -83,6 +88,9 @@ export class QuizPage implements OnInit, OnDestroy {
     }
 
     handleQuizResult(result: boolean): void {
+        if (result === false) {
+            this.errors++;
+        }
         this.results.push(result);
         this.showNextCard();
         /*
@@ -96,9 +104,19 @@ export class QuizPage implements OnInit, OnDestroy {
         */
     }
 
-    async presentToast() {
-        return of().pipe(
-            delay(2000)
-        ).toPromise();
+    async presentModal() {
+        const modal = await this.modalController.create({
+            component: BannerComponent,
+            showBackdrop: true,
+            cssClass: 'banner'
+        });
+        modal.onDidDismiss().then((data: any) => {
+            if (data.data.restart === true) {
+                this.handleRestart();
+            }
+        });
+        return await modal.present();
+
     }
+
 }

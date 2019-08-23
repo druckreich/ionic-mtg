@@ -6,4 +6,6 @@ export interface QuizQuestion {
     prepare(): void;
 
     validate(value: any): void;
+
+    emitAnswer(value: boolean): void;
 }

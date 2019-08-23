@@ -31,12 +31,11 @@ export class WhatsTheColorComponent implements OnInit, QuizQuestion {
 
     validate(value: any): void {
         if (isEqual(this.selectedColor, this.card.colors)) {
-            this.quizQuestionService.emitAnswer(true);
+            this.emitAnswer(true);
         } else {
-            this.quizQuestionService.emitAnswer(false);
+            this.emitAnswer(false);
         }
     }
-
 
     toggleColor(color: string): void {
         const index = this.selectedColor.indexOf(color);
@@ -50,6 +49,10 @@ export class WhatsTheColorComponent implements OnInit, QuizQuestion {
 
     isColorSelected(color: string): boolean {
         return this.selectedColor.includes(color);
+    }
+
+    emitAnswer(value: boolean): void {
+        this.quizQuestionService.emitAnswer(value);
     }
 
 }

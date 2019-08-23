@@ -1,7 +1,11 @@
 <p>Wie ist der Name dieser Karte?</p>
 {{this.card.name}}
-<div *ngFor="let card of cards$ | async">
-    <ion-button (click)="validate(card)" type="button" size="block" color="primary">{{card.name}}</ion-button>
+<div *ngFor="let card of cards">
+    <div [@fadeOutRightBig]="card.animate"
+         (@fadeOutRightBig.done)="onAnimationEvent($event, card)"
+         [ngClass]="card.hide ? 'hide' : ''">
+        <ion-button (click)="validate(card)" type="button" size="block" color="primary">{{card.name}}</ion-button>
+    </div>
 </div>
 
 

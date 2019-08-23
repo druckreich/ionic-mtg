@@ -1,67 +1,28 @@
-.colors {
-  position: relative;
-  width: 10em;
-  height: 10em;
-  padding: 2.8em;
-  left: 50%;
-  transform: translateX(-5em);
-  top: 50%;
-  margin-top: 80px;
-}
-
-.colors img {
-  width: 64px;
-  border-radius: 50%;
-  display: block;
-  position: absolute;
-  border: 1px solid #eee;
-}
-
 ion-button {
+  margin-bottom: 12px;
+}
+
+img {
   width: 64px;
-  border-radius: 50%;
-  display: block;
-  position: absolute;
-  border: 1px solid #eee;
 }
 
-.colors img.W {
-  transform: rotate(-90deg) translate(6em) rotate(90deg);
-}
-
-.colors img.W.glow {
+.colors .W.glow {
   box-shadow: 0px 0px 10px grey;
 }
 
-.colors img.U {
-  transform: rotate(-18deg) translate(6em) rotate(18deg);
-}
-
-.colors img.U.glow {
+.colors .U.glow {
   box-shadow: 0px 0px 10px blue;
 }
 
-.colors img.G {
-  transform: rotate(-162deg) translate(6em) rotate(162deg);
-}
-
-.colors img.G.glow {
+.colors .G.glow {
   box-shadow: 0px 0px 10px green;
 }
 
-.colors img.B {
-  transform: rotate(-234deg) translate(6em) rotate(234deg);
-}
-
-.colors img.B.glow {
+.colors .B.glow {
   box-shadow: 0px 0px 10px black;
 }
 
-.colors img.R {
-  transform: rotate(-306deg) translate(6em) rotate(306deg);
-}
-
-.colors img.R.glow {
+.colors .R.glow {
   box-shadow: 0px 0px 10px red;
 }
 

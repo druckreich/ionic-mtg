@@ -1,23 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {
-  bounceInAnimation,
-  bounceInOnEnterAnimation,
-  fadeOutOnLeaveAnimation,
-  lightSpeedInOnEnterAnimation, pulseOnEnterAnimation,
-  rubberBandAnimation, rubberBandOnEnterAnimation, shakeOnEnterAnimation
-} from 'angular-animations';
+import {ModalController} from '@ionic/angular';
 
 @Component({
     selector: 'app-banner',
     templateUrl: './banner.component.html',
     styleUrls: ['./banner.component.scss'],
-    animations: [
-        lightSpeedInOnEnterAnimation({duration: 250}),
-        fadeOutOnLeaveAnimation(),
-        rubberBandOnEnterAnimation({delay: 200}),
-        pulseOnEnterAnimation({delay: 200}),
-        shakeOnEnterAnimation({delay: 200})
-    ]
 })
 export class BannerComponent implements OnInit {
 
@@ -26,7 +13,7 @@ export class BannerComponent implements OnInit {
 
     text: string;
 
-    constructor() {
+    constructor(public modalController: ModalController) {
     }
 
     ngOnInit() {
@@ -35,5 +22,11 @@ export class BannerComponent implements OnInit {
         } else {
             this.text = 'LOOSER';
         }
+    }
+
+    handleRestart(): void {
+        this.modalController.dismiss({
+            'restart': true
+        });
     }
 }

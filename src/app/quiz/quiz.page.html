@@ -1,7 +1,5 @@
-<ion-backdrop [visible]="true" *ngIf="showBackdrop"></ion-backdrop>
-
 <ion-content padding>
-    <ng-container *ngIf="quizStatus == 'STARTED'">
+    <ng-container>
         <ion-grid>
             <ion-row justify-content-center align-items-center>
                 <app-quiz-card [card]="currentCard" (loaded)="onQuizCardLoaded()"></app-quiz-card>
@@ -9,8 +7,5 @@
         </ion-grid>
         <app-quiz-questions *ngIf="currentCardLoaded" [card]="currentCard"
                             (answer)="handleQuizResult($event)"></app-quiz-questions>
-    </ng-container>
-    <ng-container *ngIf="quizStatus == 'SHOW_RESULT'">
-        <h4>{{ this.results.join(' ') }}</h4>
     </ng-container>
 </ion-content>
