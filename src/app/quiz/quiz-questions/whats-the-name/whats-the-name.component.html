@@ -1,10 +1,11 @@
 <p>Wie ist der Name dieser Karte?</p>
 {{this.card.name}}
-<div *ngFor="let card of cards">
-    <div [@fadeOutRightBig]="card.animate"
-         (@fadeOutRightBig.done)="onAnimationEvent($event, card)"
-         [ngClass]="card.hide ? 'hide' : ''">
-        <ion-button (click)="validate(card)" type="button" size="block" color="primary">{{card.name}}</ion-button>
+<div *ngFor="let answer of answers">
+    <div class="answer"
+         [@fadeOutRightBig]="answer.animate"
+         (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
+         [ngClass]="answer.hide ? 'hide' : ''">
+        <ion-button (click)="validate(answer)" type="button" size="block" color="primary">{{answer.name}}</ion-button>
     </div>
 </div>
 

@@ -1,10 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Card} from '../../../+store/card.model';
+
 import {MainService} from '../../../+store/main.service';
 import {QuizQuestion} from '../quiz-question.model';
 import {map} from 'rxjs/operators';
 import {QuizQuestionService} from '../quiz-question.service';
 import {fadeOutRightBigAnimation} from 'angular-animations';
+import {Card} from '../../../+store/card.model';
 
 export interface Answer extends Card {
     animate: boolean;
@@ -24,7 +25,7 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
     @Input()
     card: Card;
 
-    cards: Answer[];
+    answers: Answer[];
 
     constructor(public mainService: MainService, public quizQuestionService: QuizQuestionService) {
     }
@@ -35,38 +36,38 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
 
     prepare(): void {
         this.mainService.getRandomCards(4).pipe(
-            map((cards: Answer[]) => [...cards, this.card]),
-            map((cards: Answer[]) => cards.map((card: Card) => {
+            map((answers: Answer[]) => [...answers, <Answer>this.card]),
+            map((answers: Answer[]) => answers.map((answer: Card) => {
                 return {
-                    ...card,
+                    ...answer,
                     animate: false,
                     hide: false
                 };
             })),
-            map((cards: Answer[]) => {
+            map((answers: Answer[]) => {
                 let j, x, i;
-                for (i = cards.length - 1; i > 0; i--) {
+                for (i = answers.length - 1; i > 0; i--) {
                     j = Math.floor(Math.random() * (i + 1));
-                    x = cards[i];
-                    cards[i] = cards[j];
-                    cards[j] = x;
+                    x = answers[i];
+                    answers[i] = answers[j];
+                    answers[j] = x;
                 }
-                return cards;
+                return answers;
             })
-        ).subscribe((cards: Answer[]) => this.cards = cards);
+        ).subscribe((answers: Answer[]) => this.answers = answers);
     }
 
     validate(value: any): void {
-        this.cards.forEach((card: Answer) => {
-            if (card.name !== this.card.name) {
-                card.animate = true;
+        this.answers.forEach((answer: Answer) => {
+            if (answer.name !== this.card.name) {
+                answer.animate = true;
             }
         });
     }
 
-    onAnimationEvent($event, card: Answer): void {
+    onAnimationEvent($event, answer: Answer): void {
         if ($event.toState === true && $event.phaseName === 'done') {
-            card.hide = true;
+            answer.hide = true;
         }
 
     }
