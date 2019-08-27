@@ -51,17 +51,17 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
         }, 2000);
     }
 
-    toggleColor(color: string): void {
-        const index = this.selectedColor.indexOf(color);
+    toggleType(color: string): void {
+        const index = this.selectedType.indexOf(color);
         if (index === -1) {
-            this.selectedColor.push(color);
+            this.selectedType.push(color);
         } else {
-            this.selectedColor.splice(index, 1);
+            this.selectedType.splice(index, 1);
         }
     }
 
-    isColorSelected(color: string): boolean {
-        return this.selectedColor.includes(color);
+    isTypeSelected(color: string): boolean {
+        return this.selectedType.includes(color);
     }
 
     emitAnswer(value: boolean): void {

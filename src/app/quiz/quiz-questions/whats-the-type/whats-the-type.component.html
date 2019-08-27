@@ -1,12 +1,22 @@
 <p>Wie selten ist diese Karte?</p>
-<div *ngFor="let answer of answers">
-  <div class="answer" *ngIf="answer.correct == true">
-    <ion-button (click)="validate(answer)" type="button" size="block" color="primary">{{answer.type}}</ion-button>
-  </div>
-  <div class="answer" *ngIf="answer.correct == false"
-       [@fadeOutRightBig]="showSolution"
-       (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
-       [ngClass]="answer.hide ? 'hide' : ''">
-    <ion-button (click)="validate(answer)" type="button" size="block" color="primary">{{answer.type}}</ion-button>
-  </div>
+<div class="types">
+    <ng-container *ngFor="let answer of answers">
+        <ion-button *ngIf="answer.correct == true"
+                    [ngClass]="isTypeSelected(answer.type) ? ' glow' : ''"
+                    (click)="toggleType(answer.type)"
+                    type="button" size="block" color="primary">{{answer.type}}
+        </ion-button>
+        <ion-button *ngIf="answer.correct == false"
+                    [ngClass]="isTypeSelected(answer.type) ? ' glow' : ''"
+                    (click)="toggleType(answer.type)"
+                    [@fadeOutRightBig]="showSolution"
+                    (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
+                    type="button" size="block" color="primary">{{answer.type}}
+        </ion-button>
+    </ng-container>
 </div>
+<ion-button size="block" (click)="validate($event)">OK</ion-button>
+
+
+
+

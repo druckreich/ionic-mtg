@@ -1,9 +1,9 @@
 <p>Welche Farbe?</p>
-
 <div class="colors">
     <ng-container *ngFor="let answer of answers">
         <ion-button *ngIf="answer.correct == true"
-                    [ngClass]="isColorSelected(answer.color) ? answer.color + 'glow' : answer.color"
+                    class="{{answer.color}}"
+                    [ngClass]="isColorSelected(answer.color) ? ' glow' : ''"
                     (click)="toggleColor(answer.color)"
                     [@fadeOutRightBig]="showSolution"
                     type="button" size="block" color="light">
