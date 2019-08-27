@@ -18,6 +18,7 @@ import {QuizQuestionService} from './quiz-question.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {WhatsTheColorComponent} from './whats-the-color/whats-the-color.component';
+import {WhatsTheRarityComponent} from './whats-the-rarity/whats-the-rarity.component';
 
 
 @Component({
@@ -40,7 +41,8 @@ export class QuizQuestionsComponent implements OnInit, OnChanges, OnDestroy {
     questionIndex = 0;
     questions: any[] = [
         WhatsTheNameComponent,
-        WhatsTheColorComponent
+        WhatsTheColorComponent,
+        WhatsTheRarityComponent
     ];
 
     destroy$: Subject<any> = new Subject();

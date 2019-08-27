@@ -13,10 +13,14 @@ import {QuizQuestionAnchorDirective} from './quiz-questions/quiz-question-anchor
 import {WhatsTheNameComponent} from './quiz-questions/whats-the-name/whats-the-name.component';
 import {QuizQuestionService} from './quiz-questions/quiz-question.service';
 import {WhatsTheColorComponent} from './quiz-questions/whats-the-color/whats-the-color.component';
+import {WhatsTheRarityComponent} from './quiz-questions/whats-the-rarity/whats-the-rarity.component';
+import {WhatsTheTypeComponent} from './quiz-questions/whats-the-type/whats-the-type.component';
 
 const questions: any[] = [
     WhatsTheNameComponent,
-    WhatsTheColorComponent
+    WhatsTheColorComponent,
+    WhatsTheRarityComponent,
+    WhatsTheTypeComponent
 ];
 
 const routes: Routes = [

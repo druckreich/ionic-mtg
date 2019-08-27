@@ -10,7 +10,8 @@
             <img src="../../assets/icon/{{answer.color}}.svg">
         </ion-button>
         <ion-button *ngIf="answer.correct == false"
-                    [ngClass]="isColorSelected(answer.color) ? answer.color + ' glow' : answer.color"
+                    class="{{answer.color}}"
+                    [ngClass]="isColorSelected(answer.color) ? ' glow' : ''"
                     (click)="toggleColor(answer.color)"
                     type="button" size="block" color="light">
             <img src="../../assets/icon/{{answer.color}}.svg">
