@@ -8,7 +8,7 @@ import {fadeOutRightBigAnimation} from 'angular-animations';
 import {Card} from '../../../+store/card.model';
 
 export interface Answer extends Card {
-    animate: boolean;
+    correct: boolean;
     hide: boolean;
 }
 
@@ -27,6 +27,8 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
 
     answers: Answer[];
 
+    showSolution = false;
+
     constructor(public mainService: MainService, public quizQuestionService: QuizQuestionService) {
     }
 
@@ -36,14 +38,25 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
 
     prepare(): void {
         this.mainService.getRandomCards(4).pipe(
-            map((answers: Answer[]) => [...answers, <Answer>this.card]),
-            map((answers: Answer[]) => answers.map((answer: Card) => {
-                return {
-                    ...answer,
-                    animate: false,
-                    hide: false
-                };
-            })),
+            map((answers: Answer[]) => answers.map((answer: Answer) => {
+                    return {
+                        ...answer,
+                        correct: false,
+                        hide: false
+                    };
+                }
+            )),
+            map((answers: Answer[]) => {
+                    return [
+                        ...answers,
+                        {
+                            ...this.card,
+                            correct: true,
+                            hide: false
+                        }
+                    ];
+                }
+            ),
             map((answers: Answer[]) => {
                 let j, x, i;
                 for (i = answers.length - 1; i > 0; i--) {
@@ -57,19 +70,17 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
         ).subscribe((answers: Answer[]) => this.answers = answers);
     }
 
-    validate(value: any): void {
-        this.answers.forEach((answer: Answer) => {
-            if (answer.name !== this.card.name) {
-                answer.animate = true;
-            }
-        });
+    validate(value: Answer): void {
+        this.showSolution = true;
+        setTimeout(() => {
+            this.emitAnswer(value.name === this.card.name);
+        }, 2000);
     }
 
     onAnimationEvent($event, answer: Answer): void {
         if ($event.toState === true && $event.phaseName === 'done') {
             answer.hide = true;
         }
-
     }
 
     emitAnswer(answer: boolean) {

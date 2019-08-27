@@ -22,7 +22,7 @@ export class QuizPage implements OnInit, OnDestroy {
     currentCardLoaded = false;
     cardIndex = 0;
     errors = 0;
-    maxErrors = 2;
+    maxErrors = 1;
     results: any[] = [];
 
     destroy$: Subject<any> = new Subject();
@@ -93,15 +93,6 @@ export class QuizPage implements OnInit, OnDestroy {
         }
         this.results.push(result);
         this.showNextCard();
-        /*
-                this.showBanner = true;
-                this.presentToast().then(() => {
-                    this.showNextCard();
-                    this.showBanner = false;
-                    this.cd.markForCheck();
-                });
-
-        */
     }
 
     async presentModal() {

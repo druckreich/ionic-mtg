@@ -1,35 +1,23 @@
 <p>Welche Farbe?</p>
 
-    <div class="colors">
-
-        <ion-button class="W" type="button" size="block" color="light" (click)="toggleColor('W')"
-                    [ngClass]="isColorSelected('W') ? 'glow' : ''">
-            <img src="../../assets/icon/W.svg">
+<div class="colors">
+    <ng-container *ngFor="let answer of answers">
+        <ion-button *ngIf="answer.correct == true"
+                    [ngClass]="isColorSelected(answer.color) ? answer.color + 'glow' : answer.color"
+                    (click)="toggleColor(answer.color)"
+                    [@fadeOutRightBig]="showSolution"
+                    type="button" size="block" color="light">
+            <img src="../../assets/icon/{{answer.color}}.svg">
         </ion-button>
-
-        <ion-button class="G" type="button" size="block" color="light" (click)="toggleColor('G')"
-                    [ngClass]="isColorSelected('G') ? 'glow' : ''">
-            <img src="../../assets/icon/G.svg">
+        <ion-button *ngIf="answer.correct == false"
+                    [ngClass]="isColorSelected(answer.color) ? answer.color + ' glow' : answer.color"
+                    (click)="toggleColor(answer.color)"
+                    type="button" size="block" color="light">
+            <img src="../../assets/icon/{{answer.color}}.svg">
         </ion-button>
-
-        <ion-button class="U" type="button" size="block" color="light" (click)="toggleColor('U')"
-                    [ngClass]="isColorSelected('U') ? 'glow' : ''">
-            <img src="../../assets/icon/U.svg">
-        </ion-button>
-
-        <ion-button class="B" type="button" size="block" color="light" (click)="toggleColor('B')"
-                    [ngClass]="isColorSelected('B') ? 'glow' : ''">
-            <img src="../../assets/icon/B.svg">
-        </ion-button>
-
-        <ion-button class="R" type="button" size="block" color="light" (click)="toggleColor('R')"
-                    [ngClass]="isColorSelected('R') ? 'glow' : ''">
-            <img src="../../assets/icon/R.svg">
-        </ion-button>
-
-        <ion-button (click)="validate($event)">OK</ion-button>
-
-    </div>
+    </ng-container>
+</div>
+<ion-button size="block" (click)="validate($event)">OK</ion-button>
 
 
 
