@@ -20,21 +20,34 @@ export class MainService {
 
     getRandomCards(n: number): Observable<Card[]> {
         return this.cards$.pipe(
-            map((cards: Card[]) => {
-                const result = new Array(n);
-                const taken = new Array(cards.length);
-                let len = cards.length;
-                if (n > len) {
-                    throw new RangeError('getRandom: more elements taken than available');
-                }
-                while (n--) {
-                    let x = Math.floor(Math.random() * len);
-                    x = x in taken ? taken[x] : x;
-                    result[n] = {...cards[x]};
-                    taken[x] = --len in taken ? taken[len] : len;
-                }
-                return result;
-            })
+            map((cards: Card[]) => this.randomCards(cards, n)),
+            map((cards: Card[]) => this.prepareCards(cards))
         );
+    }
+
+    private randomCards(cards: Card[], n: number): Card[] {
+        const result = new Array(n);
+        const taken = new Array(cards.length);
+        let len = cards.length;
+        if (n > len) {
+            throw new RangeError('getRandom: more elements taken than available');
+        }
+        while (n--) {
+            let x = Math.floor(Math.random() * len);
+            x = x in taken ? taken[x] : x;
+            result[n] = {...cards[x]};
+            taken[x] = --len in taken ? taken[len] : len;
+        }
+        return result;
+    }
+
+    private prepareCards(cards: Card[]): Card[] {
+        return cards.map((card: Card) => {
+            const types: string[] = card.type_line.split(' — ');
+            return {
+                ...card,
+                types: types[0].replace('Legendary', '').trim().split(' ')
+            };
+        });
     }
 }

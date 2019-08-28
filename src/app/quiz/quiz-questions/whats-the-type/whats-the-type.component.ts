@@ -47,21 +47,21 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
     validate(value: any): void {
         this.showSolution = true;
         setTimeout(() => {
-            this.emitAnswer(isEqual(this.selectedType, this.card.type_line.split()));
+            this.emitAnswer(isEqual(this.selectedType, this.card.types));
         }, 2000);
     }
 
-    toggleType(color: string): void {
-        const index = this.selectedType.indexOf(color);
+    toggleType(type: string): void {
+        const index = this.selectedType.indexOf(type);
         if (index === -1) {
-            this.selectedType.push(color);
+            this.selectedType.push(type);
         } else {
             this.selectedType.splice(index, 1);
         }
     }
 
-    isTypeSelected(color: string): boolean {
-        return this.selectedType.includes(color);
+    isTypeSelected(type: string): boolean {
+        return this.selectedType.includes(type);
     }
 
     emitAnswer(value: boolean): void {

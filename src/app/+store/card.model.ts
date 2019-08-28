@@ -16,4 +16,5 @@ export class Card {
     };
     colors: string[];
     type_line: string;
+    types: string[];
 }

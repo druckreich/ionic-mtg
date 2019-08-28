@@ -6,11 +6,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "ionic-build": "ionic cordova build android --prod --debug --buildConfig=build.json"
+    "build": "ionic cordova build android --prod --debug --buildConfig=build.json"
   },
   "private": true,
   "dependencies": {
