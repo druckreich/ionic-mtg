@@ -12,14 +12,14 @@ import {
 } from '@angular/core';
 import {Card} from '../../+store/card.model';
 import {QuizQuestionAnchorDirective} from './quiz-question-anchor.directive';
-import {WhatsTheNameComponent} from './whats-the-name/whats-the-name.component';
 import {QuizQuestion} from './quiz-question.model';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {QuizQuestionService} from './quiz-question.service';
-import {WhatsTheTypeComponent} from './whats-the-type/whats-the-type.component';
-import {WhatsTheRarityComponent} from './whats-the-rarity/whats-the-rarity.component';
 import {WhatsTheColorComponent} from './whats-the-color/whats-the-color.component';
+import {WhatsTheTypeComponent} from './whats-the-type/whats-the-type.component';
+import {WhatsTheNameComponent} from './whats-the-name/whats-the-name.component';
+import {WhatsTheRarityComponent} from './whats-the-rarity/whats-the-rarity.component';
 
 
 @Component({

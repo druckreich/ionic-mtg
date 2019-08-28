@@ -18,4 +18,8 @@ export class QuizQuestionService {
     findIndexAnswer(answers: Answer[], answer: Answer): number {
         return answers.findIndex((a: Answer) => a.value === answer.value);
     }
+
+    getValues(answer: Answer[]): string[] {
+        return answer.map((a: Answer) => a.value);
+    }
 }

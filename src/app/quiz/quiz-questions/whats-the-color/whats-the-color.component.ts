@@ -1,17 +1,10 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {QuizQuestion} from '../quiz-question.model';
+import {Answer, QuizQuestion} from '../quiz-question.model';
 import {Card} from '../../../+store/card.model';
 import {COLOR} from '../../../+store/main.state';
 import isEqual from 'lodash-ts/isEqual';
 import {fadeOutRightBigAnimation} from 'angular-animations';
 import {QuizQuestionService} from '../quiz-question.service';
-
-
-export interface Answer {
-    color: string;
-    correct: boolean;
-    hide: boolean;
-}
 
 @Component({
     selector: 'app-whats-the-color',
@@ -30,8 +23,7 @@ export class WhatsTheColorComponent implements OnInit, QuizQuestion {
 
     showSolution = false;
 
-    selectedColor: string[] = [];
-
+    selectedAnswers: Answer[] = [];
 
     constructor(private quizQuestionService: QuizQuestionService) {
     }
@@ -39,7 +31,7 @@ export class WhatsTheColorComponent implements OnInit, QuizQuestion {
     ngOnInit() {
         this.answers = COLOR.map((color: string) => {
             return {
-                color: color,
+                value: color,
                 correct: this.card.colors.includes(color),
                 hide: false
             };
@@ -53,25 +45,30 @@ export class WhatsTheColorComponent implements OnInit, QuizQuestion {
     validate(value: any): void {
         this.showSolution = true;
         setTimeout(() => {
-            this.emitAnswer(isEqual(this.selectedColor, this.card.colors));
+            this.emitAnswer(isEqual(this.quizQuestionService.getValues(this.selectedAnswers), this.card.colors));
         }, 2000);
     }
 
-    toggleColor(color: string): void {
-        const index = this.selectedColor.indexOf(color);
+    selectAnswer(answer: Answer): void {
+        const index = this.quizQuestionService.findIndexAnswer(this.selectedAnswers, answer);
         if (index === -1) {
-            this.selectedColor.push(color);
+            this.selectedAnswers.push(answer);
         } else {
-            this.selectedColor.splice(index, 1);
+            this.selectedAnswers.splice(index, 1);
         }
     }
 
-    isColorSelected(color: string): boolean {
-        return this.selectedColor.includes(color);
+    isAnswerSelected(answer: Answer): boolean {
+        return this.quizQuestionService.findIndexAnswer(this.selectedAnswers, answer) !== -1;
+    }
+
+    onAnimationEvent($event, answer: Answer): void {
+        if ($event.toState === true && $event.phaseName === 'done') {
+            answer.hide = true;
+        }
     }
 
     emitAnswer(value: boolean): void {
         this.quizQuestionService.emitAnswer(value);
     }
-
 }

@@ -18,8 +18,8 @@ export class HomePage implements OnInit {
 
     }
 
-    startQuiz(cardsNumber: number) {
-        this.store.dispatch(new Navigate(['/quiz'], {cardsNumber: cardsNumber, format: 'Standard'}));
+    startQuiz() {
+        this.store.dispatch(new Navigate(['/quiz']));
     }
 
 }

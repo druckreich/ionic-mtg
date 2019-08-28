@@ -28,7 +28,8 @@ export class MainService {
     getRandomCards(n: number): Observable<Card[]> {
         return this.cards$.pipe(
             map((cards: Card[]) => this.randomCards(cards, n)),
-            map((cards: Card[]) => this.prepareCards(cards))
+            map((cards: Card[]) => this.prepareCards(cards)),
+            tap((cards: Card[]) => console.log(cards))
         );
     }
 

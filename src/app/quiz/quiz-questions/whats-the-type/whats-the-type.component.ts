@@ -45,7 +45,7 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
     validate(value: any): void {
         this.showSolution = true;
         setTimeout(() => {
-            this.emitAnswer(isEqual(this.selectedAnswers, this.card.types));
+            this.emitAnswer(isEqual(this.quizQuestionService.getValues(this.selectedAnswers), this.card.types));
         }, 2000);
     }
 
@@ -71,6 +71,4 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
     emitAnswer(value: boolean): void {
         this.quizQuestionService.emitAnswer(value);
     }
-
-
 }

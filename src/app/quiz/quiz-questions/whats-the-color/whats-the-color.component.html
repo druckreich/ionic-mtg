@@ -1,20 +1,22 @@
 <p>Welche Farbe?</p>
 <div class="colors">
+    <pre>{{card | json}}</pre>
     <ng-container *ngFor="let answer of answers">
         <ion-button *ngIf="answer.correct == true"
-                    class="{{answer.color}}"
-                    [ngClass]="isColorSelected(answer.color) ? ' glow' : ''"
-                    (click)="toggleColor(answer.color)"
+                    class="{{answer.value}}"
+                    [ngClass]="{'glow': isAnswerSelected(answer)}"
+                    (click)="selectAnswer(answer)"
                     type="button" size="block" color="light">
-            <img src="../../assets/icon/{{answer.color}}.svg">
+            <img src="../../assets/icon/{{answer.value}}.svg">
         </ion-button>
         <ion-button *ngIf="answer.correct == false"
-                    class="{{answer.color}}"
-                    [ngClass]="isColorSelected(answer.color) ? ' glow' : ''"
-                    (click)="toggleColor(answer.color)"
+                    class="{{answer.value}}"
+                    [ngClass]="{'glow': isAnswerSelected(answer), 'hide': answer.hide}"
+                    (click)="selectAnswer(answer)"
                     [@fadeOutRightBig]="showSolution"
+                    (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
                     type="button" size="block" color="light">
-            <img src="../../assets/icon/{{answer.color}}.svg">
+            <img src="../../assets/icon/{{answer.value}}.svg">
         </ion-button>
     </ng-container>
 </div>
