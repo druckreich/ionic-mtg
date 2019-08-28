@@ -1,17 +1,20 @@
-<p>Wie selten ist diese Karte?</p>
+<p>Welcher Typ?</p>
 <div class="types">
     <ng-container *ngFor="let answer of answers">
         <ion-button *ngIf="answer.correct == true"
-                    [ngClass]="isTypeSelected(answer.type) ? ' glow' : ''"
-                    (click)="toggleType(answer.type)"
-                    type="button" size="block" color="primary">{{answer.type}}
+                    (click)="selectAnswer(answer)"
+                    [ngClass]="{'glow': isAnswerSelected(answer)}"
+                    type="button" size="block" color="light" fill="solid">
+            {{answer.value}}
         </ion-button>
         <ion-button *ngIf="answer.correct == false"
-                    [ngClass]="isTypeSelected(answer.type) ? ' glow' : ''"
-                    (click)="toggleType(answer.type)"
+                    (click)="selectAnswer(answer)"
+                    class="hide"
+                    [ngClass]="{'glow': isAnswerSelected(answer), 'hide': answer.hide}"
                     [@fadeOutRightBig]="showSolution"
                     (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
-                    type="button" size="block" color="primary">{{answer.type}}
+                    type="button" size="block" color="light" fill="solid">
+            {{answer.value}}
         </ion-button>
     </ng-container>
 </div>

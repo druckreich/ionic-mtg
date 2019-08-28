@@ -1,15 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {QuizQuestion} from '../quiz-question.model';
+import {Answer, QuizQuestion} from '../quiz-question.model';
 import {Card} from '../../../+store/card.model';
-import {RARITY, TYPE} from '../../../+store/main.state';
-import {QuizQuestionService} from '../quiz-question.service';
+import {RARITY} from '../../../+store/main.state';
 import {fadeOutRightBigAnimation} from 'angular-animations';
-
-export interface Answer {
-    rarity: string;
-    correct: boolean;
-    hide: boolean;
-}
+import {QuizQuestionService} from '../quiz-question.service';
 
 @Component({
     selector: 'app-whats-the-rarity',
@@ -28,14 +22,16 @@ export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
 
     showSolution = false;
 
+    selectedAnswers: Answer[];
+
     constructor(private quizQuestionService: QuizQuestionService) {
     }
 
     ngOnInit() {
         this.answers = RARITY.map((rarity: string) => {
             return {
-                rarity: rarity,
-                correct: this.card.rarity === rarity,
+                value: rarity,
+                correct: this.card.rarity.toLowerCase() === rarity.toLowerCase(),
                 hide: false
             };
         });
@@ -45,10 +41,10 @@ export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
 
     }
 
-    validate(value: Answer): void {
+    validate(): void {
         this.showSolution = true;
         setTimeout(() => {
-            this.emitAnswer(value.rarity === this.card.rarity);
+            this.emitAnswer(this.selectedAnswers[0].value === this.card.rarity);
         }, 2000);
     }
 
@@ -60,6 +56,14 @@ export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
 
     emitAnswer(answer: boolean) {
         this.quizQuestionService.emitAnswer(answer);
+    }
+
+    isAnswerSelected(answer: Answer): boolean {
+        return this.selectedAnswers && this.selectedAnswers[0].value === answer.value;
+    }
+
+    selectAnswer(answer: Answer): void {
+        this.selectedAnswers = [answer];
     }
 
 }

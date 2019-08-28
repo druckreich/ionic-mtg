@@ -14,11 +14,12 @@ import {Card} from '../../+store/card.model';
 import {QuizQuestionAnchorDirective} from './quiz-question-anchor.directive';
 import {WhatsTheNameComponent} from './whats-the-name/whats-the-name.component';
 import {QuizQuestion} from './quiz-question.model';
-import {QuizQuestionService} from './quiz-question.service';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
-import {WhatsTheColorComponent} from './whats-the-color/whats-the-color.component';
+import {QuizQuestionService} from './quiz-question.service';
+import {WhatsTheTypeComponent} from './whats-the-type/whats-the-type.component';
 import {WhatsTheRarityComponent} from './whats-the-rarity/whats-the-rarity.component';
+import {WhatsTheColorComponent} from './whats-the-color/whats-the-color.component';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class QuizQuestionsComponent implements OnInit, OnChanges, OnDestroy {
 
     questionIndex = 0;
     questions: any[] = [
+        WhatsTheTypeComponent,
         WhatsTheNameComponent,
         WhatsTheColorComponent,
         WhatsTheRarityComponent

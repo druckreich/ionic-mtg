@@ -5,7 +5,6 @@
                     class="{{answer.color}}"
                     [ngClass]="isColorSelected(answer.color) ? ' glow' : ''"
                     (click)="toggleColor(answer.color)"
-                    [@fadeOutRightBig]="showSolution"
                     type="button" size="block" color="light">
             <img src="../../assets/icon/{{answer.color}}.svg">
         </ion-button>
@@ -13,6 +12,7 @@
                     class="{{answer.color}}"
                     [ngClass]="isColorSelected(answer.color) ? ' glow' : ''"
                     (click)="toggleColor(answer.color)"
+                    [@fadeOutRightBig]="showSolution"
                     type="button" size="block" color="light">
             <img src="../../assets/icon/{{answer.color}}.svg">
         </ion-button>

@@ -2,10 +2,11 @@
     <ng-container>
         <ion-grid>
             <ion-row justify-content-center align-items-center>
-                <app-quiz-card [card]="currentCard" (loaded)="onQuizCardLoaded()"></app-quiz-card>
+                <app-quiz-card [card]="currentCard$ | async" (loaded)="onQuizCardLoaded()"></app-quiz-card>
             </ion-row>
         </ion-grid>
-        <app-quiz-questions *ngIf="currentCardLoaded" [card]="currentCard"
+        <app-quiz-questions *ngIf="currentCardLoaded" [card]="currentCard$ | async"
                             (answer)="handleQuizResult($event)"></app-quiz-questions>
     </ng-container>
 </ion-content>
+

@@ -1,20 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Card} from '../../../+store/card.model';
-import {QuizQuestionService} from '../quiz-question.service';
 import {TYPE} from '../../../+store/main.state';
-import {QuizQuestion} from '../quiz-question.model';
+import {Answer, QuizQuestion} from '../quiz-question.model';
 import isEqual from 'lodash-ts/isEqual';
-
-export interface Answer {
-    type: string;
-    correct: boolean;
-    hide: boolean;
-}
+import {QuizQuestionService} from '../quiz-question.service';
+import {fadeOutRightBigAnimation} from 'angular-animations';
 
 @Component({
     selector: 'app-whats-the-type',
     templateUrl: './whats-the-type.component.html',
     styleUrls: ['./whats-the-type.component.scss'],
+    animations: [
+        fadeOutRightBigAnimation({duration: 500})
+    ]
 })
 export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
 
@@ -25,7 +23,7 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
 
     showSolution = false;
 
-    selectedType: string[] = [];
+    selectedAnswers: Answer[] = [];
 
     constructor(private quizQuestionService: QuizQuestionService) {
     }
@@ -33,7 +31,7 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
     ngOnInit() {
         this.answers = TYPE.map((type: string) => {
             return {
-                type: type,
+                value: type,
                 correct: this.card.type_line.includes(type),
                 hide: false
             };
@@ -47,25 +45,32 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
     validate(value: any): void {
         this.showSolution = true;
         setTimeout(() => {
-            this.emitAnswer(isEqual(this.selectedType, this.card.types));
+            this.emitAnswer(isEqual(this.selectedAnswers, this.card.types));
         }, 2000);
     }
 
-    toggleType(type: string): void {
-        const index = this.selectedType.indexOf(type);
+    selectAnswer(answer: Answer): void {
+        const index = this.quizQuestionService.findIndexAnswer(this.selectedAnswers, answer);
         if (index === -1) {
-            this.selectedType.push(type);
+            this.selectedAnswers.push(answer);
         } else {
-            this.selectedType.splice(index, 1);
+            this.selectedAnswers.splice(index, 1);
         }
     }
 
-    isTypeSelected(type: string): boolean {
-        return this.selectedType.includes(type);
+    isAnswerSelected(answer: Answer): boolean {
+        return this.quizQuestionService.findIndexAnswer(this.selectedAnswers, answer) !== -1;
+    }
+
+    onAnimationEvent($event, answer: Answer): void {
+        if ($event.toState === true && $event.phaseName === 'done') {
+            answer.hide = true;
+        }
     }
 
     emitAnswer(value: boolean): void {
         this.quizQuestionService.emitAnswer(value);
     }
+
 
 }

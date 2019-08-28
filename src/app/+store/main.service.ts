@@ -10,12 +10,19 @@ import {map, shareReplay, tap} from 'rxjs/operators';
 export class MainService {
 
     cards$: Observable<Card[]> = this.http.get<Card[]>('../assets/data/cards.json').pipe(
-        tap(() => console.log('CARDS LOADED')),
         shareReplay(1)
     );
 
     constructor(private http: HttpClient) {
 
+    }
+
+    getRandomCard(): Observable<Card> {
+        return this.cards$.pipe(
+            map((cards: Card[]) => this.randomCards(cards, 1)),
+            map((cards: Card[]) => this.prepareCards(cards)),
+            map((cards: Card[]) => cards[0])
+        );
     }
 
     getRandomCards(n: number): Observable<Card[]> {

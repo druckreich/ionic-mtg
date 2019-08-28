@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
 import {MainService} from '../+store/main.service';
-import {map, takeUntil} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import {Card} from '../+store/card.model';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {ModalController} from '@ionic/angular';
 import {BannerComponent} from './banner/banner.component';
 
@@ -18,11 +18,11 @@ export class QuizPage implements OnInit, OnDestroy {
 
     quizStatus = null;
 
-    currentCard: Card;
+    currentCard$: Observable<Card>;
     currentCardLoaded = false;
     cardIndex = 0;
     errors = 0;
-    maxErrors = 1;
+    maxErrors = 3;
     results: any[] = [];
 
     destroy$: Subject<any> = new Subject();
@@ -33,12 +33,7 @@ export class QuizPage implements OnInit, OnDestroy {
     ngOnInit() {
         this.quizStatus = 'PREPARING';
         this.mainService.cards$.pipe(
-            takeUntil(this.destroy$),
-            map((cards: Card[]) => {
-                return cards.filter((card: Card) => {
-                    return card.legalities.standard === 'legal';
-                });
-            })
+            takeUntil(this.destroy$)
         ).subscribe((cards: Card[]) => {
             this.cards = cards;
             this.startQuiz();
@@ -48,7 +43,6 @@ export class QuizPage implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.destroy$.next();
     }
-
 
     startQuiz() {
         this.quizStatus = 'STARTED';
@@ -72,15 +66,9 @@ export class QuizPage implements OnInit, OnDestroy {
             this.stopQuiz();
         } else {
             this.currentCardLoaded = false;
+            this.currentCard$ = this.mainService.getRandomCard();
             this.cardIndex++;
-            this.currentCard = this.getRandomCard();
         }
-    }
-
-    getRandomCard(): Card {
-        const len = this.cards.length;
-        const x = Math.floor(Math.random() * len);
-        return this.cards[x];
     }
 
     onQuizCardLoaded(): void {

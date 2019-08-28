@@ -1,23 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
 
 import {MainService} from '../../../+store/main.service';
-import {QuizQuestion} from '../quiz-question.model';
+import {Answer, QuizQuestion} from '../quiz-question.model';
 import {map} from 'rxjs/operators';
-import {QuizQuestionService} from '../quiz-question.service';
 import {fadeOutRightBigAnimation} from 'angular-animations';
 import {Card} from '../../../+store/card.model';
-
-export interface Answer extends Card {
-    correct: boolean;
-    hide: boolean;
-}
+import {QuizQuestionService} from '../quiz-question.service';
 
 @Component({
     selector: 'app-whats-the-name',
     templateUrl: './whats-the-name.component.html',
     styleUrls: ['./whats-the-name.component.scss'],
     animations: [
-        fadeOutRightBigAnimation()
+        fadeOutRightBigAnimation({duration: 250})
     ]
 })
 export class WhatsTheNameComponent implements OnInit, QuizQuestion {
@@ -26,6 +21,8 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
     card: Card;
 
     answers: Answer[];
+
+    selectedAnswers: Answer[];
 
     showSolution = false;
 
@@ -38,9 +35,9 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
 
     prepare(): void {
         this.mainService.getRandomCards(4).pipe(
-            map((answers: Answer[]) => answers.map((answer: Answer) => {
+            map((cards: Card[]) => cards.map((card: Card) => {
                     return {
-                        ...answer,
+                        value: card.name,
                         correct: false,
                         hide: false
                     };
@@ -50,7 +47,7 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
                     return [
                         ...answers,
                         {
-                            ...this.card,
+                            value: this.card.name,
                             correct: true,
                             hide: false
                         }
@@ -70,20 +67,28 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
         ).subscribe((answers: Answer[]) => this.answers = answers);
     }
 
-    validate(value: Answer): void {
+    selectAnswer(answer: Answer): void {
+        this.selectedAnswers = [answer];
+    }
+
+    isAnswerSelected(answer: Answer): boolean {
+        return this.selectedAnswers && this.selectedAnswers[0].value === answer.value;
+    }
+
+    validate(): void {
         this.showSolution = true;
         setTimeout(() => {
-            this.emitAnswer(value.name === this.card.name);
+            this.emitAnswer(this.selectedAnswers[0].value === this.card.name);
         }, 2000);
+    }
+
+    emitAnswer(answer: boolean) {
+        this.quizQuestionService.emitAnswer(answer);
     }
 
     onAnimationEvent($event, answer: Answer): void {
         if ($event.toState === true && $event.phaseName === 'done') {
             answer.hide = true;
         }
-    }
-
-    emitAnswer(answer: boolean) {
-        this.quizQuestionService.emitAnswer(answer);
     }
 }

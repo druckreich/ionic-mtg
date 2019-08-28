@@ -2,9 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 import {QuizQuestion} from '../quiz-question.model';
 import {Card} from '../../../+store/card.model';
 import {COLOR} from '../../../+store/main.state';
-import {QuizQuestionService} from '../quiz-question.service';
 import isEqual from 'lodash-ts/isEqual';
 import {fadeOutRightBigAnimation} from 'angular-animations';
+import {QuizQuestionService} from '../quiz-question.service';
+
 
 export interface Answer {
     color: string;
