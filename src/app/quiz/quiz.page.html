@@ -1,17 +1,18 @@
-<ion-header padding-start padding-end>
+<ion-header no-border padding-start padding-end>
     <ion-toolbar>
         <span slot="start">Frage: <b>{{cardIndex}}</b></span>
         <span slot="end">{{errors}}/{{maxErrors}}</span>
     </ion-toolbar>
 </ion-header>
-<ion-content padding>
-    <ng-container>
+<ion-content padding-start padding-end>
+
+    <ng-container *ngIf="currentCard$ | async as currentCard">
         <ion-grid>
             <ion-row justify-content-center align-items-center>
-                <app-quiz-card [card]="currentCard$ | async" (loaded)="onQuizCardLoaded()"></app-quiz-card>
+                <app-quiz-card [card]="currentCard" (loaded)="onQuizCardLoaded()"></app-quiz-card>
             </ion-row>
         </ion-grid>
-        <app-quiz-questions *ngIf="currentCardLoaded" [card]="currentCard$ | async"
+        <app-quiz-questions *ngIf="currentCardLoaded" [card]="currentCard"
                             (answer)="handleQuizResult($event)"></app-quiz-questions>
     </ng-container>
 </ion-content>

@@ -5,35 +5,35 @@ var fs = require('fs');
 const url = "https://archive.scryfall.com/json/scryfall-oracle-cards.json";
 const path = "./src/assets/data/cards.json";
 
-if(!fs.existsSync(path)) {
+if (!fs.existsSync(path)) {
     fs.writeFileSync(path, '', function (err) {
         if (err) throw err;
     });
 }
 
-const download = function(url, dest, cb) {
+const download = function (url, dest, cb) {
     const file = fs.createWriteStream(path);
     const request = http.get(url, function (response) {
         response.pipe(file);
-        file.on('finish', function() {
+        file.on('finish', function () {
             console.log('FINISHED WRITING');
             file.close();
-            if(cb) cb();
+            if (cb) cb();
         });
-    }).on('error', function(err) {
+    }).on('error', function (err) {
         fs.unlink(dest, cb(err.message));
     });
 };
 
-const parse = function(src, dest, cb) {
+const parse = function (src, dest, cb) {
     const jsonData = JSON.parse(fs.readFileSync(path, 'utf-8'));
     const arr = [];
-    if(jsonData) {
-        for(let key in jsonData) {
+    if (jsonData) {
+        for (let key in jsonData) {
             const object = jsonData[key];
-            if(object.type_line.includes('Land') || object.type_line.includes('Token') || object.type_line.includes('Card')) {
+            if (object.type_line.includes('Land') || object.type_line.includes('Token') || object.type_line.includes('Card') || object.type_line.includes('Planeswalker')) {
 
-            } else if(object.legalities.standard === 'not_legal' && object.legalities.modern === 'not_legal') {
+            } else if (object.legalities.standard === 'not_legal' && object.legalities.modern === 'not_legal') {
 
             } else {
                 var card = {
@@ -58,9 +58,9 @@ const parse = function(src, dest, cb) {
     }
 };
 
-download(url, path, function(err) {
-  if(err) throw err;
-  parse(path);
+download(url, path, function (err) {
+    if (err) throw err;
+    parse(path);
 });
 
 

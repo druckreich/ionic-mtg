@@ -7,7 +7,7 @@ import {of} from 'rxjs';
 
 export const CMC = ['1', '2', '3', '4', '5', '6', '7', '8+'];
 export const COLOR = ['B', 'G', 'U', 'W', 'R'];
-export const TYPE = ['Artifact', 'Creature', 'Enchantment', 'Instant', 'Planeswalker', 'Sorcery'];
+export const TYPE = ['Artifact', 'Creature', 'Enchantment', 'Instant', 'Sorcery'];
 export const RARITY = ['Common', 'Uncommon', 'Rare', 'Mythic'];
 
 export interface MainStateModel {

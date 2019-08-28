@@ -1,20 +1,22 @@
 <p>Wie ist der Name dieser Karte?</p>
-<div *ngFor="let answer of answers">
-    <ion-button *ngIf="answer.correct == true"
-                [ngClass]="isAnswerSelected(answer) ? ' glow' : ''"
-                (click)="selectAnswer(answer)"
-                type="button" size="block" color="light" fill="solid">
-        {{answer.value}}
-    </ion-button>
+<div class="answers">
+    <ng-container *ngFor="let answer of answers">
+        <ion-button *ngIf="answer.correct == true"
+                    [ngClass]="isAnswerSelected(answer) ? ' glow' : ''"
+                    (click)="selectAnswer(answer)"
+                    type="button" size="block" color="light" fill="solid">
+            {{answer.value}}
+        </ion-button>
 
-    <ion-button *ngIf="answer.correct == false"
-                [@fadeOutRightBig]="showSolution"
-                (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
-                (click)="selectAnswer(answer)" type="button" size="block" color="primary"
-                [ngClass]="{'glow': isAnswerSelected(answer), 'hide': answer.hide}"
-                type="button" size="block" color="light" fill="solid">
-        {{answer.value}}
-    </ion-button>
+        <ion-button *ngIf="answer.correct == false"
+                    [@fadeOutRightBig]="showSolution"
+                    (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
+                    (click)="selectAnswer(answer)" type="button" size="block" color="primary"
+                    [ngClass]="{'glow': isAnswerSelected(answer), 'hide': answer.hide}"
+                    type="button" size="block" color="light" fill="solid">
+            {{answer.value}}
+        </ion-button>
+    </ng-container>
 </div>
 
 <ion-button size="block" (click)="validate()">OK</ion-button>

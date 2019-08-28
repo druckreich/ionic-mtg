@@ -18,19 +18,23 @@ export class MainService {
     }
 
     getRandomCard(): Observable<Card> {
-        return this.cards$.pipe(
-            map((cards: Card[]) => this.randomCards(cards, 1)),
-            map((cards: Card[]) => this.prepareCards(cards)),
+        return this.getRandomCards(1).pipe(
             map((cards: Card[]) => cards[0])
         );
     }
 
     getRandomCards(n: number): Observable<Card[]> {
         return this.cards$.pipe(
+            map((cards: Card[]) => this.sliceCards(cards)),
             map((cards: Card[]) => this.randomCards(cards, n)),
-            map((cards: Card[]) => this.prepareCards(cards)),
-            tap((cards: Card[]) => console.log(cards))
+            map((cards: Card[]) => this.prepareCards(cards))
         );
+    }
+
+    private sliceCards(cards: Card[]): Card[] {
+        return cards.filter((card: Card) => {
+            return card.legalities.standard === 'legal';
+        });
     }
 
     private randomCards(cards: Card[], n: number): Card[] {

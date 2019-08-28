@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
 import {MainService} from '../+store/main.service';
-import {takeUntil} from 'rxjs/operators';
+import {takeUntil, tap} from 'rxjs/operators';
 import {Card} from '../+store/card.model';
 import {Observable, Subject} from 'rxjs';
 import {ModalController} from '@ionic/angular';
@@ -66,7 +66,9 @@ export class QuizPage implements OnInit, OnDestroy {
             this.stopQuiz();
         } else {
             this.currentCardLoaded = false;
-            this.currentCard$ = this.mainService.getRandomCard();
+            this.currentCard$ = this.mainService.getRandomCard().pipe(
+                tap((card: Card) => console.log(card))
+            );
             this.cardIndex++;
         }
     }

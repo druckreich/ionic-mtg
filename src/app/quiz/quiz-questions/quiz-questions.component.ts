@@ -42,9 +42,9 @@ export class QuizQuestionsComponent implements OnInit, OnChanges, OnDestroy {
     questionIndex = 0;
     questions: any[] = [
         WhatsTheTypeComponent,
-        WhatsTheNameComponent,
-        WhatsTheColorComponent,
-        WhatsTheRarityComponent
+        // WhatsTheNameComponent,
+        // WhatsTheColorComponent,
+        // WhatsTheRarityComponent
     ];
 
     destroy$: Subject<any> = new Subject();

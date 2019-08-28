@@ -1,6 +1,5 @@
 <p>Welche Farbe?</p>
-<div class="colors">
-    <pre>{{card | json}}</pre>
+<div class="answers">
     <ng-container *ngFor="let answer of answers">
         <ion-button *ngIf="answer.correct == true"
                     class="{{answer.value}}"

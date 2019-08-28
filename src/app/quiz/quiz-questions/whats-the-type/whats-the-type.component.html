@@ -1,5 +1,5 @@
 <p>Welcher Typ?</p>
-<div class="types">
+<div class="answers">
     <ng-container *ngFor="let answer of answers">
         <ion-button *ngIf="answer.correct == true"
                     (click)="selectAnswer(answer)"
