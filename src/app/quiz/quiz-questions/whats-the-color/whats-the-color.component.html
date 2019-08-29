@@ -3,9 +3,9 @@
     <ng-container *ngFor="let answer of answers">
         <ion-button *ngIf="answer.correct == true"
                     class="{{answer.value}}"
-                    [ngClass]="{'glow': isAnswerSelected(answer)}"
                     (click)="selectAnswer(answer)"
-                    type="button" size="block" color="light">
+                    type="button" size="block"
+                    color="{{isAnswerSelected(answer) ? 'primary' : 'light'}}">
             <img src="../../assets/icon/{{answer.value}}.svg">
         </ion-button>
         <ion-button *ngIf="answer.correct == false"

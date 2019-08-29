@@ -4,6 +4,7 @@ import {Card} from '../../../+store/card.model';
 import {RARITY} from '../../../+store/main.state';
 import {fadeOutRightBigAnimation} from 'angular-animations';
 import {QuizQuestionService} from '../quiz-question.service';
+import {TIME_TO_NEXT_CARD} from '../../quiz.page';
 
 @Component({
     selector: 'app-whats-the-rarity',
@@ -44,8 +45,8 @@ export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
     validate(): void {
         this.showSolution = true;
         setTimeout(() => {
-            this.emitAnswer(this.selectedAnswers[0].value === this.card.rarity);
-        }, 2000);
+            this.emitAnswer(this.selectedAnswers && this.selectedAnswers[0].value.toLowerCase() === this.card.rarity.toLowerCase());
+        }, TIME_TO_NEXT_CARD);
     }
 
     onAnimationEvent($event, answer: Answer): void {
@@ -59,11 +60,10 @@ export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
     }
 
     isAnswerSelected(answer: Answer): boolean {
-        return this.selectedAnswers && this.selectedAnswers[0].value === answer.value;
+        return this.selectedAnswers && this.selectedAnswers[0].value.toLowerCase() === answer.value.toLowerCase();
     }
 
     selectAnswer(answer: Answer): void {
         this.selectedAnswers = [answer];
     }
-
 }

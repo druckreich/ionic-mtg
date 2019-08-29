@@ -31,7 +31,12 @@ const parse = function (src, dest, cb) {
     if (jsonData) {
         for (let key in jsonData) {
             const object = jsonData[key];
-            if (object.type_line.includes('Land') || object.type_line.includes('Token') || object.type_line.includes('Card') || object.type_line.includes('Planeswalker')) {
+            if (   object.type_line.includes('Land')
+                || object.type_line.includes('Token')
+                || object.type_line.includes('Card')
+                || object.type_line.includes('Planeswalker')
+                || object.type_line.includes('Saga')
+                || !object.type_line.includes('Artifact')) {
 
             } else if (object.legalities.standard === 'not_legal' && object.legalities.modern === 'not_legal') {
 

@@ -7,6 +7,8 @@ import {Observable, Subject} from 'rxjs';
 import {ModalController} from '@ionic/angular';
 import {BannerComponent} from './banner/banner.component';
 
+export const TIME_TO_NEXT_CARD = 1500;
+
 @Component({
     selector: 'app-quiz',
     templateUrl: './quiz.page.html',
@@ -52,7 +54,6 @@ export class QuizPage implements OnInit, OnDestroy {
 
     stopQuiz() {
         this.quizStatus = 'STOPPED';
-        this.presentModal();
     }
 
     handleRestart() {
@@ -77,23 +78,28 @@ export class QuizPage implements OnInit, OnDestroy {
         this.currentCardLoaded = true;
     }
 
-    handleQuizResult(result: boolean): void {
+    handleQuizQuestionResult(card: Card, result: boolean): void {
         if (result === false) {
             this.errors++;
         }
+        this.presentModal(card);
         this.results.push(result);
-        this.showNextCard();
     }
 
-    async presentModal() {
+    async presentModal(card: Card) {
         const modal = await this.modalController.create({
             component: BannerComponent,
             showBackdrop: true,
-            cssClass: 'banner'
+            cssClass: 'banner',
+            componentProps: {
+                'card': card
+            }
+
         });
+
         modal.onDidDismiss().then((data: any) => {
-            if (data.data.restart === true) {
-                this.handleRestart();
+            if (data.data['next'] === true) {
+                this.showNextCard();
             }
         });
         return await modal.present();

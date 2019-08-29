@@ -5,6 +5,7 @@ import {COLOR} from '../../../+store/main.state';
 import isEqual from 'lodash-ts/isEqual';
 import {fadeOutRightBigAnimation} from 'angular-animations';
 import {QuizQuestionService} from '../quiz-question.service';
+import {TIME_TO_NEXT_CARD} from '../../quiz.page';
 
 @Component({
     selector: 'app-whats-the-color',
@@ -46,7 +47,7 @@ export class WhatsTheColorComponent implements OnInit, QuizQuestion {
         this.showSolution = true;
         setTimeout(() => {
             this.emitAnswer(isEqual(this.quizQuestionService.getValues(this.selectedAnswers), this.card.colors));
-        }, 2000);
+        }, TIME_TO_NEXT_CARD);
     }
 
     selectAnswer(answer: Answer): void {

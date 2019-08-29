@@ -13,7 +13,7 @@
             </ion-row>
         </ion-grid>
         <app-quiz-questions *ngIf="currentCardLoaded" [card]="currentCard"
-                            (answer)="handleQuizResult($event)"></app-quiz-questions>
+                            (answer)="handleQuizQuestionResult(currentCard, $event)"></app-quiz-questions>
     </ng-container>
 </ion-content>
 

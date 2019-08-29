@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {fadeOutRightBigAnimation} from 'angular-animations';
 import {Card} from '../../../+store/card.model';
 import {QuizQuestionService} from '../quiz-question.service';
+import {TIME_TO_NEXT_CARD} from '../../quiz.page';
 
 @Component({
     selector: 'app-whats-the-name',
@@ -72,14 +73,14 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
     }
 
     isAnswerSelected(answer: Answer): boolean {
-        return this.selectedAnswers && this.selectedAnswers[0].value === answer.value;
+        return this.selectedAnswers && this.selectedAnswers[0].value.toLowerCase() === answer.value.toLowerCase();
     }
 
     validate(): void {
         this.showSolution = true;
         setTimeout(() => {
-            this.emitAnswer(this.selectedAnswers[0].value === this.card.name);
-        }, 2000);
+            this.emitAnswer(this.selectedAnswers && this.selectedAnswers[0].value.toLowerCase() === this.card.name.toLowerCase());
+        }, TIME_TO_NEXT_CARD);
     }
 
     emitAnswer(answer: boolean) {

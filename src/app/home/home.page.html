@@ -1,12 +1,3 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>MENU</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content align-items-center justify-content-center>
-  <div id="progress-indicator" *ngIf="startingQuiz">Loading ...</div>
-  <div id="menu" *ngIf="!startingQuiz">
-    <ion-button size="block" (click)="startQuiz()">Start</ion-button>
-  </div>
+<ion-content>
+  <ion-button color="medium" fill="outline" (click)="startQuiz()">START</ion-button>
 </ion-content>

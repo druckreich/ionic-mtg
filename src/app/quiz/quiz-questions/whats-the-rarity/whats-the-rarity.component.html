@@ -9,10 +9,10 @@
         </ion-button>
 
         <ion-button *ngIf="answer.correct == false"
+                    [ngClass]="{'glow': isAnswerSelected(answer), 'hide': answer.hide}"
+                    (click)="selectAnswer(answer)"
                     [@fadeOutRightBig]="showSolution"
                     (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
-                    (click)="selectAnswer(answer)" type="button" size="block" color="primary"
-                    [ngClass]="{'glow': isAnswerSelected(answer), 'hide': answer.hide}"
                     type="button" size="block" color="light" fill="solid">
             {{answer.value}}
         </ion-button>

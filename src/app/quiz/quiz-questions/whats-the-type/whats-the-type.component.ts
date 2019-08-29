@@ -5,6 +5,7 @@ import {Answer, QuizQuestion} from '../quiz-question.model';
 import isEqual from 'lodash-ts/isEqual';
 import {QuizQuestionService} from '../quiz-question.service';
 import {fadeOutRightBigAnimation} from 'angular-animations';
+import {TIME_TO_NEXT_CARD} from '../../quiz.page';
 
 @Component({
     selector: 'app-whats-the-type',
@@ -46,7 +47,7 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
         this.showSolution = true;
         setTimeout(() => {
             this.emitAnswer(isEqual(this.quizQuestionService.getValues(this.selectedAnswers), this.card.types));
-        }, 2000);
+        }, TIME_TO_NEXT_CARD);
     }
 
     selectAnswer(answer: Answer): void {

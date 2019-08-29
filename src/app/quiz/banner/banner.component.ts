@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from '@ionic/angular';
+import {Card} from '../../+store/card.model';
 
 @Component({
     selector: 'app-banner',
@@ -9,24 +10,17 @@ import {ModalController} from '@ionic/angular';
 export class BannerComponent implements OnInit {
 
     @Input()
-    valid: boolean;
-
-    text: string;
+    card: Card;
 
     constructor(public modalController: ModalController) {
     }
 
     ngOnInit() {
-        if (this.valid === true) {
-            this.text = 'WOW';
-        } else {
-            this.text = 'LOOSER';
-        }
     }
 
-    handleRestart(): void {
+    handleNext(): void {
         this.modalController.dismiss({
-            'restart': true
+            'next': true
         });
     }
 }
