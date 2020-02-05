@@ -2,17 +2,28 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Answer, QuizQuestion} from '../quiz-question.model';
 import {Card} from '../../../+store/card.model';
 import {RARITY} from '../../../+store/main.state';
-import {fadeOutRightBigAnimation} from 'angular-animations';
-import {TIME_TO_NEXT_CARD} from '../../quiz.page';
 import {QuizService} from "../../quiz.service";
 import isEqual from "lodash-ts/isEqual";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
     selector: 'app-whats-the-rarity',
     templateUrl: './whats-the-rarity.component.html',
     styleUrls: ['./whats-the-rarity.component.scss'],
     animations: [
-        fadeOutRightBigAnimation()
+        trigger('changeState', [
+            state('default', style({
+                opacity: '1'
+            })),
+            state('false', style({
+                opacity: '0.4'
+            })),
+            state('true', style({
+                transform: 'scale(1.05)',
+                "font-weight": "bold",
+            })),
+            transition('*=>*', animate('300ms')),
+        ])
     ]
 })
 export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
@@ -22,6 +33,8 @@ export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
 
     answers: Answer[];
 
+    defaultState: string = 'default';
+
     showSolution = false;
 
     constructor(private quizService: QuizService) {
@@ -29,10 +42,11 @@ export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
 
     ngOnInit() {
         this.answers = RARITY.map((rarity: string) => {
+            let correct: boolean = this.card.rarity.toLowerCase() === rarity.toLowerCase();
             return {
                 value: rarity,
-                correct: this.card.rarity.toLowerCase() === rarity.toLowerCase(),
-                hide: false,
+                correct: correct,
+                state: correct ? 'true' : 'false',
                 selected: false
             };
         });
@@ -42,17 +56,15 @@ export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
 
     }
 
+    selectAnswer(answer: Answer): void {
+        this.answers.forEach((answer: Answer) => answer.selected = false);
+        answer.selected = true;
+    }
+
+
     validate(): void {
-        const selectedAnswerValues: any = this.answers.filter((answer) => answer.selected).map((a: Answer) => a.value);
-        const isAnswerCorrect: boolean = isEqual(selectedAnswerValues, this.card.colors);
-        this.quizService.emitAnswer(isAnswerCorrect);
+        const incorrectAnswer: Answer = this.answers.find((answer) => answer.correct !== answer.selected);
+        this.quizService.emitAnswer(!incorrectAnswer);
         this.showSolution = true;
     }
-
-    onAnimationEvent($event, answer: Answer): void {
-        if ($event.toState === true && $event.phaseName === 'done') {
-            answer.hide = true;
-        }
-    }
-
 }

@@ -61,17 +61,18 @@ export class QuizPage implements OnInit, OnDestroy {
             this.stopQuiz();
         } else {
             this.quizService.cardLoaded(false);
-            this.currentCard$ = this.mainService.getRandomCard().pipe(
-                tap((card: Card) => console.log(card))
-            );
+            this.currentCard$ = this.mainService.getRandomCard();
             this.cardIndex++;
         }
     }
 
     async handleQuizQuestionResult(card: Card, result: boolean) {
-        console.log(card, result);
-
+        setTimeout(() => this.showNextCard(), 1500);
+        console.log(result);
         return;
+
+
+
         if (result === false) {
             this.errors++;
         }

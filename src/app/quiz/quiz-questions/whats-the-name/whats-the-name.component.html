@@ -5,8 +5,12 @@
     <ng-container *ngFor="let answer of answers">
         <ion-button [ngClass]="{'glow': answer.selected}"
                     (click)="selectAnswer(answer)"
-                    type="button" expand="block" size="small" color="light">
+                    type="button" expand="block" size="small"
+                    [color]="showSolution && answer.correct ? 'success' : 'light'"
+                    [@changeState]="showSolution ? answer.state : defaultState">
+            <ion-icon slot="start" name="arrow-dropright" *ngIf="answer.selected"></ion-icon>
             {{answer.value}}
+            <ion-icon slot="end" name="arrow-dropleft" *ngIf="answer.selected"></ion-icon>
         </ion-button>
     </ng-container>
 </div>

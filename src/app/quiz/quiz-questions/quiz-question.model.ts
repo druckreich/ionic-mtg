@@ -1,10 +1,10 @@
 import {Card} from '../../+store/card.model';
 
 export interface Answer {
-    hide: boolean;
     correct: boolean;
     value: string;
     selected: boolean;
+    state?: string;
 }
 
 export interface QuizQuestion {
@@ -15,6 +15,4 @@ export interface QuizQuestion {
     prepare(): void;
 
     validate(value: any): void;
-
-    onAnimationEvent($event, answer: Answer): void;
 }

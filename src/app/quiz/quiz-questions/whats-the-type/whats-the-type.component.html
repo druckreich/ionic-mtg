@@ -1,20 +1,14 @@
 <p>Welcher Typ?</p>
 <div class="answers">
     <ng-container *ngFor="let answer of answers">
-        <ion-button *ngIf="answer.correct == true"
+        <ion-button [ngClass]="{'glow': answer.selected}"
                     (click)="answer.selected = !answer.selected"
-                    [ngClass]="{'glow': answer.selected}"
-                    type="button" size="block" color="light" fill="solid">
+                    type="button" expand="block" size="small"
+                    [color]="showSolution && answer.correct ? 'success' : 'light'"
+                    [@changeState]="showSolution ? answer.state : defaultState">
+            <ion-icon slot="start" name="arrow-dropright" *ngIf="answer.selected"></ion-icon>
             {{answer.value}}
-        </ion-button>
-        <ion-button *ngIf="answer.correct == false"
-                    (click)="answer.selected = !answer.selected"
-                    class="hide"
-                    [ngClass]="{'glow': answer.selected, 'hide': answer.hide}"
-                    [@fadeOutRightBig]="showSolution"
-                    (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
-                    type="button" size="block" color="light" fill="solid">
-            {{answer.value}}
+            <ion-icon slot="end" name="arrow-dropleft" *ngIf="answer.selected"></ion-icon>
         </ion-button>
     </ng-container>
 </div>

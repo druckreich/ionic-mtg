@@ -3,16 +3,27 @@ import {Card} from '../../../+store/card.model';
 import {TYPE} from '../../../+store/main.state';
 import {Answer, QuizQuestion} from '../quiz-question.model';
 import isEqual from 'lodash-ts/isEqual';
-import {fadeOutRightBigAnimation} from 'angular-animations';
-import {TIME_TO_NEXT_CARD} from '../../quiz.page';
 import {QuizService} from "../../quiz.service";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
     selector: 'app-whats-the-type',
     templateUrl: './whats-the-type.component.html',
     styleUrls: ['./whats-the-type.component.scss'],
     animations: [
-        fadeOutRightBigAnimation({duration: 500})
+        trigger('changeState', [
+            state('default', style({
+                opacity: '1'
+            })),
+            state('false', style({
+                opacity: '0.4'
+            })),
+            state('true', style({
+                transform: 'scale(1.05)',
+                "font-weight": "bold",
+            })),
+            transition('*=>*', animate('300ms')),
+        ])
     ]
 })
 export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
@@ -22,6 +33,8 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
 
     answers: Answer[];
 
+    defaultState: string = 'default';
+
     showSolution = false;
 
     constructor(private quizService: QuizService) {
@@ -29,11 +42,12 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
 
     ngOnInit() {
         this.answers = TYPE.map((type: string) => {
+            const correct: boolean = this.card.type_line.includes(type);
             return {
                 value: type,
-                correct: this.card.type_line.includes(type),
-                hide: false,
-                selected: false
+                correct: correct,
+                selected: false,
+                state: correct ? 'true' : 'false'
             };
         });
     }
@@ -43,15 +57,8 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
     }
 
     validate(): void {
-        const selectedAnswerValues: any = this.answers.filter((answer) => answer.selected).map((a: Answer) => a.value);
-        const isAnswerCorrect: boolean = isEqual(selectedAnswerValues, this.card.colors);
-        this.quizService.emitAnswer(isAnswerCorrect);
+        const incorrectAnswer: Answer = this.answers.find((answer) => answer.correct !== answer.selected);
+        this.quizService.emitAnswer(!incorrectAnswer);
         this.showSolution = true;
-    }
-
-    onAnimationEvent($event, answer: Answer): void {
-        if ($event.toState === true && $event.phaseName === 'done') {
-            answer.hide = true;
-        }
     }
 }

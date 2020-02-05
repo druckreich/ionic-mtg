@@ -3,18 +3,28 @@ import {Component, Input, OnInit} from '@angular/core';
 import {MainService} from '../../../+store/main.service';
 import {Answer, QuizQuestion} from '../quiz-question.model';
 import {map} from 'rxjs/operators';
-import {fadeOutRightBigAnimation} from 'angular-animations';
 import {Card} from '../../../+store/card.model';
-import {TIME_TO_NEXT_CARD} from '../../quiz.page';
 import {QuizService} from "../../quiz.service";
-import isEqual from "lodash-ts/isEqual";
+import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
     selector: 'app-whats-the-name',
     templateUrl: './whats-the-name.component.html',
     styleUrls: ['./whats-the-name.component.scss'],
     animations: [
-        fadeOutRightBigAnimation({duration: 250})
+        trigger('changeState', [
+            state('default', style({
+                opacity: '1'
+            })),
+            state('false', style({
+                opacity: '0.4'
+            })),
+            state('true', style({
+                transform: 'scale(1.05)',
+                "font-weight": "bold",
+            })),
+            transition('*=>*', animate('300ms')),
+        ])
     ]
 })
 export class WhatsTheNameComponent implements OnInit, QuizQuestion {
@@ -23,6 +33,8 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
     card: Card;
 
     answers: Answer[];
+
+    defaultState: string = 'default';
 
     showSolution = false;
 
@@ -39,8 +51,8 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
                     return {
                         value: card.name,
                         correct: false,
-                        hide: false,
-                        selected: false
+                        selected: false,
+                        state: 'false'
                     };
                 }
             )),
@@ -50,8 +62,8 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
                         {
                             value: this.card.name,
                             correct: true,
-                            hide: false,
-                            selected: false
+                            selected: false,
+                            state: 'true'
                         }
                     ];
                 }
@@ -75,15 +87,8 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
     }
 
     validate(): void {
-        const selectedAnswer: Answer = this.answers.find((answer: Answer) => answer.selected);
-        const isAnswerCorrect: boolean = selectedAnswer && selectedAnswer.value.toLowerCase() === this.card.name.toLowerCase();
-        this.quizService.emitAnswer(isAnswerCorrect);
+        const incorrectAnswer: Answer = this.answers.find((answer) => answer.correct !== answer.selected);
+        this.quizService.emitAnswer(!incorrectAnswer);
         this.showSolution = true;
-    }
-
-    onAnimationEvent($event, answer: Answer): void {
-        if ($event.toState === true && $event.phaseName === 'done') {
-            answer.hide = true;
-        }
     }
 }

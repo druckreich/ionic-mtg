@@ -55,7 +55,6 @@ export class QuizQuestionsComponent implements OnChanges {
     // randomly renders one of the question components and injects the current card into the component
     prepareQuestion(): void {
         this.questionIndex = Math.floor(Math.random() * QUIZ_QUESTIONS.length);
-        this.questionIndex = 1;
         const currentQuestion = QUIZ_QUESTIONS[this.questionIndex];
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(currentQuestion);
         const viewContainerRef = this.adHost.viewContainerRef;

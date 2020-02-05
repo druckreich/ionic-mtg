@@ -1,20 +1,14 @@
 <p>Wie selten ist diese Karte?</p>
 <div class="answers">
     <ng-container *ngFor="let answer of answers">
-        <ion-button *ngIf="answer.correct == true"
-                    [ngClass]="answer.selected"
-                    (click)="answer.selected = !answer.selected"
-                    type="button" size="block" color="light" fill="solid">
+        <ion-button [ngClass]="{'glow': answer.selected}"
+                    (click)="selectAnswer(answer)"
+                    type="button" expand="block" size="small"
+                    [color]="showSolution && answer.correct ? 'success' : 'light'"
+                    [@changeState]="showSolution ? answer.state : defaultState">
+            <ion-icon slot="start" name="arrow-dropright" *ngIf="answer.selected"></ion-icon>
             {{answer.value}}
-        </ion-button>
-
-        <ion-button *ngIf="answer.correct == false"
-                    [ngClass]="{'glow': answer.selected, 'hide': answer.hide}"
-                    (click)="answer.selected = !answer.selected"
-                    [@fadeOutRightBig]="showSolution"
-                    (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
-                    type="button" size="block" color="light" fill="solid">
-            {{answer.value}}
+            <ion-icon slot="end" name="arrow-dropleft" *ngIf="answer.selected"></ion-icon>
         </ion-button>
     </ng-container>
 </div>

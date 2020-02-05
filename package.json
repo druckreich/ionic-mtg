@@ -30,7 +30,6 @@
     "@ngxs/router-plugin": "^3.2.0",
     "@ngxs/storage-plugin": "^3.2.0",
     "@ngxs/store": "^3.2.0",
-    "angular-animations": "0.0.10",
     "core-js": "^2.5.4",
     "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
