@@ -1,0 +1,81 @@
+#quiz-card {
+  position: relative;
+  width: 223px;
+  height: 311px;
+}
+
+#quiz-card.masked img {
+  width: 223px;
+  height: 311px;
+  filter: grayscale(100%);
+}
+
+#quiz-card.revealed img {
+  animation-name: remove-greyfilter;
+  animation-duration: 2s;
+}
+
+#quiz-card.revealed mask {
+  animation-name: remove-mask;
+  animation-duration: 2s;
+}
+
+#quiz-card .mask {
+  position: absolute;
+  opacity: 0.9;
+  background-color: white;
+  z-index: 1000;
+}
+
+#quiz-card .mask-top {
+  left: 0;
+  top: -1px;
+  right: 0;
+  height: 32px;
+}
+
+#quiz-card .mask-right {
+  right: -1px;
+  bottom: 0;
+  top: 0;
+  width: 14px;
+}
+
+#quiz-card .mask-left {
+  left: -1px;
+  bottom: 0;
+  top: 0;
+  width: 14px;
+}
+
+#quiz-card .mask-text.normal {
+  left: 19px;
+  bottom: 31px;
+  right: 19px;
+  height: 85px;
+}
+
+#quiz-card .mask-text.saga {
+  left: 19px;
+  bottom: 31px;
+  right: 19px;
+  height: 85px;
+}
+
+@keyframes remove-greyfilter {
+  from {
+    filter: grayscale(100%);
+  }
+  to {
+    filter: grayscale(0%);
+  }
+}
+
+@keyframes remove-mask {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

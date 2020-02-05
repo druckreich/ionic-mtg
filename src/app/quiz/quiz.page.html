@@ -1,0 +1,15 @@
+<ion-content padding-start padding-end>
+    <ng-container *ngIf="currentCard$ | async as currentCard">
+        <ion-grid>
+            {{currentCard.name}}
+            <ion-row class="justify-content-center align-items-center">
+                <app-quiz-card [card]="currentCard"></app-quiz-card>
+            </ion-row>
+        </ion-grid>
+        <ng-container *ngIf="quizService.isCardLoaded$ | async">
+            <app-quiz-questions [card]="currentCard"
+                                (answer)="handleQuizQuestionResult(currentCard, $event)"></app-quiz-questions>
+        </ng-container>
+    </ng-container>
+</ion-content>
+

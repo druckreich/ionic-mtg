@@ -1,0 +1,25 @@
+<p>Welche Farbe?</p>
+<div class="answers">
+    <ng-container *ngFor="let answer of answers">
+        <ion-button *ngIf="answer.correct == true"
+                    class="{{answer.value}}"
+                    (click)="answer.selected = !answer.selected"
+                    type="button" size="block"
+                    color="{{answer.selected ? 'primary' : 'light'}}">
+            <img src="../../assets/icon/{{answer.value}}.svg">
+        </ion-button>
+        <ion-button *ngIf="answer.correct == false"
+                    class="{{answer.value}}"
+                    [ngClass]="{'glow': answer.selected, 'hide': answer.hide}"
+                    (click)="answer.selected = !answer.selected"
+                    [@fadeOutRightBig]="showSolution"
+                    (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
+                    type="button" size="block" color="light">
+            <img src="../../assets/icon/{{answer.value}}.svg">
+        </ion-button>
+    </ng-container>
+</div>
+<ion-button size="block" (click)="validate()">OK</ion-button>
+
+
+

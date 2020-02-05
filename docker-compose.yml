@@ -1,0 +1,13 @@
+version: '2.2'
+services:
+  ionic:
+    image: 'beevelop/ionic:latest'
+    ports:
+      - 8100:8100
+      - 35729:35729
+      - 53703:53703
+      - 53704:53704
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: ionic serve --address=0.0.0.0

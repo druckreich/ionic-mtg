@@ -1,0 +1,32 @@
+// http://ionicframework.com/docs/theming/
+@import '~@ionic/angular/css/core.css';
+@import '~@ionic/angular/css/normalize.css';
+@import '~@ionic/angular/css/structure.css';
+@import '~@ionic/angular/css/typography.css';
+@import '~@ionic/angular/css/display.css';
+@import '~@ionic/angular/css/padding.css';
+@import '~@ionic/angular/css/float-elements.css';
+@import '~@ionic/angular/css/text-alignment.css';
+@import '~@ionic/angular/css/text-transformation.css';
+@import '~@ionic/angular/css/flex-utils.css';
+
+ion-modal.modal.banner {
+  --background: rgba(80, 80, 80, 0.7);
+}
+
+ion-backdrop {
+  opacity: 0.8;
+  background-color: #819fb1;
+}
+
+.answers {
+  margin-bottom: 24px;
+}
+
+ion-button.glow {
+    box-shadow: 0px 0px 10px grey;
+}
+
+ion-button.hide {
+  visibility: hidden;
+}
