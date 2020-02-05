@@ -1,19 +1,11 @@
-<p>Wie ist der Name dieser Karte?</p>
+<ion-label color="medium">
+    Wie ist der Name dieser Karte?
+</ion-label>
 <div class="answers">
     <ng-container *ngFor="let answer of answers">
-        <ion-button *ngIf="answer.correct == true"
-                    [ngClass]="{'glow': answer.selected}"
+        <ion-button [ngClass]="{'glow': answer.selected}"
                     (click)="selectAnswer(answer)"
-                    type="button" size="block" color="light" fill="solid">
-            {{answer.value}}
-        </ion-button>
-
-        <ion-button *ngIf="answer.correct == false"
-                    [@fadeOutRightBig]="showSolution"
-                    (@fadeOutRightBig.done)="onAnimationEvent($event, answer)"
-                    (click)="selectAnswer(answer)" type="button" size="block" color="primary"
-                    [ngClass]="{'glow': answer.selected, 'hide': answer.hide}"
-                    type="button" size="block" color="light" fill="solid">
+                    type="button" expand="block" size="small" color="light">
             {{answer.value}}
         </ion-button>
     </ng-container>
