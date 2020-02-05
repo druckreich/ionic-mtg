@@ -24,8 +24,6 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
 
     answers: Answer[];
 
-    selectedAnswer: Answer;
-
     showSolution = false;
 
     constructor(public mainService: MainService, public quizService: QuizService) {
@@ -77,7 +75,8 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
     }
 
     validate(): void {
-        const isAnswerCorrect: boolean = this.selectedAnswer && this.selectedAnswer.value.toLowerCase() === this.card.name.toLowerCase();
+        const selectedAnswer: Answer = this.answers.find((answer: Answer) => answer.selected);
+        const isAnswerCorrect: boolean = selectedAnswer && selectedAnswer.value.toLowerCase() === this.card.name.toLowerCase();
         this.quizService.emitAnswer(isAnswerCorrect);
         this.showSolution = true;
     }

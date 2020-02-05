@@ -69,6 +69,9 @@ export class QuizPage implements OnInit, OnDestroy {
     }
 
     async handleQuizQuestionResult(card: Card, result: boolean) {
+        console.log(card, result);
+
+        return;
         if (result === false) {
             this.errors++;
         }

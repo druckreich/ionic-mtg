@@ -1,6 +1,5 @@
-import {Injectable} from "@angular/core";
+import {EventEmitter, Injectable} from "@angular/core";
 import {Observable, Subject} from "rxjs";
-import {Answer} from "./quiz-questions/quiz-question.model";
 
 @Injectable()
 export class QuizService {

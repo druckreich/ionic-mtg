@@ -4,8 +4,6 @@ import {
     EventEmitter,
     Input,
     OnChanges,
-    OnDestroy,
-    OnInit,
     Output,
     SimpleChanges,
     ViewChild
@@ -13,7 +11,6 @@ import {
 import {Card} from '../../+store/card.model';
 import {QuizQuestionAnchorDirective} from './quiz-question-anchor.directive';
 import {QuizQuestion} from './quiz-question.model';
-import {Subject} from 'rxjs';
 import {WhatsTheColorComponent} from './whats-the-color/whats-the-color.component';
 import {WhatsTheTypeComponent} from './whats-the-type/whats-the-type.component';
 import {WhatsTheNameComponent} from './whats-the-name/whats-the-name.component';
@@ -39,7 +36,7 @@ export class QuizQuestionsComponent implements OnChanges {
     card: Card;
 
     @Output()
-    answer: EventEmitter<boolean> = this.quizService.getAnswer();
+    answer: EventEmitter<boolean> = <EventEmitter<boolean>>this.quizService.getAnswer();
 
     @ViewChild(QuizQuestionAnchorDirective, {static: true})
     adHost: QuizQuestionAnchorDirective;
@@ -47,9 +44,6 @@ export class QuizQuestionsComponent implements OnChanges {
     questionIndex = 0;
 
     constructor(private componentFactoryResolver: ComponentFactoryResolver, public quizService: QuizService) {
-    }
-
-    ngOnInit() {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -61,7 +55,7 @@ export class QuizQuestionsComponent implements OnChanges {
     // randomly renders one of the question components and injects the current card into the component
     prepareQuestion(): void {
         this.questionIndex = Math.floor(Math.random() * QUIZ_QUESTIONS.length);
-        //this.questionIndex = 1;
+        this.questionIndex = 1;
         const currentQuestion = QUIZ_QUESTIONS[this.questionIndex];
         const componentFactory = this.componentFactoryResolver.resolveComponentFactory(currentQuestion);
         const viewContainerRef = this.adHost.viewContainerRef;
