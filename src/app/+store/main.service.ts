@@ -32,9 +32,12 @@ export class MainService {
     }
 
     private sliceCards(cards: Card[]): Card[] {
-        return cards.filter((card: Card) => {
+        const c = cards.filter((card: Card) => {
             return card.legalities.standard === 'legal';
         });
+        console.log(c);
+        return c;
+
     }
 
     private randomCards(cards: Card[], n: number): Card[] {

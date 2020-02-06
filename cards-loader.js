@@ -35,8 +35,7 @@ const parse = function (src, dest, cb) {
                 || object.type_line.includes('Token')
                 || object.type_line.includes('Card')
                 || object.type_line.includes('Planeswalker')
-                || object.type_line.includes('Saga')
-                || !object.type_line.includes('Artifact')) {
+                || object.type_line.includes('Saga')) {
 
             } else if (object.legalities.standard === 'not_legal' && object.legalities.modern === 'not_legal') {
 

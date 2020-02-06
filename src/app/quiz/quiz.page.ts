@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
 import {MainService} from '../+store/main.service';
-import {takeUntil, tap} from 'rxjs/operators';
+import {takeUntil} from 'rxjs/operators';
 import {Card} from '../+store/card.model';
 import {Observable, Subject} from 'rxjs';
 import {ModalController} from '@ionic/angular';
@@ -70,8 +70,6 @@ export class QuizPage implements OnInit, OnDestroy {
         setTimeout(() => this.showNextCard(), 1500);
         console.log(result);
         return;
-
-
 
         if (result === false) {
             this.errors++;

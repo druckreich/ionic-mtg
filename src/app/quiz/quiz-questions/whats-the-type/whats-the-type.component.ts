@@ -2,9 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Card} from '../../../+store/card.model';
 import {TYPE} from '../../../+store/main.state';
 import {Answer, QuizQuestion} from '../quiz-question.model';
-import isEqual from 'lodash-ts/isEqual';
 import {QuizService} from "../../quiz.service";
-import {animate, state, style, transition, trigger} from "@angular/animations";
+import {animate, state, style, transition, trigger, useAnimation} from "@angular/animations";
 
 @Component({
     selector: 'app-whats-the-type',
@@ -19,7 +18,6 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
                 opacity: '0.4'
             })),
             state('true', style({
-                transform: 'scale(1.05)',
                 "font-weight": "bold",
             })),
             transition('*=>*', animate('300ms')),

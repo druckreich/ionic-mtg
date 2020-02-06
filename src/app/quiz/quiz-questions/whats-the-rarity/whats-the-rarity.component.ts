@@ -3,7 +3,6 @@ import {Answer, QuizQuestion} from '../quiz-question.model';
 import {Card} from '../../../+store/card.model';
 import {RARITY} from '../../../+store/main.state';
 import {QuizService} from "../../quiz.service";
-import isEqual from "lodash-ts/isEqual";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 
 @Component({
@@ -19,7 +18,6 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
                 opacity: '0.4'
             })),
             state('true', style({
-                transform: 'scale(1.05)',
                 "font-weight": "bold",
             })),
             transition('*=>*', animate('300ms')),

@@ -20,7 +20,6 @@ import {animate, state, style, transition, trigger} from "@angular/animations";
                 opacity: '0.4'
             })),
             state('true', style({
-                transform: 'scale(1.05)',
                 "font-weight": "bold",
             })),
             transition('*=>*', animate('300ms')),
