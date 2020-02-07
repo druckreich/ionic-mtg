@@ -14,6 +14,7 @@ import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
+import {NgxsReduxDevtoolsPlugin, NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
 
         NgxsModule.forRoot([MainState]),
         NgxsStoragePluginModule.forRoot({key: ['mtg']}),
-        NgxsRouterPluginModule.forRoot()
+        NgxsRouterPluginModule.forRoot(),
+        NgxsReduxDevtoolsPluginModule.forRoot()
     ],
     providers: [
         StatusBar,

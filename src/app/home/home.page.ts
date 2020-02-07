@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
 import {Navigate} from '@ngxs/router-plugin';
+import {PrepareGame} from "../+store/main.actions";
 
 @Component({
     selector: 'app-home',
@@ -9,8 +10,6 @@ import {Navigate} from '@ngxs/router-plugin';
 })
 export class HomePage implements OnInit {
 
-    startingQuiz = false;
-
     constructor(public store: Store) {
     }
 
@@ -18,8 +17,10 @@ export class HomePage implements OnInit {
 
     }
 
-    startQuiz() {
-        this.store.dispatch(new Navigate(['/quiz']));
+    startQuiz(type: string) {
+        this.store.dispatch(new PrepareGame(type)).subscribe(() => {
+            this.store.dispatch(new Navigate(['/quiz']));
+        });
     }
 
 }

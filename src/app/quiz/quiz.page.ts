@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Store} from '@ngxs/store';
-import {MainService} from '../+store/main.service';
-import {takeUntil} from 'rxjs/operators';
+import {Actions, Store} from '@ngxs/store';
 import {Card} from '../+store/card.model';
-import {Observable, Subject} from 'rxjs';
+import {Subject} from 'rxjs';
 import {ModalController} from '@ionic/angular';
 import {BannerComponent} from './banner/banner.component';
 import {QuizService} from "./quiz.service";
+import {RandomCard} from "../+store/main.actions";
+import {MainStateModel} from "../+store/main.state";
 
 export const TIME_TO_NEXT_CARD = 1500;
 
@@ -17,11 +17,9 @@ export const TIME_TO_NEXT_CARD = 1500;
 })
 export class QuizPage implements OnInit, OnDestroy {
 
-    cards: Card[];
-
     quizStatus = null;
+    currentCard: Card;
 
-    currentCard$: Observable<Card>;
     cardIndex = 0;
     errors = 0;
     maxErrors = 3;
@@ -29,17 +27,12 @@ export class QuizPage implements OnInit, OnDestroy {
 
     destroy$: Subject<any> = new Subject();
 
-    constructor(public store: Store, public mainService: MainService, public quizService: QuizService, public modalController: ModalController) {
+    constructor(public store: Store, public quizService: QuizService, public modalController: ModalController) {
     }
 
     ngOnInit() {
         this.quizStatus = 'PREPARING';
-        this.mainService.cards$.pipe(
-            takeUntil(this.destroy$)
-        ).subscribe((cards: Card[]) => {
-            this.cards = cards;
-            this.startQuiz();
-        });
+        this.startQuiz();
     }
 
     ngOnDestroy(): void {
@@ -61,8 +54,9 @@ export class QuizPage implements OnInit, OnDestroy {
             this.stopQuiz();
         } else {
             this.quizService.cardLoaded(false);
-            this.currentCard$ = this.mainService.getRandomCard();
-            this.cardIndex++;
+            this.store.dispatch(new RandomCard()).subscribe((state: MainStateModel) => {
+                this.currentCard = state['mtg'].game.card;
+            })
         }
     }
 

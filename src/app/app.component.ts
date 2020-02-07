@@ -3,9 +3,8 @@ import {Component} from '@angular/core';
 import {Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
-import {GetData} from './+store/main.actions';
 import {Store} from '@ngxs/store';
-import {Navigate} from '@ngxs/router-plugin';
+import {PrepareCards} from "./+store/main.actions";
 
 @Component({
     selector: 'app-root',
@@ -30,6 +29,6 @@ export class AppComponent {
     }
 
     loadInitialData() {
-        this.store.dispatch(new GetData());
+        //this.store.dispatch(new PrepareCards());
     }
 }

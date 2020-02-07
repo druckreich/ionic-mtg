@@ -1,14 +1,12 @@
-<ion-content padding-start padding-end>
-    <ng-container *ngIf="currentCard$ | async as currentCard">
+<ion-content class="padding-start padding-end">
 
-        <div class="ion-margin">
-            <app-quiz-card [card]="currentCard"></app-quiz-card>
-        </div>
+    <div class="ion-margin">
+        <app-quiz-card [card]="currentCard"></app-quiz-card>
+    </div>
+    <div class="ion-margin-start ion-margin-end" *ngIf="quizService.isCardLoaded$ | async">
+        <app-quiz-questions [card]="currentCard"
+                            (answer)="handleQuizQuestionResult(currentCard, $event)"></app-quiz-questions>
+    </div>
 
-        <div class="ion-margin-start ion-margin-end" *ngIf="quizService.isCardLoaded$ | async">
-            <app-quiz-questions [card]="currentCard"
-                                (answer)="handleQuizQuestionResult(currentCard, $event)"></app-quiz-questions>
-        </div>
-    </ng-container>
 </ion-content>
 
