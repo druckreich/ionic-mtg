@@ -3,6 +3,7 @@ import {PrepareCards, PrepareGame, RandomCard} from './main.actions';
 import {MainService} from './main.service';
 import {tap} from 'rxjs/operators';
 import {Card} from './card.model';
+import {patch} from '@ngxs/store/operators/patch';
 
 export const CMC = ['1', '2', '3', '4', '5', '6', '7', '8+'];
 export const COLOR = ['B', 'G', 'U', 'W', 'R'];
@@ -37,24 +38,23 @@ export class MainState {
     }
 
     @Action(PrepareCards)
-    prepareCards({patchState}: StateContext<MainStateModel>) {
+    prepareCards({setState}: StateContext<MainStateModel>) {
         return this.mainService.prepareCards().pipe(
             tap((cards: Card[]) => {
-                patchState({cards: cards});
+                setState(
+                    patch({
+                        cards: cards
+                    }));
             })
         );
     }
 
-
     @Action(PrepareGame)
     prepareGame({setState, getState}: StateContext<MainStateModel>, action: PrepareGame) {
-        setState({
-            ...getState(),
-            game: {
-                ...getState().game,
-                type: action.type
-            }
-        });
+        setState(
+            patch({
+                game: patch({tap: action.type})
+            }))
     }
 
     @Action(RandomCard)
