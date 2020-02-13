@@ -63,3 +63,13 @@ table {
 body* > {
   box-sizing: border-box;
 }
+
+.answers {
+  width: 408px;
+  height: 200px;
+}
+
+ion-fab.validate  {
+  right: -8px;
+  bottom: -8px;
+}

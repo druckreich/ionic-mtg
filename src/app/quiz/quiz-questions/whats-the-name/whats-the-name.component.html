@@ -2,7 +2,7 @@
     <ng-container *ngFor="let answer of answers">
         <ion-button [ngClass]="{'glow': answer.selected}"
                     (click)="selectAnswer(answer)"
-                    type="button" fill="clear" expand="block" size="small"
+                    type="button" fill="clear" expand="block"
                     [color]="showSolution && answer.correct ? 'success' : 'dark'"
                     [@changeState]="showSolution ? answer.state : defaultState">
             <ion-icon slot="start" name="arrow-dropright" *ngIf="answer.selected"></ion-icon>
@@ -11,7 +11,13 @@
         </ion-button>
     </ng-container>
 </div>
-<ion-button size="block" (click)="validate()">OK</ion-button>
+<ion-fab class="validate" vertical="bottom" horizontal="end" slot="fixed" *ngIf="!showSolution">
+    <ion-fab-button color="primary" (click)="validate()">
+        <ion-icon name="checkmark"></ion-icon>
+    </ion-fab-button>
+</ion-fab>
+
+
 
 
 

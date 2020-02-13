@@ -8,7 +8,7 @@ import {Game} from "./game.model";
 import {getRandomElementsFrom} from "src/app/shared/util";
 
 export const CMC = ['1', '2', '3', '4', '5', '6', '7', '8+'];
-export const COLOR = ['B', 'G', 'U', 'W', 'R'];
+export const COLOR = ['W', 'U', 'B', 'R', 'G'];
 export const TYPE = ['Artifact', 'Creature', 'Enchantment', 'Instant', 'Sorcery'];
 export const RARITY = ['Common', 'Uncommon', 'Rare', 'Mythic'];
 

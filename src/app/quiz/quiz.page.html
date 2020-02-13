@@ -1,51 +1,49 @@
-<ion-content>
-    <ion-row>
-        <ion-col size="5" >
-            <div class="card-container">
-                <div class="card-background">
-                    <div class="card-frame">
-
-                        <div class="frame-header">
-                            <h1 class="name">Quiz - Standard</h1>
-                            <i class="ms ms-g" id="mana-icon"></i>
-                        </div>
-
-                        <div class="frame-art">
-                            <app-quiz-card [card]="currentCard"></app-quiz-card>
-                        </div>
-
-                        <div class="frame-type-line">
-                            <h1 class="type">Legendary Enchantment</h1>
-                        </div>
-
-                        <div class="frame-text-box">
-                            <div *ngIf="quizService.isCardLoaded$ | async">
-                                <app-quiz-questions [card]="currentCard"
-                                                    (answer)="handleQuizQuestionResult(currentCard, $event)"></app-quiz-questions>
-                            </div>
-                        </div>
-
-                        <div class="frame-bottom-info inner-margin">
-                            <div class="fbi-left">
-                                <p>hfgl</p>
-                                <p>001 &#x2022; EN
-                                    <img class="paintbrush" src="https://image.ibb.co/e2VxAS/paintbrush_white.png"
-                                         alt="paintbrush icon"> druckreich</p>
-                            </div>
-
-                            <div class="fbi-right">
-                                &#x99; &amp; &#169; 2016 Wizards of the Coast
-                            </div>
-                        </div>
-
+<div class="container">
+    <div class="border-art" *ngIf="showBorderArt">
+        <img [src]="currentCard.image_uris.border_crop">
+    </div>
+    <div class="card-container">
+        <div class="card-background">
+            <div class="card-frame">
+                <div class="frame-header">
+                    <h1 class="name">Quiz - Standard</h1>
+                    <div>
+                        <img class="mana-icon" src="../../assets/icon/{{l}}.svg" width="20px" *ngFor="let l of lives">
+                    </div>
+                </div>
+                <div class="frame-art">
+                    <app-quiz-card [card]="currentCard"></app-quiz-card>
+                </div>
+                <div class="frame-type-line">
+                    <h1 class="type">Frage!</h1>
+                </div>
+                <div class="frame-text-box">
+                    <div *ngIf="quizService.isCardLoaded$ | async">
+                        <app-quiz-questions [card]="currentCard"
+                                            (answer)="handleQuizQuestionResult(currentCard, $event)"></app-quiz-questions>
                     </div>
 
                 </div>
-
+                <div class="frame-bottom-info inner-margin">
+                    <div class="fbi-left">
+                        <p>hfgl</p>
+                        <p>{{cardIndex}} &#x2022; EN
+                            <img class="paintbrush" src="https://image.ibb.co/e2VxAS/paintbrush_white.png"
+                                 alt="paintbrush icon"> druckreich</p>
+                    </div>
+                    <div class="fbi-right">
+                        &#x99; &amp; &#169; 2016 Wizards of the Coast
+                    </div>
+                </div>
             </div>
-        </ion-col>
-        <ion-col size="5">
-            <img src="{{currentCard.image_uris.border_crop}}">
-        </ion-col>
-    </ion-row>
-</ion-content>
+        </div>
+    </div>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="isShowBorderArtButtonVisible">
+        <ion-fab-button [color]="wasLastAnswerCorrect ? 'success' : 'danger'" (click)="showBorderArt = !showBorderArt">
+            <ion-icon name="search"></ion-icon>
+        </ion-fab-button>
+        <ion-fab-button color="primary" >
+            <ion-icon name="checkmark" (click)="showNextCard()"></ion-icon>
+        </ion-fab-button>
+    </ion-fab>
+</div>

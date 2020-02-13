@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Actions, Store} from '@ngxs/store';
+import {Store} from '@ngxs/store';
 import {Card} from '../+store/card.model';
 import {Subject} from 'rxjs';
-import {ModalController} from '@ionic/angular';
-import {BannerComponent} from './banner/banner.component';
 import {QuizService} from "./quiz.service";
 import {RandomCard} from "../+store/main.actions";
-import {MainStateModel} from "../+store/main.state";
+import {COLOR, MainStateModel} from "../+store/main.state";
+import {ToastController} from "@ionic/angular";
+import {Navigate} from "@ngxs/router-plugin";
 
 export const TIME_TO_NEXT_CARD = 1500;
 
@@ -19,15 +19,16 @@ export class QuizPage implements OnInit, OnDestroy {
 
     quizStatus = null;
     currentCard: Card;
-
     cardIndex = 0;
-    errors = 0;
-    maxErrors = 3;
-    results: any[] = [];
+
+    lives: string[];
+    wasLastAnswerCorrect: boolean = false;
+    isShowBorderArtButtonVisible: boolean = false;
+    showBorderArt: boolean = false;
 
     destroy$: Subject<any> = new Subject();
 
-    constructor(public store: Store, public quizService: QuizService, public modalController: ModalController) {
+    constructor(public store: Store, public quizService: QuizService, public toastController: ToastController) {
     }
 
     ngOnInit() {
@@ -42,51 +43,58 @@ export class QuizPage implements OnInit, OnDestroy {
     startQuiz() {
         this.quizStatus = 'STARTED';
         this.cardIndex = 0;
+        this.wasLastAnswerCorrect = false;
+        this.isShowBorderArtButtonVisible = false;
+        this.lives = ['B'];//[...COLOR];
         this.showNextCard();
     }
 
     stopQuiz() {
         this.quizStatus = 'STOPPED';
+        this.presentToastWithOptions();
     }
 
     showNextCard() {
-        if (this.errors >= this.maxErrors) {
+
+        if (this.lives.length <= 0) {
             this.stopQuiz();
-        } else {
-            this.quizService.cardLoaded(false);
-            this.store.dispatch(new RandomCard()).subscribe((state: MainStateModel) => {
-                this.currentCard = state['mtg'].game.card;
-            })
+            return;
         }
+
+        // hode border art and disable button
+        this.showBorderArt = false;
+        this.isShowBorderArtButtonVisible = false;
+
+        this.cardIndex++;
+        this.quizService.cardLoaded(false);
+        this.store.dispatch(new RandomCard()).subscribe((state: MainStateModel) => {
+            this.currentCard = state['mtg'].game.card;
+        })
     }
 
-    async handleQuizQuestionResult(card: Card, result: boolean) {
-        setTimeout(() => this.showNextCard(), 1500);
-        console.log(result);
-        return;
-
+    handleQuizQuestionResult(card: Card, result: boolean) {
+        this.wasLastAnswerCorrect = true;
         if (result === false) {
-            this.errors++;
+            this.lives.shift();
+            this.wasLastAnswerCorrect = false;
         }
-        await this.presentModal(card);
-        this.results.push(result);
+        this.isShowBorderArtButtonVisible = true;
     }
 
-    async presentModal(card: Card) {
-        const modal = await this.modalController.create({
-            component: BannerComponent,
-            showBackdrop: true,
-            cssClass: 'banner',
-            componentProps: {
-                'card': card
-            }
+    async presentToastWithOptions() {
+        const toast = await this.toastController.create({
+            message: 'My, my beein a smartass? ' + (this.cardIndex - 1) + ' correct answers is not bad',
+            position: 'middle',
+            buttons: [
+                {
+                    side: 'end',
+                    text: 'Hit me one more time!',
+                    handler: () => {
+                        this.startQuiz();
+                    }
+                }
+            ]
         });
-        modal.onDidDismiss().then((data: any) => {
-            if (data.data['next'] === true) {
-                this.showNextCard();
-            }
-        });
-        return await modal.present();
+        toast.present();
     }
-
 }

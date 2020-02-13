@@ -36,8 +36,4 @@ export class WhatsTheColorComponent extends QuizQuestionBaseComponent implements
     prepare(): void {
 
     }
-
-    validate(): void {
-        super.validate();
-    }
 }
