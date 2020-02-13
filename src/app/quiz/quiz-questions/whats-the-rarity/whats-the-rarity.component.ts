@@ -5,6 +5,7 @@ import {RARITY} from 'src/app/+store/main.state';
 import {QuizService} from "src/app/quiz/quiz.service";
 import {quizQuestionTrigger} from "src/app/quiz/quiz-questions/animations";
 import {cardValueToAnswer} from "src/app/shared/util";
+import {QuizQuestionBaseComponent} from "src/app/quiz/quiz-questions/quiz-question-base/quiz-question-base.component";
 
 @Component({
     selector: 'app-whats-the-rarity',
@@ -12,7 +13,7 @@ import {cardValueToAnswer} from "src/app/shared/util";
     styleUrls: ['./whats-the-rarity.component.scss'],
     animations: [quizQuestionTrigger]
 })
-export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
+export class WhatsTheRarityComponent extends QuizQuestionBaseComponent implements OnInit, QuizQuestion {
 
     @Input()
     card: Card;
@@ -23,7 +24,8 @@ export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
 
     showSolution = false;
 
-    constructor(private quizService: QuizService) {
+    constructor(public quizService: QuizService) {
+        super(quizService);
     }
 
     ngOnInit() {
@@ -43,8 +45,6 @@ export class WhatsTheRarityComponent implements OnInit, QuizQuestion {
     }
 
     validate(): void {
-        const incorrectAnswer: Answer = this.answers.find((answer) => answer.correct !== answer.selected);
-        this.quizService.emitAnswer(!incorrectAnswer);
-        this.showSolution = true;
+        super.validate();
     }
 }

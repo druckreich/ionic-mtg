@@ -12,7 +12,9 @@ export interface QuizQuestion {
 
     answers: Answer[];
 
+    showSolution: boolean;
+
     prepare(): void;
 
-    validate(value: any): void;
+    validate(): void;
 }

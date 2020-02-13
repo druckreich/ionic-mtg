@@ -5,6 +5,7 @@ import {QuizService} from "../../quiz.service";
 import {Store} from "@ngxs/store";
 import {cardValueToAnswer, getRandomElementsFrom} from "src/app/shared/util";
 import {quizQuestionTrigger} from "src/app/quiz/quiz-questions/animations";
+import {QuizQuestionBaseComponent} from "src/app/quiz/quiz-questions/quiz-question-base/quiz-question-base.component";
 
 
 @Component({
@@ -13,7 +14,7 @@ import {quizQuestionTrigger} from "src/app/quiz/quiz-questions/animations";
     styleUrls: ['./whats-the-name.component.scss'],
     animations: [quizQuestionTrigger]
 })
-export class WhatsTheNameComponent implements OnInit, QuizQuestion {
+export class WhatsTheNameComponent extends QuizQuestionBaseComponent implements OnInit, QuizQuestion {
 
     @Input()
     card: Card;
@@ -25,6 +26,7 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
     showSolution = false;
 
     constructor(public store: Store, public quizService: QuizService) {
+        super(quizService);
     }
 
     ngOnInit() {
@@ -34,9 +36,7 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
     prepare(): void {
         const cards: Card[] = this.store.selectSnapshot(s => s['mtg'].cards);
         const randomCards: Card[] = getRandomElementsFrom(cards, 4);
-
         const answers: Answer[] = randomCards.map((card: Card) => cardValueToAnswer(card.name, false));
-
         this.answers = [
             ...answers,
             cardValueToAnswer(this.card.name, true)
@@ -49,8 +49,6 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
     }
 
     validate(): void {
-        const incorrectAnswer: Answer = this.answers.find((answer) => answer.correct !== answer.selected);
-        this.quizService.emitAnswer(!incorrectAnswer);
-        this.showSolution = true;
+        super.validate();
     }
 }

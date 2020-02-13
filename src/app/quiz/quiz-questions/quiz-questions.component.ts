@@ -13,12 +13,15 @@ import {QuizQuestionAnchorDirective} from 'src/app/quiz/quiz-questions/quiz-ques
 import {QuizQuestion} from 'src/app/quiz/quiz-questions/quiz-question.model';
 import {QuizService} from "src/app/quiz/quiz.service";
 import {WhatsTheNameComponent} from "src/app/quiz/quiz-questions/whats-the-name/whats-the-name.component";
+import {WhatsTheColorComponent} from "src/app/quiz/quiz-questions/whats-the-color/whats-the-color.component";
+import {WhatsTheTypeComponent} from "src/app/quiz/quiz-questions/whats-the-type/whats-the-type.component";
+import {WhatsTheRarityComponent} from "src/app/quiz/quiz-questions/whats-the-rarity/whats-the-rarity.component";
 
 export const QUIZ_QUESTIONS: any[] = [
-    //WhatsTheColorComponent,
+    WhatsTheColorComponent,
     WhatsTheNameComponent,
-    //WhatsTheTypeComponent,
-    //WhatsTheRarityComponent
+    WhatsTheTypeComponent,
+    WhatsTheRarityComponent
 ];
 
 @Component({
