@@ -38,6 +38,9 @@ export class QuizQuestionsComponent implements OnChanges {
     @Output()
     answer: EventEmitter<boolean> = <EventEmitter<boolean>>this.quizService.getAnswer();
 
+    @Output()
+    quizQuestion: EventEmitter<string> = new EventEmitter<string>();
+
     @ViewChild(QuizQuestionAnchorDirective, {static: true})
     adHost: QuizQuestionAnchorDirective;
 

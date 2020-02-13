@@ -29,6 +29,6 @@ export class AppComponent {
     }
 
     loadInitialData() {
-        //this.store.dispatch(new PrepareCards());
+        this.store.dispatch(new PrepareCards());
     }
 }

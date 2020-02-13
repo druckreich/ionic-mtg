@@ -17,11 +17,9 @@ export class WhatsTheRarityComponent extends QuizQuestionBaseComponent implement
 
     @Input()
     card: Card;
-
+    question: string = "Wie selten ist diese Karte?";
     answers: Answer[];
-
     defaultState: string = 'default';
-
     showSolution = false;
 
     constructor(public quizService: QuizService) {

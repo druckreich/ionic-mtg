@@ -17,7 +17,7 @@ export class WhatsTheTypeComponent extends QuizQuestionBaseComponent implements 
 
     @Input()
     card: Card;
-
+    question: string = "Welche/n Typ/en hat diese Karte?";
     answers: Answer[];
 
     defaultState: string = 'default';

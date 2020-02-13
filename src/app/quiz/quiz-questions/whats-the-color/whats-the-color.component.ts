@@ -18,11 +18,9 @@ export class WhatsTheColorComponent extends QuizQuestionBaseComponent implements
 
     @Input()
     card: Card;
-
+    question: string = "Welche Farbe?";
     answers: Answer[];
-
     defaultState: string = 'default';
-
     showSolution: boolean = false;
 
     constructor(public quizService: QuizService) {

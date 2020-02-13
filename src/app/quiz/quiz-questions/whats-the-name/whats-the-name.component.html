@@ -1,10 +1,9 @@
-<ion-label color="dark">Wie ist der Name dieser Karte?</ion-label>
 <div class="answers">
     <ng-container *ngFor="let answer of answers">
         <ion-button [ngClass]="{'glow': answer.selected}"
                     (click)="selectAnswer(answer)"
-                    type="button" fill="solid" expand="block" size="small"
-                    [color]="showSolution && answer.correct ? 'success' : 'medium'"
+                    type="button" fill="clear" expand="block" size="small"
+                    [color]="showSolution && answer.correct ? 'success' : 'dark'"
                     [@changeState]="showSolution ? answer.state : defaultState">
             <ion-icon slot="start" name="arrow-dropright" *ngIf="answer.selected"></ion-icon>
             {{answer.value}}

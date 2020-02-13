@@ -16,7 +16,7 @@ const download = function (url, dest, cb) {
     const request = http.get(url, function (response) {
         response.pipe(file);
         file.on('finish', function () {
-            console.log('FINISHED WRITING');
+            console.log('done');
             file.close();
             if (cb) cb();
         });
@@ -50,7 +50,9 @@ const parse = function (src, dest, cb) {
                     },
                     image_uris: {
                         art_crop: object.image_uris ? object.image_uris.art_crop : '',
-                        border_crop: object.image_uris ? object.image_uris.border_crop : ''
+                        border_crop: object.image_uris ? object.image_uris.border_crop : '',
+                        small: object.image_uris ? object.image_uris.small : '',
+                        normal: object.image_uris ? object.image_uris.normal : ''
                     },
                     colors: object.colors,
                     type_line: object.type_line
@@ -59,6 +61,7 @@ const parse = function (src, dest, cb) {
             }
         }
         fs.writeFileSync(path, JSON.stringify(arr));
+        console.log(arr.length + ' cards written');
     }
 };
 
