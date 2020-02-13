@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
 import {Navigate} from '@ngxs/router-plugin';
-import {PrepareGame} from "../+store/main.actions";
+import {PrepareGame} from "src/app/+store/main.actions";
 
 @Component({
     selector: 'app-home',

@@ -1,29 +1,18 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Answer, QuizQuestion} from '../quiz-question.model';
-import {Card} from '../../../+store/card.model';
-import {COLOR} from '../../../+store/main.state';
-import {QuizService} from "../../quiz.service";
-import {animate, state, style, transition, trigger} from "@angular/animations";
+import {Card} from 'src/app/+store/card.model';
+import {COLOR} from 'src/app/+store/main.state';
+import {QuizService} from '../../quiz.service';
+import {quizQuestionTrigger} from "src/app/quiz/quiz-questions/animations";
+import {cardValueToAnswer} from "src/app/shared/util";
 
 @Component({
     selector: 'app-whats-the-color',
     templateUrl: './whats-the-color.component.html',
     styleUrls: ['./whats-the-color.component.scss'],
-    animations: [
-        trigger('changeState', [
-            state('default', style({
-                opacity: '1'
-            })),
-            state('false', style({
-                opacity: '0.4'
-            })),
-            state('true', style({
-                "font-weight": "bold",
-            })),
-            transition('*=>*', animate('300ms')),
-        ])
-    ]
+    animations: [quizQuestionTrigger]
 })
+
 export class WhatsTheColorComponent implements OnInit, QuizQuestion {
 
     @Input()
@@ -40,12 +29,7 @@ export class WhatsTheColorComponent implements OnInit, QuizQuestion {
 
     ngOnInit() {
         this.answers = COLOR.map((color: string) => {
-            return {
-                value: color,
-                correct: this.card.colors.includes(color),
-                selected: false,
-                state: this.card.colors.includes(color) ? 'true' : 'false'
-            };
+            return cardValueToAnswer(color, this.card.colors.includes(color));
         });
     }
 

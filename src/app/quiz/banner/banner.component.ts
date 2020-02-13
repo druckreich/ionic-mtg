@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ModalController} from '@ionic/angular';
-import {Card} from '../../+store/card.model';
+import {Card} from 'src/app/+store/card.model';
 
 @Component({
     selector: 'app-banner',

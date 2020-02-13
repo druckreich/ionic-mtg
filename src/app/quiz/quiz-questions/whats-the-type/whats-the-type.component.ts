@@ -1,28 +1,16 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Card} from '../../../+store/card.model';
-import {TYPE} from '../../../+store/main.state';
+import {Card} from 'src/app/+store/card.model';
+import {TYPE} from 'src/app/+store/main.state';
 import {Answer, QuizQuestion} from '../quiz-question.model';
 import {QuizService} from "../../quiz.service";
-import {animate, state, style, transition, trigger, useAnimation} from "@angular/animations";
+import {quizQuestionTrigger} from "src/app/quiz/quiz-questions/animations";
+import {cardValueToAnswer} from "src/app/shared/util";
 
 @Component({
     selector: 'app-whats-the-type',
     templateUrl: './whats-the-type.component.html',
     styleUrls: ['./whats-the-type.component.scss'],
-    animations: [
-        trigger('changeState', [
-            state('default', style({
-                opacity: '1'
-            })),
-            state('false', style({
-                opacity: '0.4'
-            })),
-            state('true', style({
-                "font-weight": "bold",
-            })),
-            transition('*=>*', animate('300ms')),
-        ])
-    ]
+    animations: [quizQuestionTrigger]
 })
 export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
 
@@ -41,12 +29,7 @@ export class WhatsTheTypeComponent implements OnInit, QuizQuestion {
     ngOnInit() {
         this.answers = TYPE.map((type: string) => {
             const correct: boolean = this.card.type_line.includes(type);
-            return {
-                value: type,
-                correct: correct,
-                selected: false,
-                state: correct ? 'true' : 'false'
-            };
+            return cardValueToAnswer(type, correct);
         });
     }
 

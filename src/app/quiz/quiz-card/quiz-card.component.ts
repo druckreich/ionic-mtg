@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {Card} from '../../+store/card.model';
+import {Card} from 'src/app/+store/card.model';
 import {Observable, Observer} from 'rxjs';
-import {QuizService} from "../quiz.service";
+import {QuizService} from "src/app/quiz/quiz.service";
 
 @Component({
     selector: 'app-quiz-card',

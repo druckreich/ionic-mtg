@@ -1,3 +1,6 @@
+import {Card} from "./card.model";
+
 export class Game {
-    type: string;
+    type?: string;
+    card?: Card;
 }

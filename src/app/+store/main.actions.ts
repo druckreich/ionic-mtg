@@ -24,10 +24,18 @@ export class RandomCard {
     }
 }
 
-export class RandomCards {
-    static readonly type: string = '[MTG] Random Cards';
+export class GetRandomCards {
+    static readonly type: string = '[MTG] Get Random Cards';
 
     constructor(public num: number) {
+
+    }
+}
+
+export class GetRandomCardsSuccess {
+    static readonly type: string = '[MTG] Get Random Cards Success';
+
+    constructor(public card: Card[]) {
 
     }
 }

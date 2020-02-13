@@ -1,28 +1,17 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Answer, QuizQuestion} from '../quiz-question.model';
-import {Card} from '../../../+store/card.model';
+import {Answer, QuizQuestion} from 'src/app/quiz/quiz-questions/quiz-question.model';
+import {Card} from 'src/app/+store/card.model';
 import {QuizService} from "../../quiz.service";
-import {animate, state, style, transition, trigger} from "@angular/animations";
 import {Store} from "@ngxs/store";
+import {cardValueToAnswer, getRandomElementsFrom} from "src/app/shared/util";
+import {quizQuestionTrigger} from "src/app/quiz/quiz-questions/animations";
+
 
 @Component({
     selector: 'app-whats-the-name',
     templateUrl: './whats-the-name.component.html',
     styleUrls: ['./whats-the-name.component.scss'],
-    animations: [
-        trigger('changeState', [
-            state('default', style({
-                opacity: '1'
-            })),
-            state('false', style({
-                opacity: '0.4'
-            })),
-            state('true', style({
-                "font-weight": "bold",
-            })),
-            transition('*=>*', animate('300ms')),
-        ])
-    ]
+    animations: [quizQuestionTrigger]
 })
 export class WhatsTheNameComponent implements OnInit, QuizQuestion {
 
@@ -43,13 +32,14 @@ export class WhatsTheNameComponent implements OnInit, QuizQuestion {
     }
 
     prepare(): void {
-        this.answers = [{
-            value: this.card.name,
-            correct: false,
-            selected: false,
-            state: 'false'
-        }
+        const cards: Card[] = this.store.selectSnapshot(s => s['mtg'].cards);
+        const randomCards: Card[] = getRandomElementsFrom(cards, 4);
 
+        const answers: Answer[] = randomCards.map((card: Card) => cardValueToAnswer(card.name, false));
+
+        this.answers = [
+            ...answers,
+            cardValueToAnswer(this.card.name, true)
         ]
     }
 

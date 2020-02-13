@@ -1,4 +1,4 @@
-import {Card} from '../../+store/card.model';
+import {Card} from 'src/app/+store/card.model';
 
 export interface Answer {
     correct: boolean;

@@ -8,20 +8,17 @@ import {
     SimpleChanges,
     ViewChild
 } from '@angular/core';
-import {Card} from '../../+store/card.model';
-import {QuizQuestionAnchorDirective} from './quiz-question-anchor.directive';
-import {QuizQuestion} from './quiz-question.model';
-import {WhatsTheColorComponent} from './whats-the-color/whats-the-color.component';
-import {QuizService} from "../quiz.service";
-import {WhatsTheNameComponent} from "./whats-the-name/whats-the-name.component";
-import {WhatsTheTypeComponent} from "./whats-the-type/whats-the-type.component";
-import {WhatsTheRarityComponent} from "./whats-the-rarity/whats-the-rarity.component";
+import {Card} from 'src/app/+store/card.model';
+import {QuizQuestionAnchorDirective} from 'src/app/quiz/quiz-questions/quiz-question-anchor.directive';
+import {QuizQuestion} from 'src/app/quiz/quiz-questions/quiz-question.model';
+import {QuizService} from "src/app/quiz/quiz.service";
+import {WhatsTheNameComponent} from "src/app/quiz/quiz-questions/whats-the-name/whats-the-name.component";
 
 export const QUIZ_QUESTIONS: any[] = [
-    WhatsTheColorComponent,
+    //WhatsTheColorComponent,
     WhatsTheNameComponent,
-    WhatsTheTypeComponent,
-    WhatsTheRarityComponent
+    //WhatsTheTypeComponent,
+    //WhatsTheRarityComponent
 ];
 
 @Component({
