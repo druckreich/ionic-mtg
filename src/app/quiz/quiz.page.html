@@ -15,7 +15,7 @@
                     <app-quiz-card [card]="currentCard"></app-quiz-card>
                 </div>
                 <div class="frame-type-line">
-                    <span class="type">{{quizQuestion}}</span>
+                    <span class="type">Card {{cardIndex}}: {{quizQuestion}}</span>
                 </div>
                 <div class="frame-text-box">
                     <div *ngIf="quizService.isCardLoaded$ | async">

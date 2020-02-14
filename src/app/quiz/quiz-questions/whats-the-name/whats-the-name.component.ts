@@ -18,7 +18,7 @@ export class WhatsTheNameComponent extends QuizQuestionBaseComponent implements 
 
     @Input()
     card: Card;
-    question: string = "Welcher Name?";
+    question: string = "Welchen Namen hat diese Karte?";
     answers: Answer[];
     defaultState: string = 'default';
     showSolution = false;

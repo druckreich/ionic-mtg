@@ -5,9 +5,8 @@
                     type="button" fill="clear" expand="block"
                     [color]="showSolution && answer.correct ? 'success' : 'dark'"
                     [@changeState]="showSolution ? answer.state : defaultState">
-            <ion-icon slot="start" name="arrow-dropright" *ngIf="answer.selected"></ion-icon>
+            <ion-icon slot="start" name="checkmark-circle-outline" *ngIf="answer.selected"></ion-icon>
             {{answer.value}}
-            <ion-icon slot="end" name="arrow-dropleft" *ngIf="answer.selected"></ion-icon>
         </ion-button>
     </ng-container>
 </div>

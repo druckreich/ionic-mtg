@@ -22,6 +22,7 @@ export class QuizPage implements OnInit, OnDestroy {
     cardIndex = 0;
 
     quizQuestion: string;
+    correctAnswers: number;
     lives: string[];
     wasLastAnswerCorrect: boolean = false;
     isShowBorderArtButtonVisible: boolean = false;
@@ -44,6 +45,7 @@ export class QuizPage implements OnInit, OnDestroy {
     startQuiz() {
         this.quizStatus = 'STARTED';
         this.cardIndex = 0;
+        this.correctAnswers = 0;
         this.wasLastAnswerCorrect = false;
         this.isShowBorderArtButtonVisible = false;
         this.lives = [...COLOR];
@@ -78,6 +80,8 @@ export class QuizPage implements OnInit, OnDestroy {
         if (result === false) {
             this.lives.shift();
             this.wasLastAnswerCorrect = false;
+        } else {
+            this.correctAnswers++;
         }
         this.isShowBorderArtButtonVisible = true;
     }
