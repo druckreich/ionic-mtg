@@ -10,8 +10,9 @@ import {QuizService} from "src/app/quiz/quiz.service";
 })
 export class QuizQuestionBaseComponent implements OnInit, QuizQuestion {
 
-    answers: Answer[];
     card: Card;
+    question: string;
+    answers: Answer[];
     showSolution: boolean;
 
     constructor(public quizService: QuizService) {

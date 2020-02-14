@@ -63,7 +63,10 @@ export class QuizQuestionsComponent implements OnChanges {
         const viewContainerRef = this.adHost.viewContainerRef;
         viewContainerRef.clear();
         const componentRef = viewContainerRef.createComponent(componentFactory);
+
         (<QuizQuestion>componentRef.instance).card = this.card;
+
+        this.quizQuestion.emit((<QuizQuestion>componentRef.instance).question);
     }
 
 

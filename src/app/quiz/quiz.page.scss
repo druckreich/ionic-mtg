@@ -1,7 +1,103 @@
-.container {
-  position: relative;
-  width: 480px;
-  height: 680px;
+@media only screen and (min-width: 480px) {
+  .container {
+    position: relative;
+    width: 480px;
+    height: 680px;
+  }
+
+  .name,
+  .type {
+    font-size: 16px;
+    margin-left: 10px;
+    align-self: center;
+    font-weight: 600;
+  }
+
+  .frame-header,
+  .frame-type-line {
+    padding: 8px 0;
+  }
+
+  .m-i {
+    height: 18px;
+  }
+}
+
+@media only screen and (max-width: 479px) {
+  .container {
+    position: relative;
+    // keep aspect of 480:680 -> 1:1.41666
+    width: 100%;
+    padding-top: 141.6666%;
+  }
+
+  .name,
+  .type {
+    font-size: 15px;
+    margin-left: 10px;
+    align-self: center;
+    font-weight: 600;
+  }
+
+  .frame-header,
+  .frame-type-line {
+    padding: 7px 0;
+  }
+
+  .m-i {
+    height: 16px;
+  }
+}
+
+@media only screen and (max-width: 399px) {
+  .container {
+    position: relative;
+    // keep aspect of 480:680 -> 1:1.41666
+    width: 100%;
+    padding-top: 141.6666%;
+  }
+
+  .name,
+  .type {
+    font-size: 14px;
+    margin-left: 10px;
+    align-self: center;
+    font-weight: 600;
+  }
+
+  .frame-header,
+  .frame-type-line {
+    padding: 6px 0;
+  }
+
+  .m-i {
+    height: 14px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .container {
+    position: relative;
+    width: 320px;
+    height: 453px;
+  }
+
+  .name,
+  .type {
+    font-size: 13px;
+    margin-left: 10px;
+    align-self: center;
+    font-weight: 600;
+  }
+
+  .frame-header,
+  .frame-type-line {
+    padding: 5px 0;
+  }
+
+  .m-i {
+    height: 12px;
+  }
 }
 
 .border-art {
@@ -12,27 +108,27 @@
 .card-container {
   position: absolute;
   border: 1px solid black;
-  width: 480px;
-  height: 680px;
-  //margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
   box-sizing: border-box;
   box-shadow: -8px 9px 16px -3px gray;
   background: #171314;
 }
+
 .card-background {
-  height: 600px;
+  height: 90%;
   margin: 10px 10px 0px 10px;
-  border-top-left-radius: 6px;
-  border-top-right-radius: 6px;
-  border-bottom-left-radius: 8%;
-  border-bottom-right-radius: 8%;
-  background-image: url(https://image.ibb.co/e1XKAS/green_background.jpg);
+  border-radius: 6px 6px 8% 8%;
+  background-image: url('../../assets/green_background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   display: flex;
   background-color: #bbb;
   z-index: 0;
 }
+
 
 /*
     -------------------------
@@ -52,18 +148,16 @@
 .frame-header,
 .frame-art,
 .frame-type-line {
-  box-shadow:
-          0 0 0 2px #171314,
-          0 0 0 5px #26714A,
-          -3px 3px 2px 5px #171314;
+  box-shadow: 0 0 0 2px #171314,
+  0 0 0 5px #26714A,
+  -3px 3px 2px 5px #171314;
 
   margin-bottom: 7px;
 }
 
 .frame-text-box {
-  box-shadow:
-          0 0 0 5px #26714A,
-          -3px 3px 2px 5px #171314;
+  box-shadow: 0 0 0 5px #26714A,
+  -3px 3px 2px 5px #171314;
 }
 
 /*
@@ -92,7 +186,6 @@
   position: relative;
   height: 108%;
   max-width: 97%;
-  left: 1%;
   top: 0.5%;
   left: 1.6%;
   display: flex;
@@ -100,42 +193,34 @@
 }
 
 
-
 .frame-header,
 .frame-type-line {
-  background:
-          linear-gradient( 0deg, rgba(201, 216, 201, .3), rgba(201, 216, 209, .3) ),
-          url(https://image.ibb.co/jKByZn/tile_bg_1.jpg);
+  background: linear-gradient(0deg, rgba(201, 216, 201, .3), rgba(201, 216, 209, .3)), url('../../assets/tile_bg_1.jpg');
   display: flex;
   margin-top: 10px;
   margin-left: 5px;
   margin-right: 5px;
-  padding: 8px 0;
+  //padding: 8px 0;
   display: flex;
   justify-content: space-between;
   border-radius: 18px/40px;
 }
-/*
-  Tue 27/3
-*/
-.name,
-.type {
-  font-size: 1.3em;
-  margin-left: 10px;
-  align-self: baseline;
-  font-weight: 600;
+
+.mana-icons {
+  align-self: center;
 }
 
-.mana-icon {
-  font-size: 1.4em;
-  background: #ADD3AC;
+.m-i {
+  font-size: 16px;
   border-radius: 50%;
   box-sizing: border-box;
   box-shadow: -0.05em 0.12em 0px 0 black;
   margin-right: 5px;
-  height: 20px;
+  //height: 20px;
   align-self: center;
+  top: 0;
 }
+
 .frame-art {
   height: 50%;
   margin: 0 13px;
@@ -148,21 +233,20 @@
   margin-right: 10px;
   align-self: center;
 }
+
 .frame-type-line {
   margin-top: 0;
 }
 
 .frame-text-box {
   margin: 0 12px;
-  background: #d3ded6;
-  background-image: url(https://image.ibb.co/dFcNx7/tile_bg_2.jpg);
+  background: #d3ded6 url('../../assets/tile_bg_2.jpg');
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   padding: 50px 6px;
   font-size: 1.2em;
-  width: 418px;
-  height: 214px;
+  height: 100%;
 }
 
 .flavour-text {
@@ -179,9 +263,6 @@ p {
 }
 
 
-
-
-
 .frame-bottom-info {
   color: white;
   display: flex;
@@ -192,9 +273,11 @@ p {
 fbi-left {
   flex: 1;
 }
+
 .fbi-left p:first-of-type {
   margin-bottom: 1px;
 }
+
 .fbi-left,
 .fbi-right {
   font-size: 10px;
@@ -202,18 +285,6 @@ fbi-left {
   top: 6px;
 }
 
-.fbi-center {
-  border-radius: 60%;
-  flex-basis: 41px;
-  height: 21px;
-  position: relative;
-  bottom: 11px;
-  z-index: 2;
-  background: lightgray;
-  background-image: url(https://image.ibb.co/jyq34n/holofoil_texture_2.jpg);
-  box-shadow:
-          0 0 0 4px #171314;
-}
 .inner-margins {
   margin: 0 10px;
 }
@@ -222,6 +293,7 @@ fbi-left {
   flex: 1;
   text-align: right;
 }
+
 .frame-bottom-info img {
   overflow: hidden;
   max-width: 10px;

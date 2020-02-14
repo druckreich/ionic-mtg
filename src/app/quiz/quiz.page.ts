@@ -21,6 +21,7 @@ export class QuizPage implements OnInit, OnDestroy {
     currentCard: Card;
     cardIndex = 0;
 
+    quizQuestion: string;
     lives: string[];
     wasLastAnswerCorrect: boolean = false;
     isShowBorderArtButtonVisible: boolean = false;
@@ -45,7 +46,7 @@ export class QuizPage implements OnInit, OnDestroy {
         this.cardIndex = 0;
         this.wasLastAnswerCorrect = false;
         this.isShowBorderArtButtonVisible = false;
-        this.lives = ['B'];//[...COLOR];
+        this.lives = [...COLOR];
         this.showNextCard();
     }
 
@@ -55,7 +56,6 @@ export class QuizPage implements OnInit, OnDestroy {
     }
 
     showNextCard() {
-
         if (this.lives.length <= 0) {
             this.stopQuiz();
             return;
@@ -73,6 +73,7 @@ export class QuizPage implements OnInit, OnDestroy {
     }
 
     handleQuizQuestionResult(card: Card, result: boolean) {
+        this.quizQuestion = "";
         this.wasLastAnswerCorrect = true;
         if (result === false) {
             this.lives.shift();
@@ -83,7 +84,7 @@ export class QuizPage implements OnInit, OnDestroy {
 
     async presentToastWithOptions() {
         const toast = await this.toastController.create({
-            message: 'My, my beein a smartass? ' + (this.cardIndex - 1) + ' correct answers is not bad',
+            message: 'Well done! ' + (this.cardIndex - 1) + ' correct answers is not bad!',
             position: 'middle',
             buttons: [
                 {

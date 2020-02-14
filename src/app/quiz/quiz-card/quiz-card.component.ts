@@ -15,9 +15,6 @@ export class QuizCardComponent implements OnInit, OnChanges {
 
     @Output()
     loaded: EventEmitter<any> = new EventEmitter<any>();
-
-    artWidth: number = 424;
-    artHeight: number = 310;
     base64Image: string;
 
     constructor(public quizService: QuizService) {

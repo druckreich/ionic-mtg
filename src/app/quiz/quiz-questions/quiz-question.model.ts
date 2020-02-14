@@ -9,12 +9,9 @@ export interface Answer {
 
 export interface QuizQuestion {
     card: Card;
-
+    question: string;
     answers: Answer[];
-
     showSolution: boolean;
-
     prepare(): void;
-
     validate(): void;
 }

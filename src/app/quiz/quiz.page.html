@@ -6,20 +6,21 @@
         <div class="card-background">
             <div class="card-frame">
                 <div class="frame-header">
-                    <h1 class="name">Quiz - Standard</h1>
-                    <div>
-                        <img class="mana-icon" src="../../assets/icon/{{l}}.svg" width="20px" *ngFor="let l of lives">
+                    <span class="name">Quiz - Standard</span>
+                    <div class="mana-icons">
+                        <img class="m-i" src="../../assets/icon/{{l}}.svg" *ngFor="let l of lives">
                     </div>
                 </div>
                 <div class="frame-art">
                     <app-quiz-card [card]="currentCard"></app-quiz-card>
                 </div>
                 <div class="frame-type-line">
-                    <h1 class="type">Frage!</h1>
+                    <span class="type">{{quizQuestion}}</span>
                 </div>
                 <div class="frame-text-box">
                     <div *ngIf="quizService.isCardLoaded$ | async">
                         <app-quiz-questions [card]="currentCard"
+                                            (quizQuestion)="quizQuestion = $event"
                                             (answer)="handleQuizQuestionResult(currentCard, $event)"></app-quiz-questions>
                     </div>
 
