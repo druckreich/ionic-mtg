@@ -1,6 +1,6 @@
 version: '2.2'
 services:
-  ionic:
+  mtg-quiz:
     image: 'beevelop/ionic:latest'
     ports:
       - 8100:8100
