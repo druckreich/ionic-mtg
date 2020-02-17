@@ -1,4 +1,4 @@
-import {Card} from "./card.model";
+import {Game} from "src/app/+store/game.model";
 
 export class PrepareCards {
     static readonly type: string = '[MTG] Prepare Cards';
@@ -8,15 +8,15 @@ export class PrepareCards {
     }
 }
 
-export class PrepareGame {
-    static readonly type: string = '[MTG] Prepare Game';
+export class UpdateGame {
+    static readonly type: string = '[MTG] Update Game';
 
-    constructor(public type: string) {
+    constructor(public game: Game) {
 
     }
 }
 
-export class RandomCard {
+export class UpdateGameRandomCard {
     static readonly type: string = '[MTG] Random Card';
 
     constructor() {
@@ -24,18 +24,18 @@ export class RandomCard {
     }
 }
 
-export class GetRandomCards {
-    static readonly type: string = '[MTG] Get Random Cards';
+export class UpdateGameWrongAnswer {
+    static readonly type: string = '[MTG] Update Game Wrong Answer';
 
-    constructor(public num: number) {
+    constructor() {
 
     }
 }
 
-export class GetRandomCardsSuccess {
-    static readonly type: string = '[MTG] Get Random Cards Success';
+export class UpdateGameCorrectAnswer {
+    static readonly type: string = '[MTG] Update Game Correct Answer';
 
-    constructor(public card: Card[]) {
+    constructor() {
 
     }
 }

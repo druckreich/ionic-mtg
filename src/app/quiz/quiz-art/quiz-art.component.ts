@@ -2,11 +2,25 @@ import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges
 import {Card} from 'src/app/+store/card.model';
 import {Observable, Observer} from 'rxjs';
 import {QuizService} from "src/app/quiz/quiz.service";
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
     selector: 'app-quiz-art',
     templateUrl: './quiz-art.component.html',
     styleUrls: ['./quiz-art.component.scss'],
+    animations: [
+        trigger(
+            'enterAnimation', [
+                transition(':enter', [
+                    style({opacity: 0}),
+                    animate('500ms', style({opacity: 1}))
+                ]),
+                transition(':leave', [
+                    style({opacity: 1}),
+                    animate('500ms', style({opacity: 0}))
+                ])
+            ]
+        )]
 })
 export class QuizArtComponent implements OnInit, OnChanges {
 

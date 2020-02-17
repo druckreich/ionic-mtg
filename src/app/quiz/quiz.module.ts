@@ -10,6 +10,7 @@ import {QuizArtComponent} from './quiz-art/quiz-art.component';
 import {QUIZ_QUESTIONS, QuizQuestionsComponent} from './quiz-questions/quiz-questions.component';
 import {QuizQuestionAnchorDirective} from './quiz-questions/quiz-question-anchor.directive';
 import {QuizService} from "./quiz.service";
+import {QuizCardComponent} from "src/app/quiz/quiz-card/quiz-card.component";
 
 const routes: Routes = [
     {
@@ -28,6 +29,7 @@ const routes: Routes = [
     ],
     declarations: [
         QuizPage,
+        QuizCardComponent,
         QuizArtComponent,
         QuizQuestionsComponent,
         QuizQuestionAnchorDirective,

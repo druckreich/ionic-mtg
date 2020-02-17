@@ -50,9 +50,7 @@ const parse = function (src, dest, cb) {
                     },
                     image_uris: {
                         art_crop: object.image_uris ? object.image_uris.art_crop : '',
-                        border_crop: object.image_uris ? object.image_uris.border_crop : '',
-                        small: object.image_uris ? object.image_uris.small : '',
-                        normal: object.image_uris ? object.image_uris.normal : ''
+                        border_crop: object.image_uris ? object.image_uris.border_crop : ''
                     },
                     colors: object.colors,
                     type_line: object.type_line

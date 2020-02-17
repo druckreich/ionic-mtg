@@ -17,6 +17,7 @@ export class AppComponent {
         private statusBar: StatusBar,
         public store: Store
     ) {
+        this.splashScreen.show();
         this.initializeApp();
         this.loadInitialData();
     }
@@ -29,6 +30,6 @@ export class AppComponent {
     }
 
     loadInitialData() {
-        this.store.dispatch(new PrepareCards());
+        //this.store.dispatch(new PrepareCards());
     }
 }

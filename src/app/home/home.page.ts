@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
 import {Navigate} from '@ngxs/router-plugin';
-import {PrepareGame} from "src/app/+store/main.actions";
+import {UpdateGame} from "src/app/+store/main.actions";
 import {Observable} from "rxjs";
+import {Game} from "src/app/+store/game.model";
 
 @Component({
     selector: 'app-home',
@@ -21,7 +22,13 @@ export class HomePage implements OnInit {
     }
 
     startQuiz(type: string) {
-        this.store.dispatch(new PrepareGame(type)).subscribe(() => {
+        const game: Game = {
+            type: type,
+            card: null,
+            state: null,
+            correctAnswers: 0
+        };
+        this.store.dispatch(new UpdateGame(game)).subscribe(() => {
             this.store.dispatch(new Navigate(['/quiz']));
         });
     }

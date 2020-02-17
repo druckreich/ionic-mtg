@@ -1,3 +1,39 @@
-<p>
-  quiz-card works!
-</p>
+<div class="card-container">
+    <div class="card-background">
+        <div class="card-frame">
+            <div class="frame-header">
+                <span class="name">Quiz - Standard</span>
+                <div class="mana-icons">
+                    <img class="m-i" src="../../assets/icon/{{s}}.svg" *ngFor="let s of getManaSymbols()">
+                </div>
+            </div>
+            <div class="frame-art">
+                <app-quiz-art [card]="game.card"></app-quiz-art>
+            </div>
+            <div class="frame-type-line">
+                <span class="type">Card {{game.correctAnswers}}: {{quizQuestion}}</span>
+            </div>
+            <div class="frame-text-box">
+                <div *ngIf="quizService.isCardLoaded$ | async">
+                    <app-quiz-questions [card]="game.card"
+                                        (quizQuestion)="quizQuestion = $event"
+                                        (answer)="handleQuizQuestionResult($event)"></app-quiz-questions>
+                </div>
+
+            </div>
+            <div class="frame-bottom-info inner-margin">
+                <div class="fbi-left">
+                    <p>hfgl</p>
+                    <p>{{game.correctAnswers}} &#x2022; EN
+                        <img class="paintbrush" src="https://image.ibb.co/e2VxAS/paintbrush_white.png"
+                             alt="paintbrush icon"> druckreich</p>
+                </div>
+                <div class="fbi-right">
+                    &#x99; &amp; &#169; 2016 Wizards of the Coast
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
