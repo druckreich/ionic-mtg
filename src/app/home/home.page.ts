@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngxs/store';
 import {Navigate} from '@ngxs/router-plugin';
 import {PrepareGame} from "src/app/+store/main.actions";
+import {Observable} from "rxjs";
 
 @Component({
     selector: 'app-home',
@@ -9,6 +10,8 @@ import {PrepareGame} from "src/app/+store/main.actions";
     styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+
+    record$: Observable<{ [format: string]: number }> = this.store.select(s => s['mtg'].record);
 
     constructor(public store: Store) {
     }

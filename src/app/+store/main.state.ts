@@ -14,25 +14,29 @@ export const RARITY = ['Common', 'Uncommon', 'Rare', 'Mythic'];
 
 export interface MainStateModel {
     cards: Card[];
-    type: string;
-    game: Game
+    record: { [format: string]: number };
+    game: Game;
 }
 
 @State<MainStateModel>({
     name: 'mtg',
     defaults: {
-        type: "",
         cards: [],
         game: {
-            type: ""
+            type: "X"
+        },
+        record: {
+            standard: 0,
+            modern: 0
         }
+
     }
 })
 
 export class MainState {
 
-    constructor(public mainService: MainService) {
 
+    constructor(public mainService: MainService) {
     }
 
     @Action(PrepareCards)
