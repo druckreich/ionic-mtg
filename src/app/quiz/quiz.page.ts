@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Store} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {Card} from '../+store/card.model';
-import {Subject} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {QuizService} from "./quiz.service";
-import {RandomCard} from "../+store/main.actions";
-import {COLOR, MainStateModel} from "../+store/main.state";
+import {RandomCard, UpdateGame} from "../+store/main.actions";
+import {COLOR, MainState, MainStateModel} from "../+store/main.state";
 import {ToastController} from "@ionic/angular";
-import {Navigate} from "@ngxs/router-plugin";
+import {GAME_STATES} from "src/app/+store/game.model";
 
 export const TIME_TO_NEXT_CARD = 1500;
 
@@ -17,8 +17,9 @@ export const TIME_TO_NEXT_CARD = 1500;
 })
 export class QuizPage implements OnInit, OnDestroy {
 
-    quizStatus = null;
-    currentCard: Card;
+    gameState$: Observable<string> = this.store.selectSnapshot(state => state['mtg'].game.state);
+    currentCard$: Observable<Card> = this.store.select(state => state['mtg'].game.card);
+
     cardIndex = 0;
 
     quizQuestion: string;
@@ -34,7 +35,8 @@ export class QuizPage implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.quizStatus = 'PREPARING';
+        console.log(this.gameState$);
+        this.store.dispatch(new UpdateGame({state: GAME_STATES.STOP}));
         this.startQuiz();
     }
 
@@ -43,17 +45,16 @@ export class QuizPage implements OnInit, OnDestroy {
     }
 
     startQuiz() {
-        this.quizStatus = 'STARTED';
         this.cardIndex = 0;
         this.correctAnswers = 0;
         this.wasLastAnswerCorrect = false;
         this.isShowBorderArtButtonVisible = false;
         this.lives = [...COLOR];
+        this.store.dispatch(new UpdateGame({state: GAME_STATES.RUN}));
         this.showNextCard();
     }
 
     stopQuiz() {
-        this.quizStatus = 'STOPPED';
         this.presentToastWithOptions();
     }
 
@@ -69,9 +70,9 @@ export class QuizPage implements OnInit, OnDestroy {
 
         this.cardIndex++;
         this.quizService.cardLoaded(false);
-        this.store.dispatch(new RandomCard()).subscribe((state: MainStateModel) => {
-            this.currentCard = state['mtg'].game.card;
-        })
+        //this.store.dispatch(new RandomCard()).subscribe((state: MainStateModel) => {
+            //this.currentCard = state['mtg'].game.card;
+        //})
     }
 
     handleQuizQuestionResult(card: Card, result: boolean) {
@@ -101,5 +102,9 @@ export class QuizPage implements OnInit, OnDestroy {
             ]
         });
         toast.present();
+    }
+
+    updateGame(): void {
+
     }
 }

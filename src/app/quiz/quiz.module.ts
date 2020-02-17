@@ -6,7 +6,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {IonicModule} from '@ionic/angular';
 
 import {QuizPage} from './quiz.page';
-import {QuizCardComponent} from './quiz-card/quiz-card.component';
+import {QuizArtComponent} from './quiz-art/quiz-art.component';
 import {QUIZ_QUESTIONS, QuizQuestionsComponent} from './quiz-questions/quiz-questions.component';
 import {QuizQuestionAnchorDirective} from './quiz-questions/quiz-question-anchor.directive';
 import {QuizService} from "./quiz.service";
@@ -28,7 +28,7 @@ const routes: Routes = [
     ],
     declarations: [
         QuizPage,
-        QuizCardComponent,
+        QuizArtComponent,
         QuizQuestionsComponent,
         QuizQuestionAnchorDirective,
         QUIZ_QUESTIONS
@@ -37,7 +37,7 @@ const routes: Routes = [
         QuizService
     ],
     entryComponents: [
-        QuizCardComponent,
+        QuizArtComponent,
         QuizQuestionsComponent,
         QUIZ_QUESTIONS
     ]
