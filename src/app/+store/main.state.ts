@@ -1,6 +1,6 @@
-import {Action, State, StateContext} from '@ngxs/store';
+import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {
-    PrepareCards,
+    PrepareData, PrepareDataSuccess,
     UpdateGame,
     UpdateGameCorrectAnswer,
     UpdateGameRandomCard,
@@ -12,6 +12,7 @@ import {Card} from './card.model';
 import {patch} from '@ngxs/store/operators';
 import {Game} from "./game.model";
 import {getRandomElementsFrom} from "src/app/shared/util";
+import {Record} from "src/app/+store/record.model";
 
 export const CMC = ['1', '2', '3', '4', '5', '6', '7', '8+'];
 export const COLOR = ['W', 'U', 'B', 'R', 'G'];
@@ -20,8 +21,8 @@ export const RARITY = ['Common', 'Uncommon', 'Rare', 'Mythic'];
 
 export interface MainStateModel {
     cards: Card[];
-    record: { [format: string]: number };
     game: Game;
+    record: Record;
 }
 
 @State<MainStateModel>({
@@ -47,19 +48,39 @@ export interface MainStateModel {
 export class MainState {
 
 
+    @Selector()
+    public static cards(state: MainStateModel): Card[] {
+        return state.cards;
+    }
+
+    @Selector()
+    public static game(state: MainStateModel): Game {
+        return state.game;
+    }
+
+    @Selector()
+    public static record(state: MainStateModel): Record {
+        return state.game;
+    }
+
     constructor(public mainService: MainService) {
     }
 
-    @Action(PrepareCards)
-    prepareCards({setState}: StateContext<MainStateModel>) {
-        return this.mainService.prepareCards().pipe(
-            tap((cards: Card[]) => {
-                setState(
-                    patch(<MainStateModel>{
-                        cards: cards
-                    }));
-            })
-        );
+    @Action(PrepareData)
+    prepareData({getState, setState, dispatch}: StateContext<MainStateModel>) {
+        const cards: Card[] = getState().cards;
+        if(cards.length == 0) {
+            this.mainService.prepareCards().pipe(
+                tap((cards: Card[]) => {
+                    setState(
+                        patch(<MainStateModel>{
+                            cards: cards
+                        }));
+                })
+            );
+        } else {
+            dispatch(new PrepareDataSuccess());
+        }
     }
 
     @Action(UpdateGame)

@@ -1,7 +1,15 @@
 import {Game} from "src/app/+store/game.model";
 
-export class PrepareCards {
-    static readonly type: string = '[MTG] Prepare Cards';
+export class PrepareData {
+    static readonly type: string = '[MTG] Prepare Data';
+
+    constructor() {
+
+    }
+}
+
+export class PrepareDataSuccess {
+    static readonly type: string = '[MTG] Prepare Data Success';
 
     constructor() {
 
