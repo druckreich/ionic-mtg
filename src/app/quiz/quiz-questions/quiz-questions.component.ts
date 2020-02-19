@@ -16,6 +16,7 @@ import {WhatsTheNameComponent} from "src/app/quiz/quiz-questions/whats-the-name/
 import {WhatsTheColorComponent} from "src/app/quiz/quiz-questions/whats-the-color/whats-the-color.component";
 import {WhatsTheTypeComponent} from "src/app/quiz/quiz-questions/whats-the-type/whats-the-type.component";
 import {WhatsTheRarityComponent} from "src/app/quiz/quiz-questions/whats-the-rarity/whats-the-rarity.component";
+import {GameService} from "src/app/+store/game.service";
 
 export const QUIZ_QUESTIONS: any[] = [
     WhatsTheColorComponent,
@@ -37,9 +38,6 @@ export class QuizQuestionsComponent implements OnChanges {
 
     @Output()
     answer: EventEmitter<boolean> = <EventEmitter<boolean>>this.quizService.getAnswer();
-
-    @Output()
-    quizQuestion: EventEmitter<string> = new EventEmitter<string>();
 
     @ViewChild(QuizQuestionAnchorDirective, {static: true})
     adHost: QuizQuestionAnchorDirective;
@@ -64,11 +62,8 @@ export class QuizQuestionsComponent implements OnChanges {
         const viewContainerRef = this.adHost.viewContainerRef;
         viewContainerRef.clear();
         const componentRef = viewContainerRef.createComponent(componentFactory);
-
         (<QuizQuestion>componentRef.instance).card = this.card;
 
-        this.quizQuestion.emit((<QuizQuestion>componentRef.instance).question);
+        GameService.updateQuestion((<QuizQuestion>componentRef.instance).question);
     }
-
-
 }

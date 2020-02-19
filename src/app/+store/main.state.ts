@@ -3,7 +3,7 @@ import {
     PrepareData,
     PrepareDataSuccess,
     UpdateGame,
-    UpdateGameCorrectAnswer,
+    UpdateGameCorrectAnswer, UpdateGameQuestion,
     UpdateGameRandomCard,
     UpdateGameWrongAnswer
 } from './main.actions';
@@ -113,12 +113,24 @@ export class MainState {
         ));
     }
 
+    @Action(UpdateGameQuestion)
+    updateGameQuestion({getState, setState}: StateContext<MainStateModel>, action: UpdateGameQuestion) {
+        const game: Game = getState().game;
+        setState(patch({
+                game: patch({
+                    ...game,
+                    card: action.question
+                })
+            }
+        ));
+    }
+
     @Action(UpdateGameCorrectAnswer)
     updateGameCorrectAnswer({getState, setState}: StateContext<MainStateModel>) {
         const game: Game = getState().game;
         setState(patch({
                 game: patch({
-                    ...getState().game,
+                    ...game,
                     correctAnswers: game.correctAnswers + 1
                 })
             }
@@ -130,7 +142,7 @@ export class MainState {
         const game: Game = getState().game;
         setState(patch({
                 game: patch({
-                    ...getState().game,
+                    ...game,
                     lives: game.lives - 1
                 })
             }

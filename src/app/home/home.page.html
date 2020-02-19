@@ -1,6 +1,6 @@
 <ion-content *ngIf="true">
     <ion-button color="primary" expand="block" size="large" (click)="startQuiz('standard')">Standard</ion-button>
-    <div class="record" *ngIf="record$ | async as record">
+    <div class="record">
         <ion-text color="medium" *ngIf="record.standard == 0">
             Für den Spielmodus Standard ist noch kein Rekord gespeichert!
         </ion-text>
@@ -10,7 +10,7 @@
     </div>
     <br>
     <ion-button color="primary" expand="block" size="large" (click)="startQuiz('modern')">Modern</ion-button>
-    <div class="record" *ngIf="record$ | async as record">
+    <div class="record">
         <ion-text color="medium" *ngIf="record.standard == 0">
             Für den Spielmodus Modern ist noch kein Rekord gespeichert!
         </ion-text>

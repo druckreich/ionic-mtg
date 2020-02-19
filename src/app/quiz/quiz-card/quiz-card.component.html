@@ -11,12 +11,11 @@
                 <app-quiz-art [card]="game.card" (loaded)="isCardArtLoaded = $event"></app-quiz-art>
             </div>
             <div class="frame-type-line">
-                <span class="type">Card {{game.correctAnswers}}: {{quizQuestion}}</span>
+                <span class="type">Card {{game.correctAnswers}}: {{game.question}}</span>
             </div>
             <div class="frame-text-box">
                 <div *ngIf="isCardArtLoaded">
                     <app-quiz-questions [card]="game.card"
-                                        (quizQuestion)="quizQuestion = $event"
                                         (answer)="handleQuizQuestionResult($event)"></app-quiz-questions>
                 </div>
 

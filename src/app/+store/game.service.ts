@@ -1,5 +1,5 @@
 import {Dispatch} from "@ngxs-labs/dispatch-decorator";
-import {UpdateGame, UpdateGameRandomCard, UpdateGameWrongAnswer} from "src/app/+store/main.actions";
+import {UpdateGame, UpdateGameQuestion, UpdateGameRandomCard, UpdateGameWrongAnswer} from "src/app/+store/main.actions";
 import {Game} from "src/app/+store/game.model";
 
 export class GameService {
@@ -13,6 +13,11 @@ export class GameService {
     @Dispatch()
     public static updateCard() {
         return new UpdateGameRandomCard();
+    }
+
+    @Dispatch()
+    public static updateQuestion(question: string) {
+        return new UpdateGameQuestion(question);
     }
 
     @Dispatch()

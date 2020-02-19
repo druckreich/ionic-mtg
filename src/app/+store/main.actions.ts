@@ -25,9 +25,17 @@ export class UpdateGame {
 }
 
 export class UpdateGameRandomCard {
-    static readonly type: string = '[MTG] Random Card';
+    static readonly type: string = '[MTG] Update Random Card';
 
     constructor() {
+
+    }
+}
+
+export class UpdateGameQuestion {
+    static readonly type: string = '[MTG] Update Game Question';
+
+    constructor(public question: string) {
 
     }
 }

@@ -14,7 +14,7 @@ import {SelectSnapshot} from "@ngxs-labs/select-snapshot";
 export class HomePage implements OnInit {
 
     @SelectSnapshot(MainState.record)
-    record$: Observable<Record>;
+    record: Record;
 
     constructor() {
     }
