@@ -28,7 +28,8 @@ export class QuizArtComponent implements OnInit, OnChanges {
     card: Card;
 
     @Output()
-    loaded: EventEmitter<any> = new EventEmitter<any>();
+    loaded: EventEmitter<boolean> = new EventEmitter<boolean>();
+
     base64Image: string;
 
     constructor(public quizService: QuizService) {
@@ -43,8 +44,10 @@ export class QuizArtComponent implements OnInit, OnChanges {
         if (changes['card'].currentValue) {
             this.base64Image = '';
             const imageUrl: string = changes['card'].currentValue.image_uris.art_crop;
+            this.loaded.emit(false);
             this.getBase64ImageFromURL(imageUrl).subscribe(base64data => {
                 this.base64Image = 'data:image/jpg;base64,' + base64data;
+                this.loaded.emit(true);
                 this.quizService.cardLoaded(true);
             });
         }

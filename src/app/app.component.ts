@@ -3,8 +3,8 @@ import {Component} from '@angular/core';
 import {Platform} from '@ionic/angular';
 import {SplashScreen} from '@ionic-native/splash-screen/ngx';
 import {StatusBar} from '@ionic-native/status-bar/ngx';
-import {Store} from '@ngxs/store';
 import {PrepareData} from "./+store/main.actions";
+import {Dispatch} from "@ngxs-labs/dispatch-decorator";
 
 @Component({
     selector: 'app-root',
@@ -14,8 +14,7 @@ export class AppComponent {
     constructor(
         private platform: Platform,
         private splashScreen: SplashScreen,
-        private statusBar: StatusBar,
-        public store: Store
+        private statusBar: StatusBar
     ) {
         this.splashScreen.show();
         this.initializeApp();
@@ -29,7 +28,8 @@ export class AppComponent {
         });
     }
 
+    @Dispatch()
     loadInitialData() {
-        this.store.dispatch(new PrepareData());
+        return new PrepareData();
     }
 }

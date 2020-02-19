@@ -14,7 +14,9 @@ import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {HttpClientModule} from '@angular/common/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NgxsRouterPluginModule} from '@ngxs/router-plugin';
-import {NgxsReduxDevtoolsPlugin, NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
+import {NgxsReduxDevtoolsPluginModule} from "@ngxs/devtools-plugin";
+import {NgxsDispatchPluginModule} from "@ngxs-labs/dispatch-decorator";
+import {NgxsSelectSnapshotModule} from "@ngxs-labs/select-snapshot";
 
 
 @NgModule({
@@ -29,10 +31,15 @@ import {NgxsReduxDevtoolsPlugin, NgxsReduxDevtoolsPluginModule} from "@ngxs/devt
         IonicModule.forRoot(),
         AppRoutingModule,
 
+        // @ngxs
         NgxsModule.forRoot([MainState]),
         NgxsStoragePluginModule.forRoot({key: ['mtg']}),
         NgxsRouterPluginModule.forRoot(),
-        NgxsReduxDevtoolsPluginModule.forRoot()
+        NgxsReduxDevtoolsPluginModule.forRoot(),
+
+        // @ngxs-labs
+        NgxsDispatchPluginModule.forRoot(),
+        NgxsSelectSnapshotModule.forRoot()
     ],
     providers: [
         StatusBar,

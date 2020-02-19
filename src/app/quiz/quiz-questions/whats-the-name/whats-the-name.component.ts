@@ -2,10 +2,11 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Answer, QuizQuestion} from 'src/app/quiz/quiz-questions/quiz-question.model';
 import {Card} from 'src/app/+store/card.model';
 import {QuizService} from "../../quiz.service";
-import {Store} from "@ngxs/store";
 import {cardValueToAnswer, getRandomElementsFrom} from "src/app/shared/util";
 import {quizQuestionTrigger} from "src/app/quiz/quiz-questions/animations";
 import {QuizQuestionBaseComponent} from "src/app/quiz/quiz-questions/quiz-question-base/quiz-question-base.component";
+import {SelectSnapshot} from "@ngxs-labs/select-snapshot";
+import {MainState} from "src/app/+store/main.state";
 
 
 @Component({
@@ -18,12 +19,16 @@ export class WhatsTheNameComponent extends QuizQuestionBaseComponent implements 
 
     @Input()
     card: Card;
+
+    @SelectSnapshot(MainState.cards)
+    cards: Card[];
+
     question: string = "Welchen Namen hat diese Karte?";
     answers: Answer[];
     defaultState: string = 'default';
     showSolution = false;
 
-    constructor(public store: Store, public quizService: QuizService) {
+    constructor(public quizService: QuizService) {
         super(quizService);
     }
 
@@ -32,8 +37,7 @@ export class WhatsTheNameComponent extends QuizQuestionBaseComponent implements 
     }
 
     prepare(): void {
-        const cards: Card[] = this.store.selectSnapshot(s => s['mtg'].cards);
-        const randomCards: Card[] = getRandomElementsFrom(cards, 4);
+        const randomCards: Card[] = getRandomElementsFrom(this.cards, 4);
         const answers: Answer[] = randomCards.map((card: Card) => cardValueToAnswer(card.name, false));
         this.answers = [
             ...answers,

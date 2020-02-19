@@ -1,16 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngxs/store';
-import {Card} from '../+store/card.model';
+import {Select} from '@ngxs/store';
 import {Observable} from 'rxjs';
-import {QuizService} from "./quiz.service";
 import {ToastController} from "@ionic/angular";
 import {Game} from "src/app/+store/game.model";
-import {
-    UpdateGame,
-    UpdateGameCorrectAnswer,
-    UpdateGameRandomCard,
-    UpdateGameWrongAnswer
-} from "src/app/+store/main.actions";
+import {MainState} from "src/app/+store/main.state";
+import {GameService} from "src/app/+store/game.service";
 
 export const TIME_TO_NEXT_CARD = 1500;
 
@@ -21,12 +15,13 @@ export const TIME_TO_NEXT_CARD = 1500;
 })
 export class QuizPage implements OnInit {
 
-    game$: Observable<Game> = this.store.select(state => state['mtg'].game);
+    @Select(MainState.game)
+    game$: Observable<Game>;
 
     showBorderArt: boolean = false;
     showQuizButtons: boolean = false;
 
-    constructor(public store: Store, public quizService: QuizService, public toastController: ToastController) {
+    constructor(public toastController: ToastController) {
     }
 
     ngOnInit() {
@@ -34,19 +29,19 @@ export class QuizPage implements OnInit {
 
     showNextCard() {
         this.showQuizButtons = false;
-        this.store.dispatch(new UpdateGameRandomCard());
+        GameService.updateCard();
     }
 
     toggleShowBorderArt(): void {
         this.showBorderArt = !this.showBorderArt;
     }
 
-    handleQuizQuestionResult(result: boolean) {
+    handleQuizQuestionResult(result: boolean): void {
         this.showQuizButtons = true;
-        if(result === true) {
-            this.store.dispatch(new UpdateGameCorrectAnswer());
+        if (result === true) {
+            GameService.handleCorrectAnswer();
         } else {
-            this.store.dispatch(new UpdateGameWrongAnswer());
+            GameService.handleWrongAnswer();
         }
     }
 

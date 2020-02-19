@@ -1,9 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Store} from "@ngxs/store";
 import {Game} from "src/app/+store/game.model";
-import {QuizService} from "src/app/quiz/quiz.service";
-import {UpdateGameRandomCard, UpdateGame} from "src/app/+store/main.actions";
 import {COLOR} from "src/app/+store/main.state";
+import {RouterService} from "src/app/+store/router.service";
 
 @Component({
     selector: 'app-quiz-card',
@@ -18,16 +16,15 @@ export class QuizCardComponent implements OnInit {
     @Output()
     result: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    isCardArtLoaded: boolean = false;
     quizQuestion: string;
 
-    constructor(public store: Store, public quizService: QuizService) {
+    constructor() {
     }
 
     ngOnInit() {
-        console.log(this.game);
         if (!this.game.card) {
-            this.store.dispatch(new UpdateGame({lives: 5, correctAnswers: 0}));
-            this.store.dispatch(new UpdateGameRandomCard());
+            RouterService.navigate(['/home']);
         }
     }
 

@@ -12,6 +12,8 @@ export interface QuizQuestion {
     question: string;
     answers: Answer[];
     showSolution: boolean;
+
     prepare(): void;
+
     validate(): void;
 }

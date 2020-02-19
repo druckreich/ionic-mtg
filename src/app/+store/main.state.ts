@@ -1,6 +1,7 @@
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {
-    PrepareData, PrepareDataSuccess,
+    PrepareData,
+    PrepareDataSuccess,
     UpdateGame,
     UpdateGameCorrectAnswer,
     UpdateGameRandomCard,
@@ -33,6 +34,7 @@ export interface MainStateModel {
             type: "",
             state: null,
             card: null,
+            question: "",
             correctAnswers: 0,
             lives: 0
 
@@ -60,7 +62,7 @@ export class MainState {
 
     @Selector()
     public static record(state: MainStateModel): Record {
-        return state.game;
+        return state.record;
     }
 
     constructor(public mainService: MainService) {
@@ -69,7 +71,7 @@ export class MainState {
     @Action(PrepareData)
     prepareData({getState, setState, dispatch}: StateContext<MainStateModel>) {
         const cards: Card[] = getState().cards;
-        if(cards.length == 0) {
+        if (cards.length == 0) {
             this.mainService.prepareCards().pipe(
                 tap((cards: Card[]) => {
                     setState(
@@ -95,27 +97,43 @@ export class MainState {
     }
 
     @Action(UpdateGameRandomCard)
-    updateGameRandomCard({getState, dispatch}: StateContext<MainStateModel>) {
+    updateGameRandomCard({getState, setState}: StateContext<MainStateModel>) {
         const game: any = getState().game;
         const allCards: Card[] = getState().cards;
         const gameCards: Card[] = allCards.filter((c: Card) => {
             return c.legalities[game.type] === 'legal';
         });
         const cards: Card[] = getRandomElementsFrom(gameCards, 1);
-        dispatch(new UpdateGame({card: cards[0]}));
+        setState(patch({
+                game: patch({
+                    ...getState().game,
+                    card: cards[0]
+                })
+            }
+        ));
     }
 
     @Action(UpdateGameCorrectAnswer)
-    updateGameCorrectAnswer({getState, dispatch}: StateContext<MainStateModel>) {
+    updateGameCorrectAnswer({getState, setState}: StateContext<MainStateModel>) {
         const game: Game = getState().game;
-        dispatch(new UpdateGame({correctAnswers: game.correctAnswers + 1}));
+        setState(patch({
+                game: patch({
+                    ...getState().game,
+                    correctAnswers: game.correctAnswers + 1
+                })
+            }
+        ));
     }
 
     @Action(UpdateGameWrongAnswer)
-    updateGameWrongAnswer({getState, dispatch}: StateContext<MainStateModel>) {
+    updateGameWrongAnswer({getState, setState}: StateContext<MainStateModel>) {
         const game: Game = getState().game;
-        dispatch(new UpdateGame({lives: game.lives - 1}));
+        setState(patch({
+                game: patch({
+                    ...getState().game,
+                    lives: game.lives - 1
+                })
+            }
+        ));
     }
-
-
 }

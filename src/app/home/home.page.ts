@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Store} from '@ngxs/store';
-import {Navigate} from '@ngxs/router-plugin';
-import {UpdateGame} from "src/app/+store/main.actions";
 import {Observable} from "rxjs";
-import {Game} from "src/app/+store/game.model";
+import {MainState} from "src/app/+store/main.state";
+import {Record} from "src/app/+store/record.model";
+import {GameService} from "src/app/+store/game.service";
+import {RouterService} from "src/app/+store/router.service";
+import {SelectSnapshot} from "@ngxs-labs/select-snapshot";
 
 @Component({
     selector: 'app-home',
@@ -12,9 +13,10 @@ import {Game} from "src/app/+store/game.model";
 })
 export class HomePage implements OnInit {
 
-    record$: Observable<{ [format: string]: number }> = this.store.select(s => s['mtg'].record);
+    @SelectSnapshot(MainState.record)
+    record$: Observable<Record>;
 
-    constructor(public store: Store) {
+    constructor() {
     }
 
     ngOnInit() {
@@ -22,15 +24,7 @@ export class HomePage implements OnInit {
     }
 
     startQuiz(type: string) {
-        const game: Game = {
-            type: type,
-            card: null,
-            state: null,
-            correctAnswers: 0
-        };
-        this.store.dispatch(new UpdateGame(game)).subscribe(() => {
-            this.store.dispatch(new Navigate(['/quiz']));
-        });
+        GameService.startGame(type);
+        RouterService.navigate(['/quiz']);
     }
-
 }

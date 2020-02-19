@@ -10,6 +10,7 @@ export class Game {
     type?: string;
     state?: GAME_STATES;
     card?: Card;
+    question?: string;
     correctAnswers?: number;
     lives?: number;
 }
