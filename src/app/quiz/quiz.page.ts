@@ -1,12 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {Select} from '@ngxs/store';
+import {Component, ComponentRef, OnInit} from '@angular/core';
+import {Actions, ofActionDispatched, Select} from '@ngxs/store';
 import {Observable} from 'rxjs';
-import {ToastController} from "@ionic/angular";
 import {Game} from "src/app/+store/game.model";
 import {MainState} from "src/app/+store/main.state";
 import {GameService} from "src/app/+store/game.service";
+import {UpdateGameOver} from "src/app/+store/main.actions";
+import {ModalController} from "@ionic/angular";
+import {QuizResultComponent} from "src/app/quiz/quiz-result/quiz-result.component";
+import {RouterService} from "src/app/+store/router.service";
 
-export const TIME_TO_NEXT_CARD = 1500;
+export enum CLICK_STATE {
+    VALIDATE,
+    NEXT
+}
 
 @Component({
     selector: 'app-quiz',
@@ -18,50 +24,45 @@ export class QuizPage implements OnInit {
     @Select(MainState.game)
     game$: Observable<Game>;
 
-    showBorderArt: boolean = false;
-    showQuizButtons: boolean = false;
+    clicked: number = 0;
 
-    constructor(public toastController: ToastController) {
+    constructor(public actions$: Actions, public modalCtrl: ModalController) {
     }
 
     ngOnInit() {
+        this.actions$.pipe(
+            ofActionDispatched(UpdateGameOver)
+        ).subscribe((action: UpdateGameOver) => {
+            this.handleQuizGameOver();
+        })
     }
 
-    showNextCard() {
-        this.showQuizButtons = false;
-        GameService.updateCard();
-    }
+    async handleQuizGameOver() {
+        let resultModal = await this.modalCtrl.create({
+            component: QuizResultComponent
+        });
+        return await resultModal.present().then((r) => {
+            console.log(r)
+/*
+            GameService.startGame(type);
+            GameService.updateCard();
+            RouterService.navigate(['/quiz']);
 
-    toggleShowBorderArt(): void {
-        this.showBorderArt = !this.showBorderArt;
+ */
+        });
     }
 
     handleQuizQuestionResult(result: boolean): void {
-        this.showQuizButtons = true;
-        if (result === true) {
-            GameService.handleCorrectAnswer();
-        } else {
-            GameService.handleWrongAnswer();
+        switch (this.clicked) {
+            case CLICK_STATE.VALIDATE:
+                this.clicked = CLICK_STATE.NEXT;
+                result ? GameService.handleCorrectAnswer() : GameService.handleWrongAnswer();
+                break;
+            case CLICK_STATE.NEXT:
+                this.clicked = CLICK_STATE.VALIDATE;
+                GameService.updateCard();
+                break;
         }
-    }
-
-    async presentToastWithOptions() {
-        /*
-        const toast = await this.toastController.create({
-            message: 'Well done! ' + (this.cardIndex - 1) + ' correct answers is not bad!',
-            position: 'middle',
-            buttons: [
-                {
-                    side: 'end',
-                    text: 'Hit me one more time!',
-                    handler: () => {
-                        this.startQuiz();
-                    }
-                }
-            ]
-        });
-        toast.present();
-         */
     }
 
 }

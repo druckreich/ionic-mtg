@@ -1,0 +1,20 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>GAME OVER</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list>
+    <ion-item>
+      <ion-label>GAME TYPE: {{game.type | uppercase}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>CARDS:     {{game.correctAnswers}}</ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer class="ion-padding">
+  <ion-button color="primary" expand="block" size="large" (click)="startQuiz('standard')">Standard</ion-button>
+</ion-footer>

@@ -55,3 +55,12 @@ export class UpdateGameCorrectAnswer {
 
     }
 }
+
+
+export class UpdateGameOver {
+    static readonly type: string = '[MTG] Update Game Over';
+
+    constructor() {
+
+    }
+}

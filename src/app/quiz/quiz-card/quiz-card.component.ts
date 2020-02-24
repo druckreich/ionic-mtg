@@ -17,18 +17,17 @@ export class QuizCardComponent implements OnInit {
     result: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     isCardArtLoaded: boolean = false;
-    quizQuestion: string;
 
     constructor() {
     }
 
     ngOnInit() {
         if (!this.game.card) {
-            RouterService.navigate(['/home']);
+            RouterService.navigate(["/home"]);
         }
     }
 
-    handleQuizQuestionResult(result: boolean) {
+    handleQuizQuestionAnswer(result: boolean) {
         this.result.emit(result);
     }
 

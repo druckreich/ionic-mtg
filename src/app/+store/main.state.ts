@@ -3,7 +3,8 @@ import {
     PrepareData,
     PrepareDataSuccess,
     UpdateGame,
-    UpdateGameCorrectAnswer, UpdateGameQuestion,
+    UpdateGameCorrectAnswer, UpdateGameOver,
+    UpdateGameQuestion,
     UpdateGameRandomCard,
     UpdateGameWrongAnswer
 } from './main.actions';
@@ -14,6 +15,7 @@ import {patch} from '@ngxs/store/operators';
 import {Game} from "./game.model";
 import {getRandomElementsFrom} from "src/app/shared/util";
 import {Record} from "src/app/+store/record.model";
+import {ModalController} from "@ionic/angular";
 
 export const CMC = ['1', '2', '3', '4', '5', '6', '7', '8+'];
 export const COLOR = ['W', 'U', 'B', 'R', 'G'];
@@ -97,7 +99,13 @@ export class MainState {
     }
 
     @Action(UpdateGameRandomCard)
-    updateGameRandomCard({getState, setState}: StateContext<MainStateModel>) {
+    updateGameRandomCard({dispatch, getState, setState}: StateContext<MainStateModel>) {
+
+        if(getState().game.lives <= 0) {
+            dispatch(new UpdateGameOver());
+            return;
+        }
+
         const game: any = getState().game;
         const allCards: Card[] = getState().cards;
         const gameCards: Card[] = allCards.filter((c: Card) => {
@@ -119,7 +127,7 @@ export class MainState {
         setState(patch({
                 game: patch({
                     ...game,
-                    card: action.question
+                    question: action.question
                 })
             }
         ));
@@ -138,7 +146,7 @@ export class MainState {
     }
 
     @Action(UpdateGameWrongAnswer)
-    updateGameWrongAnswer({getState, setState}: StateContext<MainStateModel>) {
+    updateGameWrongAnswer({getState, setState, dispatch}: StateContext<MainStateModel>) {
         const game: Game = getState().game;
         setState(patch({
                 game: patch({

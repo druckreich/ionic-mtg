@@ -6,7 +6,7 @@ export class GameService {
 
     @Dispatch()
     public static startGame(type: string) {
-        const game: Game = {type: type, question: "", card: null, state: null, correctAnswers: 0};
+        const game: Game = {type: type, question: "", card: null, state: null, correctAnswers: 0, lives: 5};
         return new UpdateGame(game);
     }
 

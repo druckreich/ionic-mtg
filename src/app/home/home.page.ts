@@ -25,6 +25,7 @@ export class HomePage implements OnInit {
 
     startQuiz(type: string) {
         GameService.startGame(type);
+        GameService.updateCard();
         RouterService.navigate(['/quiz']);
     }
 }

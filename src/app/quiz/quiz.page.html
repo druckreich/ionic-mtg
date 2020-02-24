@@ -1,14 +1,12 @@
-<div class="container" *ngIf="game$ | async as game">
-    <div class="border-art" *ngIf="showBorderArt">
-        <img [src]="game.card.image_uris.border_crop">
-    </div>
-    <app-quiz-card [game]="game" (result)="handleQuizQuestionResult($event)"></app-quiz-card>
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="showQuizButtons">
-        <ion-fab-button (click)="toggleShowBorderArt()">
-            <ion-icon name="search"></ion-icon>
-        </ion-fab-button>
-        <ion-fab-button color="primary">
-            <ion-icon name="checkmark" (click)="showNextCard()"></ion-icon>
-        </ion-fab-button>
-    </ion-fab>
-</div>
+<ng-container *ngIf="game$ | async as game">
+    <ion-header>
+        <ion-toolbar>
+            <ion-title>
+                {{game.type}}: {{game.correctAnswers}}
+            </ion-title>
+        </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+        <app-quiz-card [game]="game" (result)="handleQuizQuestionResult($event)"></app-quiz-card>
+    </ion-content>
+</ng-container>

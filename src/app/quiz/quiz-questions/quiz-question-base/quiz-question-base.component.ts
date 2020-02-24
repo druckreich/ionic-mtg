@@ -13,7 +13,8 @@ export class QuizQuestionBaseComponent implements OnInit, QuizQuestion {
     card: Card;
     question: string;
     answers: Answer[];
-    showSolution: boolean;
+    showSolution: boolean = false;
+    showButton: boolean = true;
 
     constructor(public quizService: QuizService) {
     }
@@ -25,9 +26,14 @@ export class QuizQuestionBaseComponent implements OnInit, QuizQuestion {
     }
 
     validate(): void {
-        const incorrectAnswer: Answer = this.answers.find((answer) => answer.correct !== answer.selected);
-        this.quizService.emitAnswer(!incorrectAnswer);
-        this.showSolution = true;
+        if(this.showSolution === false) {
+            const incorrectAnswer: Answer = this.answers.find((answer) => answer.correct !== answer.selected);
+            this.quizService.emitAnswer(!incorrectAnswer);
+            this.showSolution = true;
+        } else {
+            this.quizService.emitAnswer(true);
+            this.showButton = false;
+        }
     }
 
 }

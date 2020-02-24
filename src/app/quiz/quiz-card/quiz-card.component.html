@@ -1,4 +1,7 @@
 <div class="card-container">
+    <div class="border-art" *ngIf="false">
+        <img [src]="game.card.image_uris.border_crop">
+    </div>
     <div class="card-background">
         <div class="card-frame">
             <div class="frame-header">
@@ -16,7 +19,7 @@
             <div class="frame-text-box">
                 <div *ngIf="isCardArtLoaded">
                     <app-quiz-questions [card]="game.card"
-                                        (answer)="handleQuizQuestionResult($event)"></app-quiz-questions>
+                                        (answer)="handleQuizQuestionAnswer($event)"></app-quiz-questions>
                 </div>
 
             </div>

@@ -11,6 +11,7 @@ import {QUIZ_QUESTIONS, QuizQuestionsComponent} from './quiz-questions/quiz-ques
 import {QuizQuestionAnchorDirective} from './quiz-questions/quiz-question-anchor.directive';
 import {QuizService} from "./quiz.service";
 import {QuizCardComponent} from "src/app/quiz/quiz-card/quiz-card.component";
+import {QuizResultComponent} from "src/app/quiz/quiz-result/quiz-result.component";
 
 const routes: Routes = [
     {
@@ -32,6 +33,7 @@ const routes: Routes = [
         QuizCardComponent,
         QuizArtComponent,
         QuizQuestionsComponent,
+        QuizResultComponent,
         QuizQuestionAnchorDirective,
         QUIZ_QUESTIONS
     ],
@@ -41,6 +43,7 @@ const routes: Routes = [
     entryComponents: [
         QuizArtComponent,
         QuizQuestionsComponent,
+        QuizResultComponent,
         QUIZ_QUESTIONS
     ]
 })
